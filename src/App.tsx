@@ -2,8 +2,6 @@ import {
   MantineProvider,
   ColorSchemeProvider,
   ColorScheme,
-  Paper,
-  Button,
 } from "@mantine/core";
 import { useHotkeys, useLocalStorage } from "@mantine/hooks";
 import AppShellComponent from "./Components/AppShellComponent";
