@@ -29,7 +29,7 @@ const LoginForm = (props: PaperProps) => {
       loading: false,
     });
   };
-  const successfullLogin = () => {
+  const showSuccessfullLogin = () => {
     showNotification({
       id: "loginNotification",
       disallowClose: false,
@@ -46,10 +46,11 @@ const LoginForm = (props: PaperProps) => {
     await signin(email, password)
       .then((response) => {
         console.log("successLoginForm", response);
-        successfullLogin();
+        showSuccessfullLogin();
       })
       .catch((error) => {
         console.log("errorLoginForm", error);
+        showUnsuccessfullLogin();
       });
   };
 
