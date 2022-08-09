@@ -68,7 +68,10 @@ function useProvideAuth() {
         Configuration.getInstance().setToken(user.token);
         setUser(user);
       })
-      .catch(() => Configuration.getInstance().removeToken());
+      .catch(() => {
+        Configuration.getInstance().removeToken();
+        throw new Error("Login failed");
+      });
   };
 
   const signup = (email: string, password: string) => {

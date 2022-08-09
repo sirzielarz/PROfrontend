@@ -7,6 +7,7 @@ import {
   PaperProps,
   Button,
   Stack,
+  Container,
 } from "@mantine/core";
 import { useAuth } from "../api/use-auth";
 import React, { useState } from "react";
@@ -16,7 +17,6 @@ const LoginForm = (props: PaperProps) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  //notification function start
   const showUnsuccessfullLogin = () => {
     showNotification({
       id: "errorNotification",
@@ -42,8 +42,8 @@ const LoginForm = (props: PaperProps) => {
     });
   };
 
-  const handleSubmit = async () => {
-    await signin(email, password)
+  const handleSubmit = () => {
+    signin(email, password)
       .then((response) => {
         console.log("successLoginForm", response);
         showSuccessfullLogin();
@@ -72,43 +72,45 @@ const LoginForm = (props: PaperProps) => {
   });
 
   return (
-    <Paper radius="md" p="xl" withBorder {...props}>
-      <Text size="lg" weight={500}>
-        Login to app:
-      </Text>
+    <Container size="xs" px="xs">
+      <Paper radius="md" p="xl" withBorder {...props}>
+        <Text size="lg" weight={500}>
+          Login to app:
+        </Text>
 
-      <form onSubmit={form.onSubmit((values) => handleSubmit())}>
-        <Stack>
-          <TextInput
-            required
-            label="Email"
-            placeholder="your@email.com"
-            value={form.values.email}
-            onChange={(event) => {
-              form.setFieldValue("email", event.currentTarget.value);
-              setEmail(event.currentTarget.value);
-            }}
-            error={form.errors.email && "Invalid email"}
-          />
+        <form onSubmit={form.onSubmit((values) => handleSubmit())}>
+          <Stack>
+            <TextInput
+              required
+              label="Email"
+              placeholder="your@email.com"
+              value={form.values.email}
+              onChange={(event) => {
+                form.setFieldValue("email", event.currentTarget.value);
+                setEmail(event.currentTarget.value);
+              }}
+              error={form.errors.email && "Invalid email"}
+            />
 
-          <PasswordInput
-            required
-            label="Password"
-            placeholder="Your password"
-            value={form.values.password}
-            onChange={(event) => {
-              form.setFieldValue("password", event.currentTarget.value);
-              setPassword(event.currentTarget.value);
-            }}
-            error={
-              form.errors.password &&
-              "Password should include at least 3 characters"
-            }
-          />
-          <Button type="submit">Login</Button>
-        </Stack>
-      </form>
-    </Paper>
+            <PasswordInput
+              required
+              label="Password"
+              placeholder="Your password"
+              value={form.values.password}
+              onChange={(event) => {
+                form.setFieldValue("password", event.currentTarget.value);
+                setPassword(event.currentTarget.value);
+              }}
+              error={
+                form.errors.password &&
+                "Password should include at least 3 characters"
+              }
+            />
+            <Button type="submit">Login</Button>
+          </Stack>
+        </form>
+      </Paper>
+    </Container>
   );
 };
 export default LoginForm;

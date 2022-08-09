@@ -12,8 +12,6 @@ import {
   useMantineTheme,
   Button,
   Paper,
-  Group,
-  Container,
   Loader,
 } from "@mantine/core";
 import { BrowserRouter as Router, Link, Route, Routes } from "react-router-dom";
@@ -49,7 +47,6 @@ function GroupTeachers() {
 
 const AppShellComponent = () => {
   const { user, loaded } = useAuth();
-
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
 
@@ -59,19 +56,23 @@ const AppShellComponent = () => {
         <Loader></Loader>
         <p>Loading...</p>
       </>
-    ); //you can use spinner
+    );
   }
+
+  console.log(user);
 
   return (
     <AppShell
-      styles={{
-        main: {
-          background:
-            theme.colorScheme === "dark"
-              ? theme.colors.dark[8]
-              : theme.colors.gray[0],
-        },
-      }}
+      styles={
+        {
+          // main: {
+          //   background:
+          //     theme.colorScheme === "dark"
+          //       ? theme.colors.dark[8]
+          //       : theme.colors.gray[0],
+          // },
+        }
+      }
       navbarOffsetBreakpoint="sm"
       asideOffsetBreakpoint="sm"
       navbar={
@@ -81,7 +82,7 @@ const AppShellComponent = () => {
           hidden={!opened}
           width={{ sm: 200, lg: 300 }}
         >
-          <Text>Application navbar</Text>
+          <Text>Application menu</Text>
         </Navbar>
       }
       footer={
@@ -111,16 +112,7 @@ const AppShellComponent = () => {
     >
       <Text variant="text">Resize app to see responsive navbar in action</Text>
 
-      <Paper>
-        {user ? (
-          <GroupTeachers />
-        ) : (
-          <>
-            <LoginPage />
-            <LoginForm />
-          </>
-        )}
-      </Paper>
+      <Paper>{user ? <GroupTeachers /> : <LoginForm />}</Paper>
     </AppShell>
   );
 };
