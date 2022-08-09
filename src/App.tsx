@@ -4,6 +4,7 @@ import {
   ColorScheme,
 } from "@mantine/core";
 import { useHotkeys, useLocalStorage } from "@mantine/hooks";
+import { NotificationsProvider } from "@mantine/notifications";
 import AppShellComponent from "./Components/AppShellComponent";
 
 function App() {
@@ -29,7 +30,9 @@ function App() {
           withGlobalStyles
           withNormalizeCSS
         >
-          <AppShellComponent />
+          <NotificationsProvider>
+            <AppShellComponent />
+          </NotificationsProvider>
         </MantineProvider>
       </ColorSchemeProvider>
     </div>

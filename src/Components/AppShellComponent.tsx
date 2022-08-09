@@ -19,6 +19,7 @@ import {
 import { BrowserRouter as Router, Link, Route, Routes } from "react-router-dom";
 
 import LoginPage from "../Pages/LoginPage";
+import LoginForm from "../Pages/LoginForm";
 import TeachersPage from "../Pages/TeachersPage";
 import { useAuth } from "./../api/use-auth";
 import { getGroupTeacher } from "./../api";
@@ -109,7 +110,17 @@ const AppShellComponent = () => {
       }
     >
       <Text variant="text">Resize app to see responsive navbar in action</Text>
-      <Paper>{user ? <GroupTeachers /> : <LoginPage />}</Paper>
+
+      <Paper>
+        {user ? (
+          <GroupTeachers />
+        ) : (
+          <>
+            <LoginPage />
+            <LoginForm />
+          </>
+        )}
+      </Paper>
     </AppShell>
   );
 };

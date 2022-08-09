@@ -16,6 +16,7 @@ export interface User {
 export interface ContextValue {
   user: User | null;
   loaded: boolean;
+  // loggedSuccess: boolean | null;
   signup: (email: string, password: string) => void;
   signin: (email: string, password: string) => Promise<any>;
   signout: () => void;
@@ -43,6 +44,7 @@ export const useAuth = () => {
 function useProvideAuth() {
   const [user, setUser] = useState<null | User>(null);
   const [loaded, setLoaded] = useState(false);
+  // const [loggedSuccess, setLoggedSuccess] = useState(null);
 
   useEffect(() => {
     const token = Configuration.getInstance().getToken();
@@ -55,15 +57,18 @@ function useProvideAuth() {
       //   .catch(() => Configuration.getInstance().removeToken())
       //   .finally(() => setLoaded(true));
     } else {
+      console.log("missing token");
       setLoaded(true);
     }
   }, []);
 
   const signin = (email: string, password: string) => {
-    return loginUser(email, password).then((user) => {
-      Configuration.getInstance().setToken(user.token);
-      setUser(user);
-    });
+    return loginUser(email, password)
+      .then((user) => {
+        Configuration.getInstance().setToken(user.token);
+        setUser(user);
+      })
+      .catch(() => Configuration.getInstance().removeToken());
   };
 
   const signup = (email: string, password: string) => {
