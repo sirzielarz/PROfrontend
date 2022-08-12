@@ -8,7 +8,6 @@ export async function loginUser(email: string, password: string): Promise<any> {
     const result = await apiPost(
       `${API_URL}/login?username=${email}&password=${password}`
     );
-    console.log("successApi");
     return result;
   } catch (err) {
     console.log("ErrorApi");

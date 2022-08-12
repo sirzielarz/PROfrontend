@@ -6,6 +6,7 @@ import {
 import { useHotkeys, useLocalStorage } from "@mantine/hooks";
 import { NotificationsProvider } from "@mantine/notifications";
 import AppShellComponent from "./Components/AppShellComponent";
+import AppShellContextProvider from "./Components/AppShellContext";
 
 function App() {
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({

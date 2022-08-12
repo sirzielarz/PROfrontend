@@ -1,12 +1,8 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState, useContext, useMemo } from "react";
+import ReactDOM from "react-dom/client";
 import {
   AppShell,
-  Navbar,
   Header,
-  Footer,
-  Aside,
-  Text,
   MediaQuery,
   Burger,
   useMantineTheme,
@@ -14,14 +10,17 @@ import {
   Paper,
   Loader,
 } from "@mantine/core";
+import Logo from "./../logo.svg";
 import { BrowserRouter as Router, Link, Route, Routes } from "react-router-dom";
-
-import LoginPage from "../Pages/LoginPage";
 import LoginForm from "../Pages/LoginForm";
-import TeachersPage from "../Pages/TeachersPage";
 import { useAuth } from "./../api/use-auth";
 import { getGroupTeacher } from "./../api";
 import LightDarkButton from "./LightDarkButton";
+import NavbarComponent from "./NavbarComponent";
+import GlobalContext from "./../Helpers/GlobalContext";
+
+// import LoginPage from "../Pages/LoginPage";
+// import TeachersPage from "../Pages/TeachersPage";
 
 function GroupTeachers() {
   const [groupTeachers, setGroupTeachers] = useState(null);
@@ -48,7 +47,11 @@ function GroupTeachers() {
 const AppShellComponent = () => {
   const { user, loaded } = useAuth();
   const theme = useMantineTheme();
-  const [opened, setOpened] = useState(false);
+  const [opened, setOpened] = useState<boolean>(false);
+  const providerOpened = useMemo(
+    () => ({ opened, setOpened }),
+    [opened, setOpened]
+  );
 
   if (!loaded) {
     return (
@@ -59,61 +62,52 @@ const AppShellComponent = () => {
     );
   }
 
-  console.log(user);
+  // console.log(user);
 
   return (
-    <AppShell
-      styles={
-        {
-          // main: {
-          //   background:
-          //     theme.colorScheme === "dark"
-          //       ? theme.colors.dark[8]
-          //       : theme.colors.gray[0],
-          // },
+    <GlobalContext.Provider value={providerOpened}>
+      <AppShell
+        styles={
+          {
+            // main: {
+            //   background:
+            //     theme.colorScheme === "dark"
+            //       ? theme.colors.dark[8]
+            //       : theme.colors.gray[0],
+            // },
+          }
         }
-      }
-      navbarOffsetBreakpoint="sm"
-      asideOffsetBreakpoint="sm"
-      navbar={
-        <Navbar
-          p="md"
-          hiddenBreakpoint="sm"
-          hidden={!opened}
-          width={{ sm: 200, lg: 300 }}
-        >
-          <Text>Application menu</Text>
-        </Navbar>
-      }
-      footer={
-        <Footer height={60} p="md">
-          Application footer
-        </Footer>
-      }
-      header={
-        <Header height={70} p="md">
-          {/* Handle other responsive styles with MediaQuery component or createStyles function */}
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <MediaQuery largerThan="sm" styles={{ display: "none" }}>
-              <Burger
-                opened={opened}
-                onClick={() => setOpened((o) => !o)}
-                size="sm"
-                color={theme.colors.gray[6]}
-                mr="xl"
-              />
-            </MediaQuery>
-
-            <Text>Application header</Text>
-            <LightDarkButton />
-          </div>
-        </Header>
-      }
-    >
-      <Text variant="text">Resize app to see responsive navbar in action</Text>
-
-      <Paper>{user ? <GroupTeachers /> : <LoginForm />}</Paper>
-    </AppShell>
+        navbarOffsetBreakpoint="sm"
+        asideOffsetBreakpoint="sm"
+        navbar={
+          <NavbarComponent
+            p="md"
+            hiddenBreakpoint="sm"
+            hidden={!opened}
+            width={{ sm: 200, lg: 300 }}
+          />
+        }
+        header={
+          <Header height={70} p="md">
+            {/* Handle other responsive styles with MediaQuery component or createStyles function */}
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <MediaQuery largerThan="sm" styles={{ display: "none" }}>
+                <Burger
+                  opened={opened}
+                  onClick={() => setOpened((o) => !o)}
+                  size="sm"
+                  color={theme.colors.gray[6]}
+                />
+              </MediaQuery>
+              <img src={Logo} alt="Logo" />
+              <LightDarkButton />
+            </div>
+          </Header>
+        }
+      >
+        <Paper>{user ? <GroupTeachers /> : <LoginForm />}</Paper>
+      </AppShell>
+    </GlobalContext.Provider>
   );
 };
 
