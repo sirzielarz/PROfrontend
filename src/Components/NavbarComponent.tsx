@@ -9,7 +9,7 @@ import {
   NavLink,
 } from "@mantine/core";
 import GlobalContext from "./../Helpers/GlobalContext";
-import { useAuth } from "./../api/use-auth";
+import useAuth from "../api/useAuth";
 
 import { IconLogout, IconLogin, IconHome } from "@tabler/icons";
 
@@ -136,49 +136,70 @@ function NavbarComponent(props: Omit<NavbarProps, "children">) {
   return (
     <Navbar {...props} height={700} width={{ sm: 300 }} p="md">
       <Navbar.Section>
-        <Group className={classes.header} position="apart">
-          <Code sx={{ fontWeight: 700 }}>
-            {user ? user.email : "welcome guest"}
-          </Code>
-        </Group>
-        {/*links*/}
+        <Code sx={{ fontWeight: 700 }}>
+          {user ? user.email : "welcome guest"}
+        </Code>
       </Navbar.Section>
+      {user ? (
+        <>
+          <Navbar.Section>
+            <Group className={classes.header} position="apart"></Group>
+            <NavLink
+              label="Home"
+              key="/"
+              icon={<IconHome />}
+              component={Link}
+              to="/"
+              active={location.pathname === "/"}
+              onClick={clickHandler}
+            />
+            <NavLink
+              label="Teachers"
+              key="/teachers"
+              icon={<IconLogin />}
+              component={Link}
+              to="/teachers"
+              active={location.pathname === "/teachers"}
+              onClick={clickHandler}
+            />
+          </Navbar.Section>
+        </>
+      ) : (
+        <>
+          <Navbar.Section>
+            <Group className={classes.header} position="apart"></Group>
+            <NavLink
+              label="Login"
+              key="/login"
+              icon={<IconLogin />}
+              component={Link}
+              to="/login"
+              active={location.pathname === "/login"}
+              onClick={clickHandler}
+            />
+          </Navbar.Section>
+        </>
+      )}
 
-      <Navbar.Section>
-        <Group className={classes.header} position="apart"></Group>
-        <NavLink
-          label="Home"
-          key="/"
-          icon={<IconHome />}
-          component={Link}
-          to="/"
-          active={location.pathname === "/"}
-          onClick={clickHandler}
-        />
-        <NavLink
-          label="Login"
-          key="/login"
-          icon={<IconLogin />}
-          component={Link}
-          to="/login"
-          active={location.pathname === "/login"}
-          onClick={clickHandler}
-        />
-      </Navbar.Section>
-
-      <Navbar.Section className={classes.footer}>
-        <a
-          href="/"
-          className={classes.link}
-          onClick={(e: any) => {
-            signout();
-            clickHandler(e);
-          }}
-        >
-          <IconLogout className={classes.linkIcon} stroke={1.5} />
-          <span>Logout</span>
-        </a>
-      </Navbar.Section>
+      {user ? (
+        <>
+          <Navbar.Section className={classes.footer}>
+            <a
+              href="/"
+              className={classes.link}
+              onClick={(e: any) => {
+                signout();
+                clickHandler(e);
+              }}
+            >
+              <IconLogout className={classes.linkIcon} stroke={1.5} />
+              <span>Logout</span>
+            </a>
+          </Navbar.Section>
+        </>
+      ) : (
+        ""
+      )}
     </Navbar>
   );
 }

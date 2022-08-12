@@ -1,51 +1,29 @@
-import React, { useState, useContext, useMemo } from "react";
-import ReactDOM from "react-dom/client";
+import React, { useState, useMemo } from "react";
 import {
   AppShell,
   Header,
   MediaQuery,
   Burger,
   useMantineTheme,
-  Button,
   Loader,
 } from "@mantine/core";
 import Logo from "./../logo.svg";
-import { BrowserRouter, Link, Route, Routes, Outlet } from "react-router-dom";
+import { Route, Routes, Outlet } from "react-router-dom";
+import RequireAuth from "./RequireAuth";
 import LoginForm from "../Pages/LoginForm";
-import { useAuth } from "../api/use-auth";
-import { getGroupTeacher } from "../api";
+import useAuth from "../api/useAuth";
 import LightDarkButton from "./LightDarkButton";
 import NavbarComponent from "./NavbarComponent";
 import GlobalContext from "../Helpers/GlobalContext";
 import MissingPathPage from "../Pages/MissingPathPage";
+import TeachersPage from "../Pages/TeachersPage";
+import UnauthorizedPage from "../Pages/UnauthorizedPage";
 
 // import LoginPage from "../Pages/LoginPage";
 // import TeachersPage from "../Pages/TeachersPage";
 
-function GroupTeachers() {
-  const [groupTeachers, setGroupTeachers] = useState(null);
-
-  const handleButtonClick = () => {
-    getGroupTeacher()
-      .then((teachers) => {
-        setGroupTeachers(teachers);
-        console.log("---teachers---", teachers);
-      })
-      .catch((error) => {
-        // errors
-        console.log("---error---", error);
-      });
-  };
-
-  if (!groupTeachers) {
-    return <Button onClick={handleButtonClick}>Get group teachers</Button>;
-  }
-
-  return <div>{JSON.stringify(groupTeachers)}</div>;
-}
-
 const AppShellComponent = () => {
-  const { user, loaded } = useAuth();
+  const { loaded } = useAuth();
   const theme = useMantineTheme();
   const [opened, setOpened] = useState<boolean>(false);
   const providerOpened = useMemo(
@@ -105,16 +83,18 @@ const AppShellComponent = () => {
         }
       >
         <Routes>
-          <Route path="/" element={<Outlet />} />
-          {/*public routes*/}
-          <Route path="/login" element={<LoginForm />} />
-          {/*private routes*/}
-
-          {/*catch all other*/}
-          <Route path="*" element={<MissingPathPage />} />
+          <Route path="/" element={<Outlet />}>
+            {/*public routes*/}
+            <Route path="/login" element={<LoginForm />} />
+            <Route path="/unauthorized" element={<UnauthorizedPage />} />
+            {/*private routes*/}
+            <Route element={<RequireAuth />}>
+              <Route path="/teachers" element={<TeachersPage />} />
+            </Route>
+            {/*catch all other*/}
+            <Route path="*" element={<MissingPathPage />} />
+          </Route>
         </Routes>
-
-        {/* {user ? <GroupTeachers /> : <LoginForm />} */}
       </AppShell>
     </GlobalContext.Provider>
   );

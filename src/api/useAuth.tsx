@@ -3,7 +3,8 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { loginUser } from ".";
 import { Configuration } from "./Configuration";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate, Location } from "react-router-dom";
+
 // import { getUserProfile, loginUser, logoutUser } from "../apis/api";
 import jwtDecode from "jwt-decode";
 
@@ -46,9 +47,10 @@ export function ProvideAuth({ children }: { children: any }) {
   return <authContext.Provider value={auth}>{children}</authContext.Provider>;
 }
 
-export const useAuth = () => {
+const useAuth = () => {
   return useContext(authContext);
 };
+export default useAuth;
 
 function useProvideAuth() {
   const [user, setUser] = useState<null | User>(null);
@@ -73,6 +75,7 @@ function useProvideAuth() {
     setUser(getUserProfile);
     setLoaded(true);
   }, []);
+
   const navigate = useNavigate();
 
   const signin = (email: string, password: string) => {

@@ -7,17 +7,18 @@ import {
   Space,
 } from "@mantine/core";
 
-const MissingPathPage = (props: PaperProps) => {
+const UnauthorizedPage = () => {
   return (
     <>
       <Container>
-        <Title order={1}>Not found page</Title>
+        <Title order={1}>Access denied</Title>
         <Space h="lg" />
         <Text size="md" weight={500}>
-          Address you provided is not valid
+          You are not allowed to view this page
         </Text>
       </Container>
     </>
   );
 };
-export default MissingPathPage;
+
+export default UnauthorizedPage;

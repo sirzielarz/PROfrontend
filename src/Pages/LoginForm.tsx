@@ -2,14 +2,15 @@ import { useForm } from "@mantine/form";
 import {
   TextInput,
   PasswordInput,
-  Text,
   Paper,
   PaperProps,
   Button,
   Stack,
   Container,
+  Title,
+  Space,
 } from "@mantine/core";
-import { useAuth } from "../api/use-auth";
+import useAuth from "../api/useAuth";
 import React, { useState } from "react";
 import { showNotification } from "@mantine/notifications";
 
@@ -72,12 +73,10 @@ const LoginForm = (props: PaperProps) => {
   });
 
   return (
-    <Container size="xs" px="xs">
-      <Paper radius="md" p="xl" withBorder {...props}>
-        <Text size="lg" weight={500}>
-          Login to app:
-        </Text>
-
+    <Container>
+      <Paper radius="md" p="xl" {...props}>
+        <Title order={1}>Login to app:</Title>
+        <Space h="lg" />
         <form onSubmit={form.onSubmit((values) => handleSubmit())}>
           <Stack>
             <TextInput
