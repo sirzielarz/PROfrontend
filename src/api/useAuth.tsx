@@ -1,9 +1,9 @@
 // https://usehooks.com/useAuth/
-
+import React from "react";
 import { createContext, useContext, useEffect, useState } from "react";
 import { loginUser } from ".";
 import { Configuration } from "./Configuration";
-import { Link, useNavigate, Location } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 // import { getUserProfile, loginUser, logoutUser } from "../apis/api";
 import jwtDecode from "jwt-decode";
@@ -77,13 +77,22 @@ function useProvideAuth() {
   }, []);
 
   const navigate = useNavigate();
+  const location = useLocation();
+
+  type LocationState = {
+    from: { pathname: string };
+  };
+
+  const state = location.state as LocationState;
+
+  const from = state?.from?.pathname || "/";
 
   const signin = (email: string, password: string) => {
     return loginUser(email, password)
       .then((user) => {
         Configuration.getInstance().setToken(user.token);
         setUser(getUserProfile);
-        navigate("/");
+        navigate(from, { replace: true });
       })
       .catch(() => {
         Configuration.getInstance().removeToken();
@@ -99,7 +108,7 @@ function useProvideAuth() {
     // console.log("before", user);
     Configuration.getInstance().removeToken();
     setUser(null);
-    navigate("/login");
+    //navigate("/login");
 
     // console.log("after", user);
   };
