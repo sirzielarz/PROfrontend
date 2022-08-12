@@ -53,30 +53,31 @@ function useProvideAuth() {
   const [user, setUser] = useState<null | User>(null);
   const [loaded, setLoaded] = useState(false);
 
-  useEffect(() => {
+  function getUserProfile(): User | null {
     const token = Configuration.getInstance().getToken();
     if (token) {
       const decoded = jwtDecode<MyToken>(token);
-
       const userData: User = {
         id: decoded.id,
         token: token,
         email: decoded.sub,
         roles: decoded.roles,
       };
-
-      setUser(userData);
-      setLoaded(true);
-    } else {
-      setLoaded(true);
+      return userData;
     }
+    return null;
+  }
+
+  useEffect(() => {
+    setUser(getUserProfile);
+    setLoaded(true);
   }, []);
 
   const signin = (email: string, password: string) => {
     return loginUser(email, password)
       .then((user) => {
         Configuration.getInstance().setToken(user.token);
-        setUser(user);
+        setUser(getUserProfile);
       })
       .catch(() => {
         Configuration.getInstance().removeToken();
@@ -85,14 +86,14 @@ function useProvideAuth() {
   };
 
   const signup = (email: string, password: string) => {
-    console.log("singing up" + email + password);
+    // console.log("singing up" + email + password);
   };
 
   const signout = () => {
-    console.log("before", user);
+    // console.log("before", user);
     Configuration.getInstance().removeToken();
     setUser(null);
-    console.log("after", user);
+    // console.log("after", user);
   };
 
   return {
