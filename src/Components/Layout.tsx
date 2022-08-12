@@ -7,7 +7,6 @@ import {
   Burger,
   useMantineTheme,
   Button,
-  Paper,
   Loader,
 } from "@mantine/core";
 import Logo from "./../logo.svg";
