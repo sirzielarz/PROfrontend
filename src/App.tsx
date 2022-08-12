@@ -5,8 +5,7 @@ import {
 } from "@mantine/core";
 import { useHotkeys, useLocalStorage } from "@mantine/hooks";
 import { NotificationsProvider } from "@mantine/notifications";
-import AppShellComponent from "./Components/AppShellComponent";
-import AppShellContextProvider from "./Components/AppShellContext";
+import Layout from "./Components/Layout";
 
 function App() {
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
@@ -32,7 +31,7 @@ function App() {
           withNormalizeCSS
         >
           <NotificationsProvider>
-            <AppShellComponent />
+            <Layout />
           </NotificationsProvider>
         </MantineProvider>
       </ColorSchemeProvider>

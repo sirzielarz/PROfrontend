@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { loginUser } from ".";
 import { Configuration } from "./Configuration";
+import { useNavigate } from "react-router-dom";
 // import { getUserProfile, loginUser, logoutUser } from "../apis/api";
 import jwtDecode from "jwt-decode";
 
@@ -72,12 +73,14 @@ function useProvideAuth() {
     setUser(getUserProfile);
     setLoaded(true);
   }, []);
+  const navigate = useNavigate();
 
   const signin = (email: string, password: string) => {
     return loginUser(email, password)
       .then((user) => {
         Configuration.getInstance().setToken(user.token);
         setUser(getUserProfile);
+        navigate("/");
       })
       .catch(() => {
         Configuration.getInstance().removeToken();
@@ -93,6 +96,8 @@ function useProvideAuth() {
     // console.log("before", user);
     Configuration.getInstance().removeToken();
     setUser(null);
+    navigate("/login");
+
     // console.log("after", user);
   };
 

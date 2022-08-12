@@ -11,13 +11,14 @@ import {
   Loader,
 } from "@mantine/core";
 import Logo from "./../logo.svg";
-import { BrowserRouter as Router, Link, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Link, Route, Routes, Outlet } from "react-router-dom";
 import LoginForm from "../Pages/LoginForm";
-import { useAuth } from "./../api/use-auth";
-import { getGroupTeacher } from "./../api";
+import { useAuth } from "../api/use-auth";
+import { getGroupTeacher } from "../api";
 import LightDarkButton from "./LightDarkButton";
 import NavbarComponent from "./NavbarComponent";
-import GlobalContext from "./../Helpers/GlobalContext";
+import GlobalContext from "../Helpers/GlobalContext";
+import MissingPathPage from "../Pages/MissingPathPage";
 
 // import LoginPage from "../Pages/LoginPage";
 // import TeachersPage from "../Pages/TeachersPage";
@@ -57,7 +58,6 @@ const AppShellComponent = () => {
     return (
       <>
         <Loader></Loader>
-        <p>Loading...</p>
       </>
     );
   }
@@ -105,7 +105,17 @@ const AppShellComponent = () => {
           </Header>
         }
       >
-        <Paper>{user ? <GroupTeachers /> : <LoginForm />}</Paper>
+        <Routes>
+          <Route path="/" element={<Outlet />} />
+          {/*public routes*/}
+          <Route path="/login" element={<LoginForm />} />
+          {/*private routes*/}
+
+          {/*catch all other*/}
+          <Route path="*" element={<MissingPathPage />} />
+        </Routes>
+
+        {/* {user ? <GroupTeachers /> : <LoginForm />} */}
       </AppShell>
     </GlobalContext.Provider>
   );
