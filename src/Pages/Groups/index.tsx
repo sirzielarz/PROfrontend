@@ -5,7 +5,7 @@ import { GroupFormFields } from "./GroupsFormFields";
 
 export const GroupIndex: React.FC = () => {
   const apiOptions = {
-    //relations: ["teacher"]
+    //relations: ["teacher"] @todo check
   };
 
   const emptyRecord = {
