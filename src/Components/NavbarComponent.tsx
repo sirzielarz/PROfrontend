@@ -155,23 +155,16 @@ function NavbarComponent(props: Omit<NavbarProps, "children">) {
             />
             {/* {admin links start} */}
             {user.roles?.includes("admin") ? (
-              <NavLink
-                label="Teachers"
-                key="/teachers"
-                icon={<IconUsers />}
-                component={Link}
-                to="/teachers"
-                active={location.pathname === "/teachers"}
-                onClick={clickHandler}
-              />
-            ) : (
-              <></>
-            )}
-            {/* {admin links end} */}
-            {/* {teachers and admin links start} */}
-            {user.roles?.includes("teacher") ||
-            user.roles?.includes("admin") ? (
               <>
+                <NavLink
+                  label="Teachers"
+                  key="/teachers"
+                  icon={<IconUsers />}
+                  component={Link}
+                  to="/teachers"
+                  active={location.pathname === "/teachers"}
+                  onClick={clickHandler}
+                />
                 <NavLink
                   label="Groups"
                   key="/groups"
@@ -181,6 +174,15 @@ function NavbarComponent(props: Omit<NavbarProps, "children">) {
                   active={location.pathname === "/groups"}
                   onClick={clickHandler}
                 />
+              </>
+            ) : (
+              <></>
+            )}
+            {/* {admin links end} */}
+            {/* {teachers and admin links start} */}
+            {user.roles?.includes("teacher") ||
+            user.roles?.includes("admin") ? (
+              <>
                 <NavLink
                   label="Parents"
                   key="/parents"
