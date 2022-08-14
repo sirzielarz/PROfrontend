@@ -1,4 +1,4 @@
-import { Button, Title, Text, Space } from "@mantine/core";
+import { Title, Text, Space } from "@mantine/core";
 
 const HomePage = () => {
   return (

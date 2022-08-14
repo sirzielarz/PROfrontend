@@ -8,7 +8,7 @@ import {
   Loader,
 } from "@mantine/core";
 import Logo from "./../logo.svg";
-import { Route, Routes, Outlet, useParams } from "react-router-dom";
+import { Route, Routes, Outlet } from "react-router-dom";
 import RequireAuth from "./RequireAuth";
 import LoginForm from "../pages/LoginForm";
 import useAuth from "../api/useAuth";
@@ -18,7 +18,6 @@ import GlobalContext from "../helpers/GlobalContext";
 import MissingPathPage from "../pages/MissingPathPage";
 import TeachersPage from "../pages/Teachers/TeachersPage";
 import UnauthorizedPage from "../pages/UnauthorizedPage";
-import { User } from "../api/useAuth";
 import ParentsPage from "../pages/Parents/ParentsPage";
 import GroupsPage from "../pages/Groups/GroupsPage";
 import HomePage from "../pages/HomePage";
