@@ -190,6 +190,15 @@ function NavbarComponent(props: Omit<NavbarProps, "children">) {
                   active={location.pathname === "/parents"}
                   onClick={clickHandler}
                 />
+                <NavLink
+                  label="Children"
+                  key="/children"
+                  icon={<IconUsers />}
+                  component={Link}
+                  to="/children"
+                  active={location.pathname === "/children"}
+                  onClick={clickHandler}
+                />
               </>
             ) : (
               <></>

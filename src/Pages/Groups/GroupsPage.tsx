@@ -7,8 +7,8 @@ const GroupsPage = () => {
   const [groups, setGroups] = useState(null);
   const { page, setPage } = usePage();
   useEffect(() => {
-    setPage(Page.Children);
-    console.log("children context have been set");
+    setPage(Page.Groups);
+    console.log("groups context have been set");
   }, []);
 
   const handleButtonClick = () => {

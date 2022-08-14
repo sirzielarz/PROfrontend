@@ -21,6 +21,7 @@ import UnauthorizedPage from "../pages/UnauthorizedPage";
 import ParentsPage from "../pages/Parents/ParentsPage";
 import GroupsPage from "../pages/Groups/GroupsPage";
 import HomePage from "../pages/HomePage";
+import ChildrenPage from "../pages/Children/ChildrenPage";
 
 const AppShellComponent = () => {
   const { loaded } = useAuth();
@@ -105,6 +106,7 @@ const AppShellComponent = () => {
               element={<RequireAuth allowedRoles={["teacher", "admin"]} />}
             >
               <Route path="/parents" element={<ParentsPage />} />
+              <Route path="/children" element={<ChildrenPage />} />
             </Route>
             {/*catch all other*/}
             <Route path="*" element={<MissingPathPage />} />
