@@ -1,12 +1,14 @@
 import { Button, Title, Text, Space } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import { getGroups } from "./../../api";
+import { usePage, Page } from "../../contexts/Page";
 
 const GroupsPage = () => {
   const [groups, setGroups] = useState(null);
-
+  const { page, setPage } = usePage();
   useEffect(() => {
-    console.log("useEffect from groups page");
+    setPage(Page.Children);
+    console.log("children context have been set");
   }, []);
 
   const handleButtonClick = () => {

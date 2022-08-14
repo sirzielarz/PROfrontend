@@ -3,6 +3,8 @@ import { createContext, useContext, useState } from "react";
 export enum Page {
   Teachers = "Teachers",
   Groups = "Groups",
+  Parents = "Parents",
+  Children = "Children",
 }
 interface Props {
   children: React.ReactNode;

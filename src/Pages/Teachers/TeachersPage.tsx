@@ -5,9 +5,10 @@ import { getGroupTeacher } from "./../../api";
 
 const TeachersPage = () => {
   const [groupTeachers, setGroupTeachers] = useState(null);
-
+  const { page, setPage } = usePage();
   useEffect(() => {
-    console.log("useEffect from teachers page");
+    setPage(Page.Teachers);
+    console.log("teachers context have been set");
   }, []);
 
   const handleButtonClick = () => {

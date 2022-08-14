@@ -1,9 +1,15 @@
 import { Button, Title, Text, Space } from "@mantine/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getParents } from "./../../api";
+import { usePage, Page } from "../../contexts/Page";
 
 const ParentsPage = () => {
   const [parents, setParents] = useState(null);
+  const { page, setPage } = usePage();
+  useEffect(() => {
+    setPage(Page.Parents);
+    console.log("parents context have been set");
+  }, []);
 
   const handleButtonClick = () => {
     getParents()
