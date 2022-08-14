@@ -1,10 +1,17 @@
 import { Group } from "./../../interfaces/RecordEntities";
 import { RecordIndex } from "./../Record";
 import { GroupListItem } from "./ListItem";
+import { GroupFormFields } from "./GroupsFormFields";
 
 export const GroupIndex: React.FC = () => {
   const apiOptions = {
     //relations: ["teacher"]
+  };
+
+  const emptyRecord = {
+    groupName: "",
+    children: [],
+    teachers: [],
   };
 
   return (
@@ -12,6 +19,8 @@ export const GroupIndex: React.FC = () => {
       ListItem={GroupListItem}
       apiPath="group"
       apiOptions={apiOptions}
+      FormFields={GroupFormFields}
+      emptyRecord={emptyRecord}
     />
   );
 };
