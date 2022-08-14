@@ -45,7 +45,9 @@ export interface PrivateMessage extends Record {
 }
 
 export interface Group extends Record {
-  name: string;
+  groupName: string;
+  children: Child[];
+  teachers: Teacher[];
 }
 
 // /api/parent/{id}

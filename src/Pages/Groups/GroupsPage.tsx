@@ -1,7 +1,8 @@
 import { Button, Title, Text, Space } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import { getGroups } from "./../../api";
-import { usePage, Page } from "../../contexts/Page";
+import { usePage, Page } from "./../../contexts/Page";
+import { GroupIndex } from "./index";
 
 const GroupsPage = () => {
   const [groups, setGroups] = useState(null);
@@ -27,6 +28,7 @@ const GroupsPage = () => {
     <>
       <Title order={1}>Groups </Title>
       <Space h="lg" />
+      <GroupIndex />
       <Text>Groups list</Text>
       {!groups ? (
         <Button onClick={handleButtonClick}>Get group teachers</Button>
