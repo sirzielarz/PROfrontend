@@ -28,5 +28,5 @@ export async function getGroups(): Promise<any> {
 }
 //children
 export async function getChildren(): Promise<any> {
-  return await apiGet(`${API_URL}/api/children/`);
+  return await apiGet(`${API_URL}/api/child/`);
 }
