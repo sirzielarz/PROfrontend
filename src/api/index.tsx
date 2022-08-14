@@ -10,12 +10,23 @@ export async function loginUser(email: string, password: string): Promise<any> {
     );
     return result;
   } catch (err) {
-    console.log("ErrorApi");
     console.error(err);
-    throw new Error("wrong email or password");
   }
 }
 
-export function getGroupTeacher(): Promise<any> {
-  return apiGet(`${API_URL}/api/group-teacher/`);
+//group-teacher
+export async function getGroupTeacher(): Promise<any> {
+  return await apiGet(`${API_URL}/api/group-teacher/`);
+}
+//parents
+export async function getParents(): Promise<any> {
+  return await apiGet(`${API_URL}/api/parent/`);
+}
+//group
+export async function getGroups(): Promise<any> {
+  return await apiGet(`${API_URL}/api/group/`);
+}
+//children
+export async function getChildren(): Promise<any> {
+  return await apiGet(`${API_URL}/api/children/`);
 }

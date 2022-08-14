@@ -5,7 +5,8 @@ import {
 } from "@mantine/core";
 import { useHotkeys, useLocalStorage } from "@mantine/hooks";
 import { NotificationsProvider } from "@mantine/notifications";
-import Layout from "./Components/Layout";
+import Layout from "./components/Layout";
+import { PageStore } from "./contexts/Page";
 
 function App() {
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
@@ -31,7 +32,9 @@ function App() {
           withNormalizeCSS
         >
           <NotificationsProvider>
-            <Layout />
+            <PageStore>
+              <Layout />
+            </PageStore>
           </NotificationsProvider>
         </MantineProvider>
       </ColorSchemeProvider>

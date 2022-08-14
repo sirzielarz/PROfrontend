@@ -8,19 +8,20 @@ import {
   Loader,
 } from "@mantine/core";
 import Logo from "./../logo.svg";
-import { Route, Routes, Outlet } from "react-router-dom";
+import { Route, Routes, Outlet, useParams } from "react-router-dom";
 import RequireAuth from "./RequireAuth";
-import LoginForm from "../Pages/LoginForm";
+import LoginForm from "../pages/LoginForm";
 import useAuth from "../api/useAuth";
 import LightDarkButton from "./LightDarkButton";
 import NavbarComponent from "./NavbarComponent";
-import GlobalContext from "../Helpers/GlobalContext";
-import MissingPathPage from "../Pages/MissingPathPage";
-import TeachersPage from "../Pages/TeachersPage";
-import UnauthorizedPage from "../Pages/UnauthorizedPage";
-
-// import LoginPage from "../Pages/LoginPage";
-// import TeachersPage from "../Pages/TeachersPage";
+import GlobalContext from "../helpers/GlobalContext";
+import MissingPathPage from "../pages/MissingPathPage";
+import TeachersPage from "../pages/Teachers/TeachersPage";
+import UnauthorizedPage from "../pages/UnauthorizedPage";
+import { User } from "../api/useAuth";
+import ParentsPage from "../pages/Parents/ParentsPage";
+import GroupsPage from "../pages/Groups/GroupsPage";
+import HomePage from "../pages/HomePage";
 
 const AppShellComponent = () => {
   const { loaded } = useAuth();
@@ -87,9 +88,24 @@ const AppShellComponent = () => {
             {/*public routes*/}
             <Route path="/login" element={<LoginForm />} />
             <Route path="/unauthorized" element={<UnauthorizedPage />} />
+
+            <Route
+              element={
+                <RequireAuth allowedRoles={["teacher", "admin", "parent"]} />
+              }
+            >
+              <Route path="/" element={<HomePage />} />
+            </Route>
+
             {/*private routes*/}
-            <Route element={<RequireAuth />}>
+            <Route element={<RequireAuth allowedRoles={["admin"]} />}>
               <Route path="/teachers" element={<TeachersPage />} />
+              <Route path="/groups" element={<GroupsPage />} />
+            </Route>
+            <Route
+              element={<RequireAuth allowedRoles={["teacher", "admin"]} />}
+            >
+              <Route path="/parents" element={<ParentsPage />} />
             </Route>
             {/*catch all other*/}
             <Route path="*" element={<MissingPathPage />} />

@@ -8,10 +8,10 @@ import {
   NavbarProps,
   NavLink,
 } from "@mantine/core";
-import GlobalContext from "./../Helpers/GlobalContext";
+import GlobalContext from "../helpers/GlobalContext";
 import useAuth from "../api/useAuth";
 
-import { IconLogout, IconLogin, IconHome } from "@tabler/icons";
+import { IconLogout, IconLogin, IconHome, IconUsers } from "@tabler/icons";
 
 const useStyles = createStyles((theme, _params, getRef) => {
   const icon = getRef("icon");
@@ -153,15 +153,48 @@ function NavbarComponent(props: Omit<NavbarProps, "children">) {
               active={location.pathname === "/"}
               onClick={clickHandler}
             />
-            <NavLink
-              label="Teachers"
-              key="/teachers"
-              icon={<IconLogin />}
-              component={Link}
-              to="/teachers"
-              active={location.pathname === "/teachers"}
-              onClick={clickHandler}
-            />
+            {/* {admin links start} */}
+            {user.roles?.includes("admin") ? (
+              <NavLink
+                label="Teachers"
+                key="/teachers"
+                icon={<IconUsers />}
+                component={Link}
+                to="/teachers"
+                active={location.pathname === "/teachers"}
+                onClick={clickHandler}
+              />
+            ) : (
+              <></>
+            )}
+            {/* {admin links end} */}
+            {/* {teachers and admin links start} */}
+            {user.roles?.includes("teacher") ||
+            user.roles?.includes("admin") ? (
+              <>
+                <NavLink
+                  label="Groups"
+                  key="/groups"
+                  icon={<IconUsers />}
+                  component={Link}
+                  to="/groups"
+                  active={location.pathname === "/groups"}
+                  onClick={clickHandler}
+                />
+                <NavLink
+                  label="Parents"
+                  key="/parents"
+                  icon={<IconUsers />}
+                  component={Link}
+                  to="/parents"
+                  active={location.pathname === "/parents"}
+                  onClick={clickHandler}
+                />
+              </>
+            ) : (
+              <></>
+            )}
+            {/* {teachers and admins links end} */}
           </Navbar.Section>
         </>
       ) : (
