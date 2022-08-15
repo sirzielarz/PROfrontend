@@ -33,7 +33,13 @@ const GroupsPage = () => {
       ) : (
         ""
       )}
-      {groups ? <>{JSON.stringify(groups)} </> : ""}
+      {groups ? (
+        <>
+          <div className="jsonout">{JSON.stringify(groups, null, 4)} </div>
+        </>
+      ) : (
+        ""
+      )}
     </>
   );
 };

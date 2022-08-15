@@ -7,6 +7,7 @@ import { useHotkeys, useLocalStorage } from "@mantine/hooks";
 import { NotificationsProvider } from "@mantine/notifications";
 import Layout from "./components/Layout";
 import { PageStore } from "./contexts/Page";
+import "./../src/App.css";
 
 function App() {
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
