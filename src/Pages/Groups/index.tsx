@@ -12,6 +12,7 @@ export const GroupIndex: React.FC = () => {
     groupName: "",
     children: [],
     teachers: [],
+    announcements: [],
   };
 
   return (

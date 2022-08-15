@@ -29,13 +29,13 @@ const GroupsPage = () => {
       <Title order={1}>Groups </Title>
       <Space h="lg" />
       <GroupIndex />
-      <Text>Groups list</Text>
+      {/* <Text>Groups list</Text>
       {!groups ? (
         <Button onClick={handleButtonClick}>Get group teachers</Button>
       ) : (
         ""
       )}
-      {groups ? <>{JSON.stringify(groups)} </> : ""}
+      {groups ? <>{JSON.stringify(groups)} </> : ""} */}
     </>
   );
 };
