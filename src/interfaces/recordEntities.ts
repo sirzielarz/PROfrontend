@@ -48,6 +48,7 @@ export interface Group extends Record {
   groupName: string;
   children: Child[];
   teachers: Teacher[];
+  announcements: Annoucment[];
 }
 
 // /api/parent/{id}
@@ -78,14 +79,14 @@ export interface Address {
 export interface Annoucment extends Record {
   subject: string;
   announcementText: string;
-  //kindergartenGroup
+  kindergartenGroup: KindergartenGroup;
 }
 
 export interface KindergartenGroup extends Record {
   groupName: string;
-  teachers: Teacher[];
-  children: Child[];
-  announcements: Annoucment[];
+  // teachers: Teacher[];
+  // children: Child[];
+  // announcements: Annoucment[];
 }
 export interface Child extends Record {
   name: string;
