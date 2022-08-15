@@ -17,7 +17,7 @@ export const GroupFormFields: React.FC<IProps> = ({
         <input
           type="text"
           name="groupName"
-          value={formState.groupName}
+          // value={formState.groupName}
           onChange={handleChange}
         />
       </div>
