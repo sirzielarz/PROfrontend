@@ -1,4 +1,5 @@
 import { Configuration } from "./Configuration";
+import useSWR from "swr";
 
 export function apiGet(uri: string) {
   return fetchWrapper(uri);
@@ -15,13 +16,29 @@ export function apiPut(uri: string, body?: any) {
 export function apiDelete(uri: string, body?: any) {
   return fetchWrapper(uri, "DELETE", body);
 }
-
-function fetchWrapper(uri: string, method: string = "GET", body?: any) {
+//fetcher for use with swr
+export const fetcher = (url: string) => {
   const token = Configuration.getInstance().getToken();
-
   const headers: HeadersInit = {
     "Content-Type": "application/x-www-form-urlencoded",
   };
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+  return fetch(url, {
+    headers,
+  }).then((r) => r.json());
+};
+
+function fetchWrapper(uri: string, method: string = "GET", body?: any) {
+  const token = Configuration.getInstance().getToken();
+  const headers: HeadersInit = {};
+  if (method === "GET") {
+    headers["Content-Type"] = "application/x-www-form-urlencoded";
+  } else {
+    headers["Content-Type"] = "application/json";
+  }
+
   if (token) {
     headers["Authorization"] = `Bearer ${token}`;
   }

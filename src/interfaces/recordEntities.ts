@@ -84,8 +84,8 @@ export interface Annoucment extends Record {
 
 export interface KindergartenGroup extends Record {
   groupName: string;
-  // teachers: Teacher[];
-  // children: Child[];
+  teachers: Teacher[];
+  children: Child[];
   // announcements: Annoucment[];
 }
 export interface Child extends Record {

@@ -1,4 +1,5 @@
 import { apiGet, apiPost } from "./fetch";
+import { Group } from "./../interfaces/recordEntities";
 
 const API_URL = "http://localhost:8080";
 
@@ -25,6 +26,10 @@ export async function getParents(): Promise<any> {
 //group
 export async function getGroups(): Promise<any> {
   return await apiGet(`${API_URL}/api/group/`);
+}
+//group
+export async function createGroup(values: any): Promise<any> {
+  return await apiPost(`${API_URL}/api/group/`, values);
 }
 //children
 export async function getChildren(): Promise<any> {
