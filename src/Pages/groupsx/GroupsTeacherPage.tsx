@@ -1,8 +1,8 @@
 import useSWR from "swr";
-import useRequest from "../../api/useRequest";
-import { fetcher } from "../../api/fetch";
+import useRequest from "../../apix/useRequest";
+import { fetcher } from "../../apix/fetch";
 import { Button, Loader } from "@mantine/core";
-import { Group as IGroupa, Teacher } from "../../interfaces/recordEntities";
+import { Group as IGroupa, Teacher } from "../../interfacesx/RecordEntities";
 import { useForm } from "@mantine/form";
 import { useState } from "react";
 import {

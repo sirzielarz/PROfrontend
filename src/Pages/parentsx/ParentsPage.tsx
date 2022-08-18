@@ -1,7 +1,7 @@
 import { Button, Title, Text, Space } from "@mantine/core";
 import React, { useEffect, useState } from "react";
-import { getParents } from "./../../api";
-import { usePage, Page } from "../../contexts/Page";
+import { getParents } from "../../apix";
+import { usePage, Page } from "../../contextsx/Page";
 
 const ParentsPage = () => {
   const [parents, setParents] = useState(null);

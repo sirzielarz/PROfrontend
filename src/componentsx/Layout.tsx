@@ -11,17 +11,17 @@ import Logo from "./../logo.svg";
 import { Route, Routes, Outlet } from "react-router-dom";
 import RequireAuth from "./RequireAuth";
 import LoginForm from "../pages/LoginForm";
-import useAuth from "../api/useAuth";
+import useAuth from "../apix/useAuth";
 import LightDarkButton from "./LightDarkButton";
 import NavbarComponent from "./NavbarComponent";
-import GlobalContext from "../helpers/GlobalContext";
+import GlobalContext from "../helpersx/GlobalContext";
 import MissingPathPage from "../pages/MissingPathPage";
-import TeachersPage from "../pages/Teachers/TeachersPage";
+import TeachersPage from "../pages/teachersx/TeachersPage";
 import UnauthorizedPage from "../pages/UnauthorizedPage";
-import ParentsPage from "../pages/Parents/ParentsPage";
-import GroupsPage from "../pages/Groups/GroupsPage";
+import ParentsPage from "../pages/parentsx/ParentsPage";
+import GroupsPage from "../pages/groupsx/GroupsPage";
 import HomePage from "../pages/HomePage";
-import ChildrenPage from "../pages/Children/ChildrenPage";
+import ChildrenPage from "../pages/childrenx/ChildrenPage";
 
 const AppShellComponent = () => {
   const { loaded } = useAuth();

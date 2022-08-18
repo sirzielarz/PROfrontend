@@ -5,8 +5,8 @@ import {
 } from "@mantine/core";
 import { useHotkeys, useLocalStorage } from "@mantine/hooks";
 import { NotificationsProvider } from "@mantine/notifications";
-import Layout from "./components/Layout";
-import { PageStore } from "./contexts/Page";
+import Layout from "./componentsx/Layout";
+import { PageStore } from "./contextsx/Page";
 import "./../src/App.css";
 
 function App() {

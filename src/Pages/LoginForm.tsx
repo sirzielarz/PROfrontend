@@ -10,7 +10,7 @@ import {
   Title,
   Space,
 } from "@mantine/core";
-import useAuth from "../api/useAuth";
+import useAuth from "../apix/useAuth";
 import React, { useState } from "react";
 import { showNotification } from "@mantine/notifications";
 

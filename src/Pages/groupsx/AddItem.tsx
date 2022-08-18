@@ -2,9 +2,9 @@ import { useState } from "react";
 import { useForm } from "@mantine/form";
 import { Button, Modal, Group, TextInput, Textarea } from "@mantine/core";
 import useSWR, { KeyedMutator } from "swr";
-import { fetcher } from "../../api/fetch";
+import { fetcher } from "../../apix/fetch";
 import { IGroup } from "./GroupsPage";
-import { createGroup } from "../../api/index";
+import { createGroup } from "../../apix/index";
 
 function AddItem({ mutate }: { mutate: KeyedMutator<IGroup[]> }) {
   const [open, setOpen] = useState(false);
