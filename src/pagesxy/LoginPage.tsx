@@ -1,5 +1,5 @@
 import { useState } from "react";
-import useAuth from "../apix/useAuth";
+import useAuth from "../api/useAuth";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");

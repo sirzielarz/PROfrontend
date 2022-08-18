@@ -8,8 +8,8 @@ import {
   NavbarProps,
   NavLink,
 } from "@mantine/core";
-import GlobalContext from "../helpersx/GlobalContext";
-import useAuth from "../apix/useAuth";
+import GlobalContext from "../helpers/GlobalContext";
+import useAuth from "../api/useAuth";
 
 import { IconLogout, IconLogin, IconHome, IconUsers } from "@tabler/icons";
 

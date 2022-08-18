@@ -1,5 +1,5 @@
 import { apiGet, apiPost } from "./fetch";
-import { Group } from "../interfacesx/RecordEntities";
+import { Group } from "../interfaces/RecordEntities";
 
 const API_URL = "http://localhost:8080";
 

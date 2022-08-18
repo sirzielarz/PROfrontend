@@ -1,7 +1,7 @@
 import { Button, Title, Text, Space } from "@mantine/core";
 import React, { useEffect, useState } from "react";
-import { usePage, Page } from "../../contextsx/Page";
-import { getGroupTeacher } from "../../apix";
+import { usePage, Page } from "../../contexts/Page";
+import { getGroupTeacher } from "../../api";
 
 const TeachersPage = () => {
   const [groupTeachers, setGroupTeachers] = useState(null);

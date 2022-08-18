@@ -1,7 +1,7 @@
 import useSWR from "swr";
-import { fetcher } from "../../apix/fetch";
+import { fetcher } from "../../api/fetch";
 import { Button, Collapse, Loader } from "@mantine/core";
-import { Group as IGroupx } from "../../interfacesx/RecordEntities";
+import { Group as IGroupx } from "../../interfaces/RecordEntities";
 import { useForm } from "@mantine/form";
 import { useState } from "react";
 import AddItem from "./AddItem";
