@@ -10,18 +10,18 @@ import {
 import Logo from "./../logo.svg";
 import { Route, Routes, Outlet } from "react-router-dom";
 import RequireAuth from "./RequireAuth";
-import LoginForm from "../pagesxy/LoginForm";
+import LoginForm from "../pages/LoginForm";
 import useAuth from "../api/useAuth";
 import LightDarkButton from "./LightDarkButton";
 import NavbarComponent from "./NavbarComponent";
 import GlobalContext from "../helpers/GlobalContext";
-import MissingPathPage from "../pagesxy/MissingPathPage";
-import TeachersPage from "../pagesxy/teachersx/TeachersPage";
-import UnauthorizedPage from "../pagesxy/UnauthorizedPage";
-import ParentsPage from "../pagesxy/parentsx/ParentsPage";
-import GroupsPage from "../pagesxy/groupsx/GroupsPage";
-import HomePage from "../pagesxy/HomePage";
-import ChildrenPage from "../pagesxy/childrenx/ChildrenPage";
+import MissingPathPage from "../pages/MissingPathPage";
+import TeachersPage from "../pages/teachers/TeachersPage";
+import UnauthorizedPage from "../pages/UnauthorizedPage";
+import ParentsPage from "../pages/parents/ParentsPage";
+import GroupsPage from "../pages/groups/GroupsPage";
+import HomePage from "../pages/HomePage";
+import ChildrenPage from "../pages/children/ChildrenPage";
 
 const AppShellComponent = () => {
   const { loaded } = useAuth();
