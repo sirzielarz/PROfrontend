@@ -1,16 +1,27 @@
 // https://usehooks.com/useAuth/
-
+import React from "react";
 import { createContext, useContext, useEffect, useState } from "react";
 import { loginUser } from ".";
 import { Configuration } from "./Configuration";
+import { useNavigate, useLocation } from "react-router-dom";
+
 // import { getUserProfile, loginUser, logoutUser } from "../apis/api";
+import jwtDecode from "jwt-decode";
 
 // change place
 export interface User {
-  _id: string;
-  username: string;
+  id: number;
   token: string;
   email: string;
+  roles: string[];
+}
+
+export interface MyToken {
+  exp: number;
+  id: number;
+  iss: string;
+  roles: string[];
+  sub: string;
 }
 
 export interface ContextValue {
@@ -36,45 +47,71 @@ export function ProvideAuth({ children }: { children: any }) {
   return <authContext.Provider value={auth}>{children}</authContext.Provider>;
 }
 
-export const useAuth = () => {
+const useAuth = () => {
   return useContext(authContext);
 };
+export default useAuth;
 
 function useProvideAuth() {
   const [user, setUser] = useState<null | User>(null);
   const [loaded, setLoaded] = useState(false);
 
-  useEffect(() => {
+  function getUserProfile(): User | null {
     const token = Configuration.getInstance().getToken();
     if (token) {
-      // setUser({token, _id: "", email: "", username: ""}) // Maybe store it in local storage
-      Configuration.getInstance().removeToken();
-      setLoaded(true);
-      // getUserProfile()
-      //   .then(user => setUser(user))
-      //   .catch(() => Configuration.getInstance().removeToken())
-      //   .finally(() => setLoaded(true));
-    } else {
-      setLoaded(true);
+      const decoded = jwtDecode<MyToken>(token);
+      const userData: User = {
+        id: decoded.id,
+        token: token,
+        email: decoded.sub,
+        roles: decoded.roles,
+      };
+      return userData;
     }
+    return null;
+  }
+
+  useEffect(() => {
+    setUser(getUserProfile);
+    console.log(getUserProfile());
+    setLoaded(true);
   }, []);
 
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  type LocationState = {
+    from: { pathname: string };
+  };
+
+  const state = location.state as LocationState;
+
+  const from = state?.from?.pathname || "/";
+
   const signin = (email: string, password: string) => {
-    return loginUser(email, password).then((user) => {
-      Configuration.getInstance().setToken(user.token);
-      setUser(user);
-    });
+    return loginUser(email, password)
+      .then((user) => {
+        Configuration.getInstance().setToken(user.token);
+        setUser(getUserProfile);
+        navigate(from, { replace: true });
+      })
+      .catch(() => {
+        Configuration.getInstance().removeToken();
+        throw new Error("Login failed");
+      });
   };
 
   const signup = (email: string, password: string) => {
-    console.log("singing up" + email + password);
+    // console.log("singing up" + email + password);
   };
 
   const signout = () => {
-    // logoutUser().then(() => {
-    //   Configuration.getInstance().removeToken();
-    //   setUser(null);
-    // });
+    // console.log("before", user);
+    Configuration.getInstance().removeToken();
+    setUser(null);
+    navigate("/login");
+
+    // console.log("after", user);
   };
 
   return {

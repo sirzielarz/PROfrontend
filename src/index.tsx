@@ -1,17 +1,22 @@
-import React, { useState } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
-import { ProvideAuth } from "./api/use-auth";
+import { ProvideAuth } from "./api/useAuth";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <ProvideAuth>
-      <App />
-    </ProvideAuth>
+    <BrowserRouter>
+      <ProvideAuth>
+        <Routes>
+          <Route path="/*" element={<App />} />
+        </Routes>
+      </ProvideAuth>
+    </BrowserRouter>
   </React.StrictMode>
 );
 
