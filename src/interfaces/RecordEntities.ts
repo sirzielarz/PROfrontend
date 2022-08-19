@@ -48,7 +48,7 @@ export interface Group extends Record {
   groupName: string;
   children: Child[];
   teachers: Teacher[];
-  announcements: Annoucment[];
+  announcements: Announcment[];
 }
 
 // /api/parent/{id}
@@ -76,7 +76,7 @@ export interface Address {
   isWorkAddress: boolean;
 }
 
-export interface Annoucment extends Record {
+export interface Announcment extends Record {
   subject: string;
   announcementText: string;
   kindergartenGroup: KindergartenGroup;
