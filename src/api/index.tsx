@@ -1,5 +1,6 @@
 import { apiGet, apiPost } from "./fetch";
 import { Group } from "../interfaces/RecordEntities";
+import { GroupDTO, TeacherDTO } from "../interfaces/Entities";
 
 const API_URL = "http://localhost:8080";
 

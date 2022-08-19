@@ -1,7 +1,7 @@
 import useSWR from "swr";
 import { fetcher } from "../../api/fetch";
 import { Button, Collapse, Loader } from "@mantine/core";
-import { Group as IGroupx } from "../../interfaces/RecordEntities";
+import { GroupDTO } from "../../interfaces/Entities";
 import { useForm } from "@mantine/form";
 import { useState } from "react";
 import AddItem from "./AddItem";
@@ -17,32 +17,10 @@ import {
 } from "@mantine/core";
 import { IconPencil, IconTrash, IconDots, IconLetterC } from "@tabler/icons";
 
-interface Teacher {
-  teacher: {
-    id: number;
-    name: string;
-    surname: string;
-  };
-}
-
-interface Child {
-  child: {
-    id: number;
-    name: string;
-    surname: string;
-  };
-}
-
-export interface IGroup {
-  id: number;
-  groupName: string;
-  teachers: Teacher[];
-  children: Child[];
-}
 const GroupsPage = () => {
   const [open, setOpen] = useState(false);
 
-  const { data, error, mutate } = useSWR<IGroup[], string>(
+  const { data, error, mutate } = useSWR<GroupDTO[], string>(
     `${process.env.REACT_APP_API}/group`,
     fetcher
   );
@@ -69,7 +47,7 @@ const GroupsPage = () => {
       )}
       <Space h="lg" />
       <AddItem mutate={mutate} />
-      {/* <Button onClick={addItem}>Add group</Button> */}
+      {<Button onClick={addItem}>Add group</Button>}
     </>
   );
 };
@@ -77,8 +55,7 @@ export default GroupsPage;
 
 const addItem = () => {};
 
-export const GroupsTable = ({ data }: { data: IGroup[] }) => {
-  // console.log(data);
+export const GroupsTable = ({ data }: { data: GroupDTO[] }) => {
   const rows = data.map((item) => (
     <>
       <tr>

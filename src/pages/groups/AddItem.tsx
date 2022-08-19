@@ -2,11 +2,10 @@ import { useState } from "react";
 import { useForm } from "@mantine/form";
 import { Button, Modal, Group, TextInput, Textarea } from "@mantine/core";
 import useSWR, { KeyedMutator } from "swr";
-import { fetcher } from "../../api/fetch";
-import { IGroup } from "./GroupsPage";
 import { createGroup } from "../../api/index";
+import { GroupDTO } from "../../interfaces/Entities";
 
-function AddItem({ mutate }: { mutate: KeyedMutator<IGroup[]> }) {
+function AddItem({ mutate }: { mutate: KeyedMutator<GroupDTO[]> }) {
   const [open, setOpen] = useState(false);
 
   const form = useForm({
@@ -33,14 +32,6 @@ function AddItem({ mutate }: { mutate: KeyedMutator<IGroup[]> }) {
             placeholder="Enter group name"
             {...form.getInputProps("groupName")}
           />
-          {/* <Textarea
-            required
-            mb={12}
-            label="Body"
-            placeholder="desc....."
-            {...form.getInputProps("body")}
-          /> */}
-
           <Button type="submit">Create group</Button>
         </form>
       </Modal>
