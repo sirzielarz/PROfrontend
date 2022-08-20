@@ -1,13 +1,18 @@
-import { useState } from "react";
 import { useForm } from "@mantine/form";
-import { Button, Modal, Group, TextInput, Textarea } from "@mantine/core";
-import useSWR, { KeyedMutator } from "swr";
+import { Button, Modal, TextInput } from "@mantine/core";
+import { KeyedMutator } from "swr";
 import { createGroup } from "../../api/index";
 import { GroupDTO } from "../../interfaces/Entities";
 
-function AddItem({ mutate }: { mutate: KeyedMutator<GroupDTO[]> }) {
-  const [open, setOpen] = useState(false);
-
+function AddGroupModal({
+  mutate,
+  open,
+  setOpen,
+}: {
+  mutate: KeyedMutator<GroupDTO[]>;
+  open: boolean;
+  setOpen: (arg0: boolean) => void;
+}) {
   const form = useForm({
     initialValues: {
       groupName: "",
@@ -35,14 +40,8 @@ function AddItem({ mutate }: { mutate: KeyedMutator<GroupDTO[]> }) {
           <Button type="submit">Create group</Button>
         </form>
       </Modal>
-
-      <Group position="center">
-        <Button fullWidth mb={12} onClick={() => setOpen(true)}>
-          Add group
-        </Button>
-      </Group>
     </>
   );
 }
 
-export default AddItem;
+export default AddGroupModal;

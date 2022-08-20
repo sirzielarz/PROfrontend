@@ -1,10 +1,11 @@
 import useSWR from "swr";
 import { fetcher } from "../../api/fetch";
-import { Button, Collapse, Loader } from "@mantine/core";
+import { Button, Loader } from "@mantine/core";
 import { GroupDTO } from "../../interfaces/Entities";
-import { useForm } from "@mantine/form";
 import { useState } from "react";
-import AddItem from "./AddItem";
+import AddGroupModal from "./AddGroupModal";
+import EditGroupModal from "./EditGroupModal";
+import DeleteGroupModal from "./DeleteGroupModal";
 import {
   Title,
   Text,
@@ -15,18 +16,18 @@ import {
   Menu,
   ScrollArea,
 } from "@mantine/core";
-import { IconPencil, IconTrash, IconDots, IconLetterC } from "@tabler/icons";
+import { IconPencil, IconTrash, IconDots } from "@tabler/icons";
 
 const GroupsPage = () => {
-  const [open, setOpen] = useState(false);
+  const [showAddGroup, setShowAddGroup] = useState(false);
+  const [editingGroup, setEditingGroup] = useState<GroupDTO | null>(null);
+  const [deletingGroup, setDeletingGroup] = useState<GroupDTO | null>(null);
 
   const { data, error, mutate } = useSWR<GroupDTO[], string>(
     `${process.env.REACT_APP_API}/group`,
     fetcher
   );
-
   // console.log("out", data);
-  // const addItem = () => {};
 
   return (
     <>
@@ -36,7 +37,11 @@ const GroupsPage = () => {
       {data ? (
         data.length > 0 ? (
           <>
-            <GroupsTable data={data} />
+            <GroupsTable
+              data={data}
+              setEditingGroup={setEditingGroup}
+              setDeletingGroup={setDeletingGroup}
+            />
             {/* <div className="jsonout">{JSON.stringify(data, null, 4)}</div> */}
           </>
         ) : (
@@ -46,24 +51,42 @@ const GroupsPage = () => {
         <Loader />
       )}
       <Space h="lg" />
-      <AddItem mutate={mutate} />
-      {<Button onClick={addItem}>Add group</Button>}
+      {editingGroup && (
+        <EditGroupModal
+          group={editingGroup}
+          mutate={mutate}
+          handleClose={() => setEditingGroup(null)}
+        />
+      )}
+      {deletingGroup && (
+        <DeleteGroupModal
+          group={deletingGroup}
+          mutate={mutate}
+          handleClose={() => setDeletingGroup(null)}
+        />
+      )}
+      <AddGroupModal
+        open={showAddGroup}
+        setOpen={setShowAddGroup}
+        mutate={mutate}
+      />
+      {<Button onClick={() => setShowAddGroup(true)}>Add group</Button>}
     </>
   );
 };
 export default GroupsPage;
 
-const addItem = () => {};
-
-export const GroupsTable = ({ data }: { data: GroupDTO[] }) => {
+export const GroupsTable = ({
+  data,
+  setEditingGroup,
+  setDeletingGroup,
+}: {
+  data: GroupDTO[];
+  setEditingGroup: (arg0: GroupDTO) => void;
+  setDeletingGroup: (arg0: GroupDTO) => void;
+}) => {
   const rows = data.map((item) => (
     <>
-      <tr>
-        <th>Group name</th>
-        <th>Teachers</th>
-        <th>Children</th>
-        <th>Actions</th>
-      </tr>
       <tr key={item.id}>
         <td>
           <Group spacing="sm">
@@ -87,14 +110,16 @@ export const GroupsTable = ({ data }: { data: GroupDTO[] }) => {
             ))}
           </Text>
           <Text size="xs" color="dimmed">
-            {item.teachers.length ? `Total: ${item.children.length}` : ""}
+            {item.teachers.length
+              ? `Total: ${item.teachers.length}`
+              : "No teachers added"}
           </Text>
         </td>
         <td>
           <Text size="sm">
             {item.children?.map((c, i) => (
               <>
-                <Text span>
+                <Text span key={c.child.id}>
                   <>
                     {`${c.child.name} ${c.child.surname}`}
                     {i + 1 < item.children?.length ? ", " : ""}
@@ -104,12 +129,14 @@ export const GroupsTable = ({ data }: { data: GroupDTO[] }) => {
             ))}
           </Text>
           <Text size="xs" color="dimmed">
-            {item.children.length ? `Total: ${item.children.length}` : ""}
+            {item.children.length
+              ? `Total: ${item.children.length}`
+              : "No children added"}
           </Text>
         </td>
         <td>
           <Group spacing={0} position="right">
-            <ActionIcon>
+            <ActionIcon onClick={() => setEditingGroup(item)}>
               <IconPencil size={16} stroke={1.5} />
             </ActionIcon>
             <Menu withinPortal transition="pop" withArrow position="bottom-end">
@@ -122,6 +149,7 @@ export const GroupsTable = ({ data }: { data: GroupDTO[] }) => {
                 <Menu.Item
                   icon={<IconTrash size={16} stroke={1.5} />}
                   color="red"
+                  onClick={() => setDeletingGroup(item)}
                 >
                   Delete group
                 </Menu.Item>
@@ -134,7 +162,13 @@ export const GroupsTable = ({ data }: { data: GroupDTO[] }) => {
   ));
   return (
     <ScrollArea>
-      <Table sx={{}} verticalSpacing="md">
+      <Table sx={{}} verticalSpacing="md" highlightOnHover>
+        <tr>
+          <th style={{ textAlign: "left" }}>Group name</th>
+          <th style={{ textAlign: "left" }}>Teachers</th>
+          <th style={{ textAlign: "left" }}>Children</th>
+          <th style={{ textAlign: "right" }}>Actions</th>
+        </tr>
         <tbody>{rows}</tbody>
       </Table>
     </ScrollArea>
