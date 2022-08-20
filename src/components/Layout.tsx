@@ -19,7 +19,7 @@ import MissingPathPage from "../pages/MissingPathPage";
 import TeachersPage from "../pages/teachers/TeachersPage";
 import UnauthorizedPage from "../pages/UnauthorizedPage";
 import ParentsPage from "../pages/parents/ParentsPage";
-import GroupsPage from "../pages/groups/GroupsPage";
+import GroupsPage from "../pages/groups/Page";
 import HomePage from "../pages/HomePage";
 import ChildrenPage from "../pages/children/ChildrenPage";
 

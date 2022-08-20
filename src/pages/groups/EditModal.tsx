@@ -1,17 +1,17 @@
 import { useLayoutEffect, useState } from "react";
 import { useForm } from "@mantine/form";
-import { Button, Modal, Group, TextInput, Textarea } from "@mantine/core";
-import useSWR, { KeyedMutator } from "swr";
-import { createGroup, editGroupName } from "../../api/index";
-import { GroupDTO } from "../../interfaces/Entities";
+import { Button, Modal, TextInput } from "@mantine/core";
+import { KeyedMutator } from "swr";
+import { editGroupName } from "../../api/index";
+import { IGroup } from "../../interfaces/Entities";
 
 function EditGroupModal({
   group,
   mutate,
   handleClose,
 }: {
-  group: GroupDTO;
-  mutate: KeyedMutator<GroupDTO[]>;
+  group: IGroup;
+  mutate: KeyedMutator<IGroup[]>;
   handleClose: () => void;
 }) {
   // visual bug fix in mantine modal

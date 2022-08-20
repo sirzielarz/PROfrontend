@@ -1,6 +1,5 @@
 import { apiDelete, apiGet, apiPost, apiPut } from "./fetch";
-import { Group } from "../interfaces/RecordEntities";
-import { GroupDTO, TeacherDTO } from "../interfaces/Entities";
+import { IGroup, ITeacher } from "../interfaces/Entities";
 
 const API_URL = "http://localhost:8080";
 
@@ -28,7 +27,6 @@ export async function getParents(): Promise<any> {
 export async function getGroups(): Promise<any> {
   return await apiGet(`${API_URL}/api/group/`);
 }
-
 export async function editGroupName(
   groupId: number,
   newGroupName: string
@@ -37,13 +35,15 @@ export async function editGroupName(
     groupName: newGroupName,
   });
 }
-//group
 export async function deleteGroupItem(groupId: number): Promise<any> {
   return await apiDelete(`${API_URL}/api/group/${groupId}`);
 }
-//group
 export async function createGroup(values: any): Promise<any> {
   return await apiPost(`${API_URL}/api/group/`, values);
+}
+//children
+export async function getTeachers(): Promise<any> {
+  return await apiGet(`${API_URL}/api/teacher/`);
 }
 //children
 export async function getChildren(): Promise<any> {

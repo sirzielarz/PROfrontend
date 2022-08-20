@@ -1,32 +1,37 @@
-export interface TeachersDTO {
-  teacher: TeacherDTO;
-}
-
-export interface TeacherDTO {
+export interface IEntity {
   id: number;
-  name: string;
-  surname: string;
 }
-
-export interface ChildDTO {
-  id: number;
+export interface IPerson extends IEntity {
   name: string;
   surname: string;
 }
 
 export interface ChildrenDTO {
-  child: ChildDTO;
-  teachers: TeacherDTO;
+  child: IPerson;
+  teachers: IPerson;
+}
+export interface TeachersDTO {
+  teacher: IPerson;
 }
 
-export interface ChildDTO {
-  id: number;
-  name: string;
-  surname: string;
+export interface privateMessageDTO extends IEntity {
+  teacher: IPerson;
+  parent: IPerson;
+  subject: string;
+  messageText: string;
+  sender: string;
+}
+export interface additionalActivitityDTO extends IEntity {}
+// api/additional-activity
+
+export interface IActivity extends IEntity {
+  activityName: string;
+  teachers: TeachersDTO[];
+  children: ChildrenDTO[];
 }
 
 // api/group
-export interface GroupDTO {
+export interface IGroup {
   id: number;
   groupName: string;
   teachers: TeachersDTO[];
@@ -34,10 +39,28 @@ export interface GroupDTO {
   announcements?: AnnouncementDTO[];
 }
 
+export interface GroupDTO extends IEntity {
+  groupName: string;
+}
+
+export interface GroupsDTO extends IEntity {
+  kinderGartenGroup: GroupDTO;
+}
+
+//api/teacher
+export interface ITeacher extends IPerson {
+  email: string;
+  password: string;
+  isAdmin: boolean;
+  groups: GroupsDTO[];
+  privateMessages: privateMessageDTO[];
+  additionalActivities: additionalActivitityDTO[];
+}
+
 export interface AnnouncementDTO {
   subject: string;
   announcement: string;
-  // kindergartenGroup: KindergartenGroup;
+  // kindergartenGroup: GroupDTO;
 }
 
 export interface Announcement {

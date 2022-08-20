@@ -1,11 +1,11 @@
 import useSWR from "swr";
 import { fetcher } from "../../api/fetch";
 import { Button, Loader } from "@mantine/core";
-import { GroupDTO } from "../../interfaces/Entities";
+import { IGroup } from "../../interfaces/Entities";
 import { useState } from "react";
-import AddGroupModal from "./AddGroupModal";
-import EditGroupModal from "./EditGroupModal";
-import DeleteGroupModal from "./DeleteGroupModal";
+import AddGroupModal from "./AddModal";
+import EditGroupModal from "./EditModal";
+import DeleteGroupModal from "./DeleteModal";
 import {
   Title,
   Text,
@@ -19,11 +19,11 @@ import {
 import { IconPencil, IconTrash, IconDots } from "@tabler/icons";
 
 const GroupsPage = () => {
-  const [showAddGroup, setShowAddGroup] = useState(false);
-  const [editingGroup, setEditingGroup] = useState<GroupDTO | null>(null);
-  const [deletingGroup, setDeletingGroup] = useState<GroupDTO | null>(null);
+  const [showAddItem, setShowAddItem] = useState(false);
+  const [editingItem, setEditingItem] = useState<IGroup | null>(null);
+  const [deletingItem, setDeletingItem] = useState<IGroup | null>(null);
 
-  const { data, error, mutate } = useSWR<GroupDTO[], string>(
+  const { data, error, mutate } = useSWR<IGroup[], string>(
     `${process.env.REACT_APP_API}/group`,
     fetcher
   );
@@ -39,8 +39,8 @@ const GroupsPage = () => {
           <>
             <GroupsTable
               data={data}
-              setEditingGroup={setEditingGroup}
-              setDeletingGroup={setDeletingGroup}
+              setEditingGroup={setEditingItem}
+              setDeletingGroup={setDeletingItem}
             />
             {/* <div className="jsonout">{JSON.stringify(data, null, 4)}</div> */}
           </>
@@ -51,26 +51,26 @@ const GroupsPage = () => {
         <Loader />
       )}
       <Space h="lg" />
-      {editingGroup && (
+      {editingItem && (
         <EditGroupModal
-          group={editingGroup}
+          group={editingItem}
           mutate={mutate}
-          handleClose={() => setEditingGroup(null)}
+          handleClose={() => setEditingItem(null)}
         />
       )}
-      {deletingGroup && (
+      {deletingItem && (
         <DeleteGroupModal
-          group={deletingGroup}
+          group={deletingItem}
           mutate={mutate}
-          handleClose={() => setDeletingGroup(null)}
+          handleClose={() => setDeletingItem(null)}
         />
       )}
       <AddGroupModal
-        open={showAddGroup}
-        setOpen={setShowAddGroup}
+        open={showAddItem}
+        setOpen={setShowAddItem}
         mutate={mutate}
       />
-      {<Button onClick={() => setShowAddGroup(true)}>Add group</Button>}
+      {<Button onClick={() => setShowAddItem(true)}>Add group</Button>}
     </>
   );
 };
@@ -81,9 +81,9 @@ export const GroupsTable = ({
   setEditingGroup,
   setDeletingGroup,
 }: {
-  data: GroupDTO[];
-  setEditingGroup: (arg0: GroupDTO) => void;
-  setDeletingGroup: (arg0: GroupDTO) => void;
+  data: IGroup[];
+  setEditingGroup: (arg0: IGroup) => void;
+  setDeletingGroup: (arg0: IGroup) => void;
 }) => {
   const rows = data.map((item) => (
     <>

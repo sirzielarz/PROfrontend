@@ -1,21 +1,31 @@
+import useSWR from "swr";
+import { fetcher } from "../../api/fetch";
 import { Button, Title, Text, Space } from "@mantine/core";
+import { ITeacher } from "../../interfaces/Entities";
 import React, { useEffect, useState } from "react";
 import { usePage, Page } from "../../contexts/Page";
-import { getGroupTeacher } from "../../api";
+import { getTeachers } from "../../api";
 
 const TeachersPage = () => {
-  const [groupTeachers, setGroupTeachers] = useState(null);
+  const [teachers, setTeachers] = useState(null);
   const { page, setPage } = usePage();
   useEffect(() => {
     setPage(Page.Teachers);
     console.log("teachers context have been set");
   }, []);
 
+  const { data, error, mutate } = useSWR<ITeacher[], string>(
+    `${process.env.REACT_APP_API}/group`,
+    fetcher
+  );
+
   const handleButtonClick = () => {
-    getGroupTeacher()
+    getTeachers()
       .then((teachers) => {
-        setGroupTeachers(teachers);
-        console.log("---teachers---", teachers);
+        setTeachers(teachers);
+
+        <div className="jsonout">{JSON.stringify(teachers, null, 4)}</div>;
+        //console.log("---teachers---", teachers);
       })
       .catch((error) => {
         // errors
@@ -28,12 +38,18 @@ const TeachersPage = () => {
       <Title order={1}>Teachers </Title>
       <Space h="lg" />
       <Text>Teachers list</Text>
-      {!groupTeachers ? (
+      {!teachers ? (
         <Button onClick={handleButtonClick}>Get group teachers</Button>
       ) : (
         ""
       )}
-      {groupTeachers ? <>{JSON.stringify(groupTeachers)} </> : ""}
+      {teachers ? (
+        <>
+          <div className="jsonout">{JSON.stringify(teachers, null, 4)}</div>
+        </>
+      ) : (
+        ""
+      )}
     </>
   );
 };

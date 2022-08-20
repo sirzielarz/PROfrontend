@@ -3,15 +3,15 @@ import { useForm } from "@mantine/form";
 import { Button, Modal, Group, TextInput, Textarea } from "@mantine/core";
 import useSWR, { KeyedMutator } from "swr";
 import { createGroup, deleteGroupItem, editGroupName } from "../../api/index";
-import { GroupDTO } from "../../interfaces/Entities";
+import { IGroup } from "../../interfaces/Entities";
 
 function DeleteGroupModal({
   group,
   mutate,
   handleClose,
 }: {
-  group: GroupDTO;
-  mutate: KeyedMutator<GroupDTO[]>;
+  group: IGroup;
+  mutate: KeyedMutator<IGroup[]>;
   handleClose: () => void;
 }) {
   // visual bug fix in mantine modal

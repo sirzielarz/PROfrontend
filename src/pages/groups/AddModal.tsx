@@ -2,14 +2,14 @@ import { useForm } from "@mantine/form";
 import { Button, Modal, TextInput } from "@mantine/core";
 import { KeyedMutator } from "swr";
 import { createGroup } from "../../api/index";
-import { GroupDTO } from "../../interfaces/Entities";
+import { IGroup } from "../../interfaces/Entities";
 
 function AddGroupModal({
   mutate,
   open,
   setOpen,
 }: {
-  mutate: KeyedMutator<GroupDTO[]>;
+  mutate: KeyedMutator<IGroup[]>;
   open: boolean;
   setOpen: (arg0: boolean) => void;
 }) {
