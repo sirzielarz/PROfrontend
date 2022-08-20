@@ -1,7 +1,7 @@
 import useSWR from "swr";
 import { fetcher } from "../../api/fetch";
 import { Button, Loader } from "@mantine/core";
-import { IGroup } from "../../interfaces/Entities";
+import { IActivity } from "../../interfaces/Entities";
 import { useState } from "react";
 import AddModal from "./AddModal";
 import EditModal from "./EditModal";
@@ -20,18 +20,17 @@ import { IconPencil, IconTrash, IconDots } from "@tabler/icons";
 
 const Page = () => {
   const [showAddItem, setShowAddItem] = useState(false);
-  const [editingItem, setEditingItem] = useState<IGroup | null>(null);
-  const [deletingItem, setDeletingItem] = useState<IGroup | null>(null);
+  const [editingItem, setEditingItem] = useState<IActivity | null>(null);
+  const [deletingItem, setDeletingItem] = useState<IActivity | null>(null);
 
-  const { data, error, mutate } = useSWR<IGroup[], string>(
-    `${process.env.REACT_APP_API}/group`,
+  const { data, error, mutate } = useSWR<IActivity[], string>(
+    `${process.env.REACT_APP_API}/additional-activity`,
     fetcher
   );
-  // console.log("out", data);
 
   return (
     <>
-      <Title order={1}>Groups</Title>
+      <Title order={1}>Additional activities</Title>
       <Space h="xl" />
       {error ? error : ""}
       {data ? (
@@ -45,7 +44,7 @@ const Page = () => {
             {/* <div className="jsonout">{JSON.stringify(data, null, 4)}</div> */}
           </>
         ) : (
-          <Text>No groups exist.</Text>
+          <Text>No additional activities exist.</Text>
         )
       ) : (
         <Loader />
@@ -66,7 +65,11 @@ const Page = () => {
         />
       )}
       <AddModal open={showAddItem} setOpen={setShowAddItem} mutate={mutate} />
-      {<Button onClick={() => setShowAddItem(true)}>Add group</Button>}
+      {
+        <Button onClick={() => setShowAddItem(true)}>
+          Add additional activity
+        </Button>
+      }
     </>
   );
 };
@@ -77,9 +80,9 @@ export const ItemsTable = ({
   setEditingItem,
   setDeletingItem,
 }: {
-  data: IGroup[];
-  setEditingItem: (arg0: IGroup) => void;
-  setDeletingItem: (arg0: IGroup) => void;
+  data: IActivity[];
+  setEditingItem: (arg0: IActivity) => void;
+  setDeletingItem: (arg0: IActivity) => void;
 }) => {
   const rows = data.map((item) => (
     <>
@@ -88,7 +91,7 @@ export const ItemsTable = ({
           <Group spacing="sm">
             <div>
               <Text size="sm" weight={500}>
-                {item.groupName}
+                {item.activityName}
               </Text>
               <Text color="dimmed" size="xs">
                 Group ID: {item.id}

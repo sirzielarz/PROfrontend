@@ -91,11 +91,6 @@ const useStyles = createStyles((theme, _params, getRef) => {
   };
 });
 
-// const data = [
-//   { link: "", label: "Notifications", icon: IconBellRinging },
-//   { link: "", label: "Billing", icon: IconReceipt2 },
-// ];
-
 function NavbarComponent(props: Omit<NavbarProps, "children">) {
   const location = useLocation();
   const { user, signout } = useAuth();
@@ -104,28 +99,7 @@ function NavbarComponent(props: Omit<NavbarProps, "children">) {
   }, [user]);
   const context = useContext(GlobalContext);
 
-  const { classes /*cx*/ } = useStyles();
-  //  const [active, setActive] = useState("Billing");
-
-  // const links = data.map((item) => (
-  //   <a
-  //     className={cx(classes.link, {
-  //       [classes.linkActive]: item.label === active,
-  //     })}
-  //     href={item.link}
-  //     key={item.label}
-  //     onClick={(event) => {
-  //       event.preventDefault();
-  //       setActive(item.label);
-  //       if (context) {
-  //         context.setOpened(false); //close burger menu
-  //       }
-  //     }}
-  //   >
-  //     <item.icon className={classes.linkIcon} stroke={1.5} />
-  //     <span>{item.label}</span>
-  //   </a>
-  // ));
+  const { classes } = useStyles();
 
   function clickHandler(event: any) {
     if (context) {
@@ -199,6 +173,15 @@ function NavbarComponent(props: Omit<NavbarProps, "children">) {
                   component={Link}
                   to="/children"
                   active={location.pathname === "/children"}
+                  onClick={clickHandler}
+                />
+                <NavLink
+                  label="Additional activities"
+                  key="/activities"
+                  icon={<IconUsers />}
+                  component={Link}
+                  to="/activities"
+                  active={location.pathname === "/activities"}
                   onClick={clickHandler}
                 />
               </>

@@ -1,15 +1,15 @@
 import { useForm } from "@mantine/form";
 import { Button, Modal, TextInput } from "@mantine/core";
 import { KeyedMutator } from "swr";
-import { createGroup } from "../../api/index";
-import { IGroup } from "../../interfaces/Entities";
+import { createActivity } from "../../api/index";
+import { IActivity } from "../../interfaces/Entities";
 
 function AddItemModal({
   mutate,
   open,
   setOpen,
 }: {
-  mutate: KeyedMutator<IGroup[]>;
+  mutate: KeyedMutator<IActivity[]>;
   open: boolean;
   setOpen: (arg0: boolean) => void;
 }) {
@@ -20,7 +20,7 @@ function AddItemModal({
   });
 
   async function createItem(values: { groupName: string }) {
-    const updated = await createGroup(values);
+    const updated = await createActivity(values);
     mutate(updated);
     form.reset();
     setOpen(false);
@@ -28,16 +28,20 @@ function AddItemModal({
 
   return (
     <>
-      <Modal opened={open} onClose={() => setOpen(false)} title="Create group">
+      <Modal
+        opened={open}
+        onClose={() => setOpen(false)}
+        title="Create additional activity"
+      >
         <form onSubmit={form.onSubmit(createItem)}>
           <TextInput
             required
             mb={12}
-            label="Group name"
-            placeholder="Enter group name"
-            {...form.getInputProps("groupName")}
+            label="Activity name"
+            placeholder="Enter activity name"
+            {...form.getInputProps("activityName")}
           />
-          <Button type="submit">Create group</Button>
+          <Button type="submit">Create activity</Button>
         </form>
       </Modal>
     </>

@@ -22,6 +22,7 @@ import ParentsPage from "../pages/parents/ParentsPage";
 import GroupsPage from "../pages/groups/Page";
 import HomePage from "../pages/HomePage";
 import ChildrenPage from "../pages/children/ChildrenPage";
+import ActivitiesPage from "../pages/additionalActivities/Page";
 
 const AppShellComponent = () => {
   const { loaded } = useAuth();
@@ -107,6 +108,7 @@ const AppShellComponent = () => {
             >
               <Route path="/parents" element={<ParentsPage />} />
               <Route path="/children" element={<ChildrenPage />} />
+              <Route path="/activities" element={<ActivitiesPage />} />
             </Route>
             {/*catch all other*/}
             <Route path="*" element={<MissingPathPage />} />

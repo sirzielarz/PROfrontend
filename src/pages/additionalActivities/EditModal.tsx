@@ -2,16 +2,16 @@ import { useLayoutEffect, useState } from "react";
 import { useForm } from "@mantine/form";
 import { Button, Modal, TextInput } from "@mantine/core";
 import { KeyedMutator } from "swr";
-import { editGroupName } from "../../api/index";
-import { IGroup } from "../../interfaces/Entities";
+import { editActivityName } from "../../api/index";
+import { IActivity } from "../../interfaces/Entities";
 
 function EditModal({
   item,
   mutate,
   handleClose,
 }: {
-  item: IGroup;
-  mutate: KeyedMutator<IGroup[]>;
+  item: IActivity;
+  mutate: KeyedMutator<IActivity[]>;
   handleClose: () => void;
 }) {
   // visual bug fix in mantine modal
@@ -22,12 +22,12 @@ function EditModal({
 
   const form = useForm({
     initialValues: {
-      groupName: item.groupName,
+      activityName: item.activityName,
     },
   });
 
-  async function editItem(values: { groupName: string }) {
-    const updated = await editGroupName(item.id, values.groupName);
+  async function editItem(values: { activityName: string }) {
+    const updated = await editActivityName(item.id, values.activityName);
     mutate(updated);
     form.reset();
     handleClose();
@@ -35,16 +35,16 @@ function EditModal({
 
   return (
     <>
-      <Modal opened={open2} onClose={() => handleClose()} title="Edit group">
+      <Modal opened={open2} onClose={() => handleClose()} title="Edit activity">
         <form onSubmit={form.onSubmit(editItem)}>
           <TextInput
             required
             mb={12}
-            label="Group name"
-            placeholder="Enter group name"
-            {...form.getInputProps("groupName")}
+            label="Activity name"
+            placeholder="Enter activity name"
+            {...form.getInputProps("activityName")}
           />
-          <Button type="submit">Edit group</Button>
+          <Button type="submit">Edit activity</Button>
         </form>
       </Modal>
     </>

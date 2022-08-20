@@ -1,5 +1,4 @@
 import { apiDelete, apiGet, apiPost, apiPut } from "./fetch";
-import { IGroup, ITeacher } from "../interfaces/Entities";
 
 const API_URL = "http://localhost:8080";
 
@@ -48,4 +47,19 @@ export async function getTeachers(): Promise<any> {
 //children
 export async function getChildren(): Promise<any> {
   return await apiGet(`${API_URL}/api/child/`);
+}
+//activity
+export async function editActivityName(
+  activityId: number,
+  newActivityName: string
+): Promise<any> {
+  return await apiPut(`${API_URL}/api/additional-activity/${activityId}`, {
+    activityName: newActivityName,
+  });
+}
+export async function deleteActivityItem(activityId: number): Promise<any> {
+  return await apiDelete(`${API_URL}/api/additional-activity/${activityId}`);
+}
+export async function createActivity(values: any): Promise<any> {
+  return await apiPost(`${API_URL}/api/additional-activity/`, values);
 }

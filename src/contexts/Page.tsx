@@ -5,6 +5,7 @@ export enum Page {
   Groups = "Groups",
   Parents = "Parents",
   Children = "Children",
+  Activities = "Activities",
 }
 interface Props {
   children: React.ReactNode;
