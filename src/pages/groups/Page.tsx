@@ -17,11 +17,18 @@ import {
   ScrollArea,
 } from "@mantine/core";
 import { IconPencil, IconTrash, IconDots } from "@tabler/icons";
+import EditChildrenModal from "./EditChildrenModal";
 
 const Page = () => {
   const [showAddItem, setShowAddItem] = useState(false);
   const [editingItem, setEditingItem] = useState<IGroup | null>(null);
   const [deletingItem, setDeletingItem] = useState<IGroup | null>(null);
+  const [editingChildrenItem, setEditingChildrenItem] = useState<IGroup | null>(
+    null
+  );
+  const [editingTeachersItem, setEditingTeachersItem] = useState<IGroup | null>(
+    null
+  );
 
   const { data, error, mutate } = useSWR<IGroup[], string>(
     `${process.env.REACT_APP_API}/group`,
@@ -41,6 +48,8 @@ const Page = () => {
               data={data}
               setEditingItem={setEditingItem}
               setDeletingItem={setDeletingItem}
+              setEditingChildrenItem={setEditingChildrenItem}
+              setEditingTeachersItem={setEditingTeachersItem}
             />
             {/* <div className="jsonout">{JSON.stringify(data, null, 4)}</div> */}
           </>
@@ -65,6 +74,20 @@ const Page = () => {
           handleClose={() => setDeletingItem(null)}
         />
       )}
+      {editingChildrenItem && (
+        <EditChildrenModal
+          item={editingChildrenItem}
+          mutate={mutate}
+          handleClose={() => setEditingChildrenItem(null)}
+        />
+      )}
+      {editingTeachersItem && (
+        <EditModal
+          item={editingTeachersItem}
+          mutate={mutate}
+          handleClose={() => setEditingTeachersItem(null)}
+        />
+      )}
       <AddModal open={showAddItem} setOpen={setShowAddItem} mutate={mutate} />
       {<Button onClick={() => setShowAddItem(true)}>Add group</Button>}
     </>
@@ -76,10 +99,14 @@ export const ItemsTable = ({
   data,
   setEditingItem,
   setDeletingItem,
+  setEditingChildrenItem,
+  setEditingTeachersItem,
 }: {
   data: IGroup[];
   setEditingItem: (arg0: IGroup) => void;
   setDeletingItem: (arg0: IGroup) => void;
+  setEditingChildrenItem: (arg0: IGroup) => void;
+  setEditingTeachersItem: (arg0: IGroup) => void;
 }) => {
   const rows = data.map((item) => (
     <>
@@ -132,16 +159,31 @@ export const ItemsTable = ({
         </td>
         <td>
           <Group spacing={0} position="right">
-            <ActionIcon onClick={() => setEditingItem(item)}>
-              <IconPencil size={16} stroke={1.5} />
-            </ActionIcon>
-            <Menu withinPortal transition="pop" withArrow position="bottom-end">
+            <Menu withinPortal transition="pop" withArrow position="left">
               <Menu.Target>
                 <ActionIcon>
                   <IconDots size={16} stroke={1.5} />
                 </ActionIcon>
               </Menu.Target>
               <Menu.Dropdown>
+                <Menu.Item
+                  icon={<IconPencil size={16} stroke={1.5} />}
+                  onClick={() => setEditingItem(item)}
+                >
+                  Edit group name
+                </Menu.Item>
+                <Menu.Item
+                  icon={<IconPencil size={16} stroke={1.5} />}
+                  onClick={() => setEditingTeachersItem(item)}
+                >
+                  Edit teachers
+                </Menu.Item>
+                <Menu.Item
+                  icon={<IconPencil size={16} stroke={1.5} />}
+                  onClick={() => setEditingChildrenItem(item)}
+                >
+                  Edit children
+                </Menu.Item>
                 <Menu.Item
                   icon={<IconTrash size={16} stroke={1.5} />}
                   color="red"
@@ -160,7 +202,7 @@ export const ItemsTable = ({
     <ScrollArea>
       <Table sx={{}} verticalSpacing="md" highlightOnHover>
         <tr>
-          <th style={{ textAlign: "left" }}>Group name</th>
+          <th style={{ textAlign: "left" }}>Name</th>
           <th style={{ textAlign: "left" }}>Teachers</th>
           <th style={{ textAlign: "left" }}>Children</th>
           <th style={{ textAlign: "right" }}>Actions</th>
