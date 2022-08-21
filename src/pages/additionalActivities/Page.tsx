@@ -94,7 +94,7 @@ export const ItemsTable = ({
                 {item.activityName}
               </Text>
               <Text color="dimmed" size="xs">
-                Group ID: {item.id}
+                ID: {item.id}
               </Text>
             </div>
           </Group>
@@ -138,7 +138,7 @@ export const ItemsTable = ({
             <ActionIcon onClick={() => setEditingItem(item)}>
               <IconPencil size={16} stroke={1.5} />
             </ActionIcon>
-            <Menu withinPortal transition="pop" withArrow position="bottom-end">
+            <Menu withinPortal transition="pop" withArrow position="left">
               <Menu.Target>
                 <ActionIcon>
                   <IconDots size={16} stroke={1.5} />
@@ -150,7 +150,7 @@ export const ItemsTable = ({
                   color="red"
                   onClick={() => setDeletingItem(item)}
                 >
-                  Delete group
+                  Delete activity
                 </Menu.Item>
               </Menu.Dropdown>
             </Menu>
@@ -163,7 +163,7 @@ export const ItemsTable = ({
     <ScrollArea>
       <Table sx={{}} verticalSpacing="md" highlightOnHover>
         <tr>
-          <th style={{ textAlign: "left" }}>Group name</th>
+          <th style={{ textAlign: "left" }}>Name</th>
           <th style={{ textAlign: "left" }}>Teachers</th>
           <th style={{ textAlign: "left" }}>Children</th>
           <th style={{ textAlign: "right" }}>Actions</th>

@@ -35,7 +35,11 @@ function EditModal({
 
   return (
     <>
-      <Modal opened={open2} onClose={() => handleClose()} title="Edit group">
+      <Modal
+        opened={open2}
+        onClose={() => handleClose()}
+        title="Edit group name"
+      >
         <form onSubmit={form.onSubmit(editItem)}>
           <TextInput
             required

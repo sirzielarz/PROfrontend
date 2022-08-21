@@ -35,7 +35,11 @@ function EditModal({
 
   return (
     <>
-      <Modal opened={open2} onClose={() => handleClose()} title="Edit activity">
+      <Modal
+        opened={open2}
+        onClose={() => handleClose()}
+        title="Edit activity name"
+      >
         <form onSubmit={form.onSubmit(editItem)}>
           <TextInput
             required

@@ -63,3 +63,18 @@ export async function deleteActivityItem(activityId: number): Promise<any> {
 export async function createActivity(values: any): Promise<any> {
   return await apiPost(`${API_URL}/api/additional-activity/`, values);
 }
+
+//group-entry
+export async function addGroupEntry(
+  childId: number,
+  groupID: number
+): Promise<any> {
+  return await apiPost(`${API_URL}/api/group-entry`, {
+    childId,
+    groupID,
+  });
+}
+
+export async function deleteGroupEntry(groupEntryId: number): Promise<any> {
+  return await apiDelete(`${API_URL}/api/group-entry/${groupEntryId}`);
+}

@@ -38,6 +38,15 @@ export interface IGroup {
   children: ChildrenDTO[];
   announcements?: AnnouncementDTO[];
 }
+//api/group-entry
+export interface IGroupEntry extends IEntity {
+  kindergartenGroup: {
+    id: number;
+    groupName: string;
+    teachers: TeachersDTO[];
+  };
+  child: IPerson;
+}
 
 export interface GroupDTO extends IEntity {
   groupName: string;
