@@ -109,8 +109,8 @@ export const ItemsTable = ({
   setEditingTeachersItem: (arg0: IGroup) => void;
 }) => {
   const rows = data.map((item) => (
-    <tr key={"a" + item.id}>
-      <td>
+    <tr key={item.id}>
+      <td key={"r1" + item.id}>
         <Group spacing="sm">
           <div>
             <Text size="sm" weight={500}>
@@ -122,7 +122,7 @@ export const ItemsTable = ({
           </div>
         </Group>
       </td>
-      <td>
+      <td key={"r2" + item.id}>
         <Text size="sm">
           {item.teachers?.map((t, i) => (
             <>
@@ -137,7 +137,7 @@ export const ItemsTable = ({
             : "No teachers added"}
         </Text>
       </td>
-      <td>
+      <td key={"r3" + item.id}>
         <Text size="sm">
           {item.children?.map((c, i) => (
             <>
@@ -156,7 +156,7 @@ export const ItemsTable = ({
             : "No children added"}
         </Text>
       </td>
-      <td>
+      <td key={"r4" + item.id}>
         <Group spacing={0} position="right">
           <Menu withinPortal transition="pop" withArrow position="left">
             <Menu.Target>
