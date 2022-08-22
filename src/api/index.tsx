@@ -65,6 +65,10 @@ export async function createActivity(values: any): Promise<any> {
 }
 
 //group-entry
+
+export async function getGroupEntries(): Promise<any> {
+  return await apiGet(`${API_URL}/api/group-entry`);
+}
 export async function addGroupEntry(
   childId: number,
   groupID: number

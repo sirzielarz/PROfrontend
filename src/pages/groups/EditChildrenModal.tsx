@@ -1,12 +1,17 @@
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { useForm } from "@mantine/form";
 import { Button, Chip, Modal, Space, TextInput } from "@mantine/core";
 import useSWR, { KeyedMutator } from "swr";
-import { addGroupEntry, deleteGroupEntry } from "../../api/index";
+import {
+  addGroupEntry,
+  deleteGroupEntry,
+  getGroupEntries,
+} from "../../api/index";
 import { IGroup, IGroupEntry, IPerson } from "../../interfaces/Entities";
 
 import { TransferList, TransferListData } from "@mantine/core";
 import { fetcher } from "../../api/fetch";
+import { IsDataURI } from "class-validator";
 
 const initialValues: TransferListData = [
   [
@@ -15,7 +20,10 @@ const initialValues: TransferListData = [
   ],
   [{ value: "sv", label: "Svelte" }],
 ];
-
+export interface IMultiselect {
+  id: string;
+  value: string;
+}
 function EditChildrenModal({
   item,
   mutate,
@@ -26,10 +34,21 @@ function EditChildrenModal({
   handleClose: () => void;
 }) {
   // visual bug fix in mantine modal
-  const [open2, setOpen2] = useState(false);
+
+  const [open2, setOpen2] = useState(false); //setting modal open state
+  const [initialData, setInitialData] = useState<string[]>(); //inital data to set current ids state
+  const [initialSelection, setInitialSelection] = useState();
+  const [dataList, setDataList] = useState<TransferListData>(initialValues); //for mantine transfer list
+  //state for selectiong with Chips
+  const [selected, setSelected] = useState<string[]>();
+
   useLayoutEffect(() => {
     setOpen2(true);
   }, []);
+
+  useEffect(() => {
+    console.log("setting current items");
+  }, [initialData]);
 
   const form = useForm({
     initialValues: {
@@ -38,15 +57,12 @@ function EditChildrenModal({
   });
 
   async function editGroupEntries(values: { groupName: string }) {
+    console.log("submitted");
     // const updated = await editGroupName(item.id, values.groupName);
     // mutate(updated);
     // form.reset();
     // handleClose();
   }
-
-  const [dataList, setDataList] = useState<TransferListData>(initialValues);
-  //state for selectiong with Chips
-  const [selected, setSelected] = useState(["1", "2", "3"]);
 
   //get groupEntry values
   const {
@@ -60,7 +76,14 @@ function EditChildrenModal({
 
   // filter group entry values for this group only
   let result = groupEntry?.filter((el) => el.kindergartenGroup.id === item.id);
-  console.log("group entries from current group:  ", result);
+  //console.log("group entries from current group:  ", result);
+  let selectedChildren = result?.map((x) => {
+    return { id: x.child.id, value: `${x.child.name} ${x.child.surname}` };
+  });
+  console.log("array of children selected", selectedChildren);
+  let selectedIDs = selectedChildren?.map((x) => String(x.id));
+  console.log("selectedIDs", selectedIDs);
+  setInitialData(selectedIDs);
 
   //get all children data
   //get groupEntry values
@@ -70,6 +93,10 @@ function EditChildrenModal({
     mutate: mutateChildrenValues,
   } = useSWR<IPerson[], string>(`${process.env.REACT_APP_API}/child`, fetcher);
   console.log("all children data", childrenValues);
+  let allChildrenData = childrenValues?.map((x) => {
+    return { id: `${x.id}`, value: `${x.name} ${x.surname}` };
+  });
+  console.log("allChildrenDataPrepared", allChildrenData);
 
   return (
     <>
@@ -92,8 +119,9 @@ function EditChildrenModal({
           <Chip.Group
             value={selected}
             onChange={setSelected}
+            {...form.getInputProps("testxd")}
             position="center"
-            multiple
+            multiple={true}
             mt={20}
             mb={30}
           >
@@ -102,7 +130,9 @@ function EditChildrenModal({
               return (
                 //@todo - onclick types doesn't match
 
-                <Chip value={x.id + ""}>{x.surname + " " + x.name}</Chip>
+                <Chip value={String(x.id)} key={String(x.id)}>
+                  {x.surname + " " + x.name}
+                </Chip>
               );
             })}
           </Chip.Group>
