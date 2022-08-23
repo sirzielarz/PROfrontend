@@ -26,6 +26,9 @@ export async function getParents(): Promise<any> {
 export async function getGroups(): Promise<any> {
   return await apiGet(`${API_URL}/api/group/`);
 }
+export async function getGroup(groupId: number): Promise<any> {
+  return await apiGet(`${API_URL}/api/group/${groupId}`);
+}
 export async function editGroupName(
   groupId: number,
   newGroupName: string
@@ -64,17 +67,40 @@ export async function createActivity(values: any): Promise<any> {
   return await apiPost(`${API_URL}/api/additional-activity/`, values);
 }
 
+//
+
 //group-entry
+
+export async function getGroupEntries(): Promise<any> {
+  return await apiGet(`${API_URL}/api/group-entry`);
+}
 export async function addGroupEntry(
-  childId: number,
-  groupID: number
+  groupId: number,
+  childId: number
 ): Promise<any> {
   return await apiPost(`${API_URL}/api/group-entry`, {
+    groupId,
     childId,
-    groupID,
   });
 }
 
 export async function deleteGroupEntry(groupEntryId: number): Promise<any> {
   return await apiDelete(`${API_URL}/api/group-entry/${groupEntryId}`);
+}
+
+//group-teacher
+export async function getGroupTeachers(): Promise<any> {
+  return await apiGet(`${API_URL}/api/group-teacher`);
+}
+export async function addGroupTeacher(
+  groupId: number,
+  teacherId: number
+): Promise<any> {
+  return await apiPost(`${API_URL}/api/group-teacher`, {
+    groupId,
+    teacherId,
+  });
+}
+export async function deleteGroupTeacher(groupTeacherId: number): Promise<any> {
+  return await apiDelete(`${API_URL}/api/group-teacher/${groupTeacherId}`);
 }

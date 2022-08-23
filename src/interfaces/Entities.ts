@@ -48,6 +48,15 @@ export interface IGroupEntry extends IEntity {
   child: IPerson;
 }
 
+//api/group-teacher
+export interface IGroupTeacher extends IEntity {
+  kindergartenGroup: {
+    id: number;
+    groupName: string;
+  };
+  teacher: IPerson;
+}
+
 export interface GroupDTO extends IEntity {
   groupName: string;
 }
