@@ -3,31 +3,12 @@ import { useForm } from "@mantine/form";
 import { Button, Chip, Loader, Modal, Space, TextInput } from "@mantine/core";
 import useSWR, { KeyedMutator } from "swr";
 import {
+  getGroupEntries,
   addGroupEntry,
   deleteGroupEntry,
-  getGroupEntries,
 } from "../../api/index";
 import { IGroup, IGroupEntry, IPerson } from "../../interfaces/Entities";
-
-import { TransferList, TransferListData } from "@mantine/core";
 import { fetcher } from "../../api/fetch";
-import { IsDataURI } from "class-validator";
-
-const initialValues: TransferListData = [
-  [
-    { value: "react", label: "React" },
-    { value: "ng", label: "Angular" },
-  ],
-  [{ value: "sv", label: "Svelte" }],
-];
-export interface IMultiselect {
-  id: string;
-  value: string;
-}
-
-function getSelectedData() {
-  return ["5", "6"];
-}
 
 function EditChildrenModal({
   item,
@@ -38,30 +19,39 @@ function EditChildrenModal({
   mutate: KeyedMutator<IGroup[]>;
   handleClose: () => void;
 }) {
-  // visual bug fix in mantine modal
-  const [mounted, setMounted] = useState(false);
-
-  const [open2, setOpen2] = useState(false); //setting modal open state
-  const [initialData, setInitialData] = useState<string[]>(); //inital data to set current ids state
-  const [dataList, setDataList] = useState<TransferListData>(initialValues); //for mantine transfer list
-  //state for selectiong with Chips
-  const [selected, setSelected] = useState<string[]>();
-
   useLayoutEffect(() => {
+    // visual bug fix in mantine modal
     setOpen2(true);
   }, []);
+  const [open2, setOpen2] = useState(false); //setting modal open state
+  const [initialData, setInitialData] = useState<string[]>([]); //inital data to remember inital state
+  const [selected, setSelected] = useState<string[]>([]); //state for selectiong with Chips
 
   useEffect(() => {
-    setMounted(true);
-    // if (!selectedIDs) {
-    //   setSelected(selectedIDs);
-    //   console.log("setting current items");
-    // } else {
-    //   console.log("in hook effect but not setting anything");
-    // }
+    console.log("startting", selected);
 
-    console.log("current selected IDs:", selected);
-  }, [selected]);
+    getGroupEntries()
+      .then((entries: IGroupEntry[]) => {
+        let result = entries.filter(
+          (el) => el.kindergartenGroup.id === item.id
+        );
+        let selectedChildren = result?.map((x) => {
+          return {
+            id: x.child.id,
+            value: `${x.child.name} ${x.child.surname}`,
+          };
+        });
+        let selectedIDs = selectedChildren?.map((x) => String(x.id));
+        setSelected(selectedIDs);
+        setInitialData(selectedIDs);
+        form.setFieldValue("formSelectedIDs", selectedIDs);
+      })
+      .catch((error) => {
+        console.log("---error---", error);
+      });
+
+    console.log("startting2", selected);
+  }, []);
 
   const form = useForm({
     initialValues: {
@@ -72,10 +62,27 @@ function EditChildrenModal({
 
   async function editGroupEntries(values: {
     groupName: string;
-    formSelectedIDs: string[] | undefined;
+    formSelectedIDs: string[];
   }) {
-    console.log("submitted");
-    console.log(values);
+    console.log("formSelectedIDs", values.formSelectedIDs);
+    console.log("initalData", initialData);
+    const toRemove: string[] = initialData.filter(
+      (el) => !values.formSelectedIDs.includes(el)
+    );
+    console.log("toRemove", toRemove);
+    const toAdd: string[] = values.formSelectedIDs.filter(
+      (el) => !initialData.includes(el)
+    );
+    console.log("toRemove", toRemove);
+    console.log("toAdd", toAdd);
+
+    // toAdd.map((x) => {
+    //   const updated = addGroupEntry(Number(x), item.id);
+    //   mutate(updated);
+    // });
+
+    // form.reset();
+    // handleClose();
     // const updated = await editGroupName(item.id, values.groupName);
     // mutate(updated);
     // form.reset();
@@ -88,42 +95,36 @@ function EditChildrenModal({
     data: childrenValues,
     error: errorChildren,
     mutate: mutateChildrenValues,
-  } = useSWR<IPerson[], string>(
-    mounted ? `${process.env.REACT_APP_API}/child` : null,
-    fetcher
-  );
+  } = useSWR<IPerson[], string>(`${process.env.REACT_APP_API}/child`, fetcher);
   let allChildrenData = childrenValues?.map((x) => {
     return { id: `${x.id}`, value: `${x.name} ${x.surname}` };
   });
-  console.log("allChildrenDataPrepared", allChildrenData);
 
-  async function GetCurrentSelections() {
-    //get groupEntry values
-    const {
-      data: groupEntry,
-      error: errorGroupEntry,
-      mutate: mutateGroupEntry,
-    } = useSWR<IGroupEntry[], string>(
-      mounted ? `${process.env.REACT_APP_API}/group-entry` : null,
-      fetcher
-    );
-    // filter group entry values for this group only
-    let result = groupEntry?.filter(
-      (el) => el.kindergartenGroup.id === item.id
-    );
-    //console.log("group entries from current group:  ", result);
-    let selectedChildren = result?.map((x) => {
-      return { id: x.child.id, value: `${x.child.name} ${x.child.surname}` };
-    }); //array of children selected
-    let selectedIDs = selectedChildren?.map((x) => String(x.id));
-    console.log("selectedIDs", selectedIDs);
-    setSelected(selectedIDs);
-    // if (error) return "An error has occurred.";
-    // if (!data) return "Loading...";
-    if (errorGroupEntry) return <div>Failed to load group entries...</div>;
-    if (!groupEntry) return <Loader></Loader>;
-    return [];
-  }
+  // async function GetCurrentSelections() {
+  //   //get groupEntry values
+  //   const {
+  //     data: groupEntry,
+  //     error: errorGroupEntry,
+  //     mutate: mutateGroupEntry,
+  //   } = useSWR<IGroupEntry[], string>(
+  //     mounted ? `${process.env.REACT_APP_API}/group-entry` : null,
+  //     fetcher
+  //   );
+  //   // filter group entry values for this group only
+  //   let result = groupEntry?.filter(
+  //     (el) => el.kindergartenGroup.id === item.id
+  //   );
+  //   //console.log("group entries from current group:  ", result);
+  //   let selectedChildren = result?.map((x) => {
+  //     return { id: x.child.id, value: `${x.child.name} ${x.child.surname}` };
+  //   }); //array of children selected
+  //   let selectedIDs = selectedChildren?.map((x) => String(x.id));
+  //   console.log("selectedIDs", selectedIDs);
+
+  //   if (errorGroupEntry) return <div>Failed to load group entries...</div>;
+  //   if (!groupEntry) return <Loader></Loader>;
+  //   return selectedIDs;
+  // }
 
   if (errorChildren) return <div>Failed to load children data...</div>;
 
@@ -135,57 +136,25 @@ function EditChildrenModal({
         title="Edit children in group"
       >
         <form onSubmit={form.onSubmit(editGroupEntries)}>
-          {/* <TextInput
-            required
-            mb={12}
-            label="Group name"
-            placeholder="Enter group name"
-            {...form.getInputProps("groupName")}
-          /> */}
+          {/* <div className="jsonout">{JSON.stringify(selected, null, 4)}</div>
+          <div className="jsonout">
+            {JSON.stringify(allChildrenData, null, 4)}
+          </div> */}
 
-          {/* @todo variant 1
-          https://mantine.dev/core/chip/ */}
           <Chip.Group
+            multiple={true}
             value={selected}
-            onChange={setSelected}
+            // onChange={setSelected}
             {...form.getInputProps("formSelectedIDs")}
             position="center"
-            multiple={true}
             mt={20}
             mb={30}
           >
             {/*  */}
             {allChildrenData?.map((x) => {
-              return (
-                //@todo - onclick types doesn't match
-
-                <Chip value={String(x.id)} key={String(x.id)}>
-                  {x.value}
-                </Chip>
-              );
+              return <Chip value={String(x.id)}>{x.value}</Chip>;
             })}
           </Chip.Group>
-
-          {/* @todo variant 2
-          https://mantine.dev/core/transfer-list/ */}
-
-          <TransferList
-            value={dataList}
-            onChange={setDataList}
-            searchPlaceholder="Search..."
-            nothingFound="Nothing here"
-            titles={["In group", "Over group"]}
-            showTransferAll={false}
-            breakpoint="sm"
-          />
-          {/*  @todo after submit submit call
-
-          get users to delete from current group and fire deleteGroupEntry
-
-          and add users to
-
-          */}
-
           <Button type="submit">Edit group</Button>
         </form>
       </Modal>
