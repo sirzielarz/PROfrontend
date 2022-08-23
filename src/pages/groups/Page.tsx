@@ -19,6 +19,7 @@ import {
 } from "@mantine/core";
 import { IconPencil, IconTrash, IconDots } from "@tabler/icons";
 import EditChildrenModal from "./EditChildrenModal";
+import EditTeachersModal from "./EditTeachersModal";
 
 const Page = () => {
   const [showAddItem, setShowAddItem] = useState(false);
@@ -61,6 +62,7 @@ const Page = () => {
         <Loader />
       )}
       <Space h="lg" />
+
       {editingItem && (
         <EditModal
           item={editingItem}
@@ -83,7 +85,7 @@ const Page = () => {
         />
       )}
       {editingTeachersItem && (
-        <EditModal
+        <EditTeachersModal
           item={editingTeachersItem}
           mutate={mutate}
           handleClose={() => setEditingTeachersItem(null)}
