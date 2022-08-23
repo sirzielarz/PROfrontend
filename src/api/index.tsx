@@ -70,12 +70,12 @@ export async function getGroupEntries(): Promise<any> {
   return await apiGet(`${API_URL}/api/group-entry`);
 }
 export async function addGroupEntry(
-  childId: number,
-  groupID: number
+  groupId: number,
+  childId: number
 ): Promise<any> {
   return await apiPost(`${API_URL}/api/group-entry`, {
+    groupId,
     childId,
-    groupID,
   });
 }
 

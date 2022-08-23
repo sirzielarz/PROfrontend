@@ -6,6 +6,7 @@ import { useState } from "react";
 import AddModal from "./AddModal";
 import EditModal from "./EditModal";
 import DeleteModal from "./DeleteModal";
+import { sortTeachers, sortChildren } from "../../helpers/utils";
 import {
   Title,
   Text,
@@ -110,7 +111,7 @@ export const ItemsTable = ({
 }) => {
   const rows = data.map((item) => (
     <tr key={item.id}>
-      <td key={"r1" + item.id}>
+      <td key={item.id}>
         <Group spacing="sm">
           <div>
             <Text size="sm" weight={500}>
@@ -122,13 +123,15 @@ export const ItemsTable = ({
           </div>
         </Group>
       </td>
-      <td key={"r2" + item.id}>
+      <td key={item.id}>
         <Text size="sm">
-          {item.teachers?.map((t, i) => (
-            <>
-              {`${t.teacher.name} ${t.teacher.surname}`}
-              {i + 1 < item.teachers?.length ? ", " : ""}
-            </>
+          {item.teachers?.sort(sortTeachers).map((t, i) => (
+            <Text span key={t.teacher.id}>
+              <>
+                {`${t.teacher.surname} ${t.teacher.name}`}
+                {i + 1 < item.teachers?.length ? ", " : ""}
+              </>
+            </Text>
           ))}
         </Text>
         <Text size="xs" color="dimmed">
@@ -137,17 +140,15 @@ export const ItemsTable = ({
             : "No teachers added"}
         </Text>
       </td>
-      <td key={"r3" + item.id}>
+      <td key={item.id}>
         <Text size="sm">
-          {item.children?.map((c, i) => (
-            <>
-              <Text span key={c.child.id}>
-                <>
-                  {`${c.child.name} ${c.child.surname}`}
-                  {i + 1 < item.children?.length ? ", " : ""}
-                </>
-              </Text>
-            </>
+          {item.children?.sort(sortChildren).map((c, i) => (
+            <Text span key={c.child.id}>
+              <>
+                {`${c.child.surname} ${c.child.name}`}
+                {i + 1 < item.children?.length ? ", " : ""}
+              </>
+            </Text>
           ))}
         </Text>
         <Text size="xs" color="dimmed">
@@ -156,7 +157,7 @@ export const ItemsTable = ({
             : "No children added"}
         </Text>
       </td>
-      <td key={"r4" + item.id}>
+      <td key={item.id}>
         <Group spacing={0} position="right">
           <Menu withinPortal transition="pop" withArrow position="left">
             <Menu.Target>
