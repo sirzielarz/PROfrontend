@@ -5,10 +5,11 @@ import { getChildren } from "../../api/child/index";
 
 const ChildrenPage = () => {
   const [children, setChildren] = useState(null);
-  const { page, setPage } = usePage();
+  const { setPage } = usePage();
   useEffect(() => {
     setPage(Page.Children);
     console.log("children context have been set");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleButtonClick = () => {
