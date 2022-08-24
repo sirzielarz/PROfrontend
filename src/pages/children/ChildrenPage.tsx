@@ -1,7 +1,7 @@
 import { Button, Title, Text, Space } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import { usePage, Page } from "../../contexts/Page";
-import { getChildren } from "../../api";
+import { getChildren } from "../../api/child/index";
 
 const ChildrenPage = () => {
   const [children, setChildren] = useState(null);

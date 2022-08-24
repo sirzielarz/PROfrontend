@@ -3,11 +3,11 @@ import { useForm } from "@mantine/form";
 import { Button, Chip, Loader, Modal, Space, TextInput } from "@mantine/core";
 import useSWR, { KeyedMutator } from "swr";
 import {
-  getGroupEntries,
-  addGroupEntry,
-  deleteGroupEntry,
-} from "../../api/group-entry/index";
-import { IGroup, IGroupEntry, IPerson } from "../../interfaces/Entities";
+  getActivityEntries,
+  addActivityEntry,
+  deleteActivityEntry,
+} from "../../api/additional-activity-entry/index";
+import { IActivity, IActivityEntry, IPerson } from "../../interfaces/Entities";
 import { sortByValue } from "../../helpers/utils";
 import { fetcher } from "../../api/fetch";
 
@@ -16,8 +16,8 @@ function EditChildrenModal({
   mutate,
   handleClose,
 }: {
-  item: IGroup;
-  mutate: KeyedMutator<IGroup[]>;
+  item: IActivity;
+  mutate: KeyedMutator<IActivity[]>;
   handleClose: () => void;
 }) {
   useLayoutEffect(() => {
@@ -27,20 +27,20 @@ function EditChildrenModal({
   const [open2, setOpen2] = useState(false); //setting modal open state
   const [initialData, setInitialData] = useState<string[]>([]); //inital data to remember inital state
   const [selected, setSelected] = useState<string[]>([]); //state for selectiong with Chips
-  const [itemEntriesIDs, setItemEntriesIDs] = useState<IGroupEntry[]>();
+  const [itemEntriesIDs, setItemsEntriesIDs] = useState<IActivityEntry[]>();
 
   useEffect(() => {
-    getGroupEntries()
-      .then((entries: IGroupEntry[]) => {
+    getActivityEntries()
+      .then((entries: IActivityEntry[]) => {
         let result = entries.filter(
-          (el) => el.kindergartenGroup.id === item.id
+          (el) => el.additionalActivity.id === item.id
         );
-        setItemEntriesIDs(result);
+        setItemsEntriesIDs(result);
         let selectedItems = result?.map((x) => {
           return {
             id: x.child.id,
             value: `${x.child.name} ${x.child.surname}`,
-            idGroupEntry: x.id,
+            idActivityEntry: x.id,
           };
         });
         let selectedIDs = selectedItems?.map((x) => String(x.id));
@@ -57,13 +57,13 @@ function EditChildrenModal({
   //form
   const form = useForm({
     initialValues: {
-      groupName: item.groupName,
+      activityName: item.activityName,
       formSelectedIDs: selected,
     },
   });
   //form submit function
-  async function editGroupEntries(values: {
-    groupName: string;
+  async function editActivityEntries(values: {
+    activityName: string;
     formSelectedIDs: string[];
   }) {
     const toRemove: string[] = initialData.filter(
@@ -73,7 +73,7 @@ function EditChildrenModal({
       (el) => !initialData.includes(el)
     );
     toAdd.map((x) => {
-      const updated = addGroupEntry(item.id, Number(x));
+      const updated = addActivityEntry(item.id, Number(x));
       mutate(updated);
     });
     toRemove.map((x) => {
@@ -81,7 +81,7 @@ function EditChildrenModal({
         (el) => el.child.id === Number(x)
       );
       entryToDelete?.map((x) => {
-        const updated = deleteGroupEntry(x.id);
+        const updated = deleteActivityEntry(x.id);
         mutate(updated);
       });
     });
@@ -114,11 +114,11 @@ function EditChildrenModal({
       <Modal
         opened={open2}
         onClose={() => handleClose()}
-        title="Edit children in group"
+        title="Edit children in activity"
       >
         {ready && allItems ? (
           <>
-            <form onSubmit={form.onSubmit(editGroupEntries)}>
+            <form onSubmit={form.onSubmit(editActivityEntries)}>
               {/* <div className="jsonout">{JSON.stringify(selected, null, 4)}</div>*/}
               <Chip.Group
                 sx={{ flexDirection: "column" }}

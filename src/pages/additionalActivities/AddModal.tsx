@@ -1,7 +1,7 @@
 import { useForm } from "@mantine/form";
 import { Button, Modal, TextInput } from "@mantine/core";
 import { KeyedMutator } from "swr";
-import { createActivity } from "../../api/index";
+import { createActivity } from "../../api/additional-activity/index";
 import { IActivity } from "../../interfaces/Entities";
 
 function AddItemModal({
@@ -15,11 +15,11 @@ function AddItemModal({
 }) {
   const form = useForm({
     initialValues: {
-      groupName: "",
+      activityName: "",
     },
   });
 
-  async function createItem(values: { groupName: string }) {
+  async function createItem(values: { activityName: string }) {
     const updated = await createActivity(values);
     mutate(updated);
     form.reset();

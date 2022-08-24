@@ -33,7 +33,7 @@ const Page = () => {
   );
 
   const { data, error, mutate } = useSWR<IGroup[], string>(
-    `${process.env.REACT_APP_API}/group`,
+    `${process.env.REACT_APP_URL}/api/group`,
     fetcher
   );
   // console.log("out", data);
@@ -120,7 +120,7 @@ export const ItemsTable = ({
               {item.groupName}
             </Text>
             <Text color="dimmed" size="xs">
-              Group ID: {item.id}
+              ID: {item.id}
             </Text>
           </div>
         </Group>

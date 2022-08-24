@@ -1,7 +1,7 @@
 import { useForm } from "@mantine/form";
 import { Button, Modal, TextInput } from "@mantine/core";
 import { KeyedMutator } from "swr";
-import { createGroup } from "../../api/index";
+import { createGroup } from "../../api/group/index";
 import { IGroup } from "../../interfaces/Entities";
 
 function AddItemModal({

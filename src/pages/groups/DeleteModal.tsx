@@ -2,7 +2,7 @@ import { useLayoutEffect, useState } from "react";
 import { useForm } from "@mantine/form";
 import { Button, Modal } from "@mantine/core";
 import { KeyedMutator } from "swr";
-import { deleteGroupItem } from "../../api/index";
+import { deleteGroupItem } from "../../api/group/index";
 import { IGroup } from "../../interfaces/Entities";
 
 function DeleteModal({

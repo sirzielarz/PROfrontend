@@ -2,7 +2,7 @@ import { useLayoutEffect, useState } from "react";
 import { useForm } from "@mantine/form";
 import { Button, Modal } from "@mantine/core";
 import { KeyedMutator } from "swr";
-import { deleteActivityItem } from "../../api/index";
+import { deleteActivityItem } from "../../api/additional-activity/index";
 import { IActivity } from "../../interfaces/Entities";
 
 function DeleteModal({

@@ -6,7 +6,7 @@ import {
   getGroupTeachers,
   addGroupTeacher,
   deleteGroupTeacher,
-} from "../../api/index";
+} from "../../api/group-teacher/index";
 import { IGroup, IGroupTeacher, IPerson } from "../../interfaces/Entities";
 import { sortByValue } from "../../helpers/utils";
 import { fetcher } from "../../api/fetch";
@@ -92,7 +92,7 @@ function EditTeachersModal({
 
   //get all teachers data with swr
   const { data: allItems, error: errorItems } = useSWR<IPerson[], string>(
-    `${process.env.REACT_APP_API}/teacher`,
+    `${process.env.REACT_APP_URL}/api/teacher`,
     fetcher
   );
 

@@ -4,7 +4,7 @@ import { Button, Title, Text, Space } from "@mantine/core";
 import { ITeacher } from "../../interfaces/Entities";
 import React, { useEffect, useState } from "react";
 import { usePage, Page } from "../../contexts/Page";
-import { getTeachers } from "../../api";
+import { getTeachers } from "../../api/teacher/index";
 
 const TeachersPage = () => {
   const [teachers, setTeachers] = useState(null);
@@ -15,7 +15,7 @@ const TeachersPage = () => {
   }, []);
 
   const { data, error, mutate } = useSWR<ITeacher[], string>(
-    `${process.env.REACT_APP_API}/group`,
+    `${process.env.REACT_APP_URL}/api/group`,
     fetcher
   );
 

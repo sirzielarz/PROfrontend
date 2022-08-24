@@ -29,6 +29,23 @@ export interface IActivity extends IEntity {
   teachers: TeachersDTO[];
   children: ChildrenDTO[];
 }
+//api/additional-activity-entry
+export interface IActivityEntry extends IEntity {
+  additionalActivity: {
+    id: number;
+    groupName: string;
+    teachers: TeachersDTO[];
+  };
+  child: IPerson;
+}
+//api/additional-activity-teacher
+export interface IActivityTeacher extends IEntity {
+  additionalActivity: {
+    id: number;
+    groupName: string;
+  };
+  teacher: IPerson;
+}
 
 // api/group
 export interface IGroup {
