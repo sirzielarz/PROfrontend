@@ -21,7 +21,13 @@ export interface privateMessageDTO extends IEntity {
   messageText: string;
   sender: string;
 }
-export interface additionalActivitityDTO extends IEntity {}
+export interface additionalActivityDTO extends IEntity {
+  activityName: string;
+}
+export interface additionalActivitiesDTO extends IEntity {
+  additionalActivity: additionalActivityDTO;
+  activityName: string;
+}
 // api/additional-activity
 
 export interface IActivity extends IEntity {
@@ -79,7 +85,7 @@ export interface GroupDTO extends IEntity {
 }
 
 export interface GroupsDTO extends IEntity {
-  kinderGartenGroup: GroupDTO;
+  kindergartenGroup: GroupDTO;
 }
 
 //api/teacher
@@ -89,7 +95,7 @@ export interface ITeacher extends IPerson {
   isAdmin: boolean;
   groups: GroupsDTO[];
   privateMessages: privateMessageDTO[];
-  additionalActivities: additionalActivitityDTO[];
+  additionalActivities: additionalActivitiesDTO[];
 }
 
 export interface AnnouncementDTO {
