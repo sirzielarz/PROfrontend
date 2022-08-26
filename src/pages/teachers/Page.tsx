@@ -23,8 +23,8 @@ import {
   ScrollArea,
 } from "@mantine/core";
 import { IconPencil, IconTrash, IconDots } from "@tabler/icons";
-import EditChildrenModal from "./EditChildrenModal";
-import EditTeachersModal from "./EditTeachersModal";
+import EditChildrenModal from "./EditGroupsModal";
+import EditTeachersModal from "./EditActivitiesModal";
 
 const Page = () => {
   const [showAddItem, setShowAddItem] = useState(false);
@@ -73,13 +73,13 @@ const Page = () => {
           handleClose={() => setEditingItem(null)}
         />
       )}
-      {/* {deletingItem && (
+      {deletingItem && (
         <DeleteModal
           item={deletingItem}
           mutate={mutate}
           handleClose={() => setDeletingItem(null)}
         />
-      )} */}
+      )}
       {/* {editingChildrenItem && (
         <EditChildrenModal
           item={editingChildrenItem}
@@ -114,7 +114,7 @@ export const ItemsTable = ({
   setEditingChildrenItem: (arg0: ITeacher) => void;
   setEditingTeachersItem: (arg0: ITeacher) => void;
 }) => {
-  const rows = data.map((item) => (
+  const rows = data.map((item: ITeacher) => (
     <tr key={item.id}>
       <td>
         <Group spacing="sm">
@@ -193,19 +193,19 @@ export const ItemsTable = ({
                 icon={<IconPencil size={16} stroke={1.5} />}
                 onClick={() => setEditingItem(item)}
               >
-                Edit activity name
+                Edit teacher data
               </Menu.Item>
               <Menu.Item
                 icon={<IconPencil size={16} stroke={1.5} />}
                 onClick={() => setEditingTeachersItem(item)}
               >
-                Edit teachers
+                Edit groups
               </Menu.Item>
               <Menu.Item
                 icon={<IconPencil size={16} stroke={1.5} />}
                 onClick={() => setEditingChildrenItem(item)}
               >
-                Edit children
+                Edit additional activities
               </Menu.Item>
               <Menu.Item
                 icon={<IconTrash size={16} stroke={1.5} />}

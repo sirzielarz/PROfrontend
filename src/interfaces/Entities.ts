@@ -54,8 +54,7 @@ export interface IActivityTeacher extends IEntity {
 }
 
 // api/group
-export interface IGroup {
-  id: number;
+export interface IGroup extends IEntity {
   groupName: string;
   teachers: TeachersDTO[];
   children: ChildrenDTO[];
@@ -96,6 +95,20 @@ export interface ITeacher extends IPerson {
   groups: GroupsDTO[];
   privateMessages: privateMessageDTO[];
   additionalActivities: additionalActivitiesDTO[];
+}
+
+export interface APITeacherPOST {
+  name: string;
+  surname: string;
+  email: string;
+  password: string;
+  isAdmin: boolean;
+}
+export interface APITeacherPUT {
+  name: string;
+  surname: string;
+  email: string;
+  isAdmin: boolean;
 }
 
 export interface AnnouncementDTO {

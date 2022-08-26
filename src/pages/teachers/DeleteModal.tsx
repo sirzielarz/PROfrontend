@@ -2,7 +2,7 @@ import { useLayoutEffect, useState } from "react";
 import { useForm } from "@mantine/form";
 import { Button, Modal } from "@mantine/core";
 import { KeyedMutator } from "swr";
-import { deleteActivityItem } from "../../api/additional-activity/index";
+import { deleteTeacher } from "../../api/teacher/index";
 import { ITeacher } from "../../interfaces/Entities";
 
 function DeleteModal({
@@ -22,12 +22,12 @@ function DeleteModal({
 
   const form = useForm({
     initialValues: {
-      activityName: item.name,
+      name: item.name,
     },
   });
 
   async function deleteItem() {
-    const updated = await deleteActivityItem(item.id);
+    const updated = await deleteTeacher(item.id);
     mutate(updated);
     form.reset();
     handleClose();
@@ -40,10 +40,11 @@ function DeleteModal({
         onClose={() => handleClose()}
         title="Delete additional activity"
       >
-        You are going to delete {item.name} teacher. Are you sure about that?
+        You are going to delete teacher:<b> {item.surname + " " + item.name}</b>
+        .<br></br> Are you sure about that?
         <br />
         <Button color="red" onClick={deleteItem}>
-          Delete {item.name}
+          Delete {item.surname + " " + item.name}
         </Button>
       </Modal>
     </>
