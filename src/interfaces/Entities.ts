@@ -102,6 +102,7 @@ export interface APITeacherPOST {
   surname: string;
   email: string;
   password: string;
+  confirmPassword?: string;
   isAdmin: boolean;
 }
 export interface APITeacherPUT {

@@ -38,7 +38,7 @@ function DeleteModal({
       <Modal
         opened={open2}
         onClose={() => handleClose()}
-        title="Delete additional activity"
+        title="Delete teacher"
       >
         You are going to delete teacher:<b> {item.surname + " " + item.name}</b>
         .<br></br> Are you sure about that?

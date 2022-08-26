@@ -39,17 +39,39 @@ function AddItemModal({
       surname: "",
       email: "",
       password: "",
+      confirmPassword: "",
       isAdmin: false,
     },
     validate: {
       email: (value: string) =>
-        /^\S+@\S+$/.test(value) ? null : "Invalid email",
-      // fname: (value) =>
-      //   value.length < 2 ? "Name must have at least 2 letters" : null,
-      // lname: (value) =>
-      //   value.length < 2 ? "Name must have at least 2 letters" : null,
-      // confirmPassword: (value: string, values: string) =>
-      //   value !== values.password ? "Passwords did not match" : null,
+        /^\S+@\S+$/.test(value) ? null : "invalid email",
+      name: (value) =>
+        value.length < 2
+          ? "enter at least 2 characters"
+          : value.length > 50
+          ? "enter less than 50 characters"
+          : null,
+      surname: (value) =>
+        value.length < 2
+          ? "enter at least 2 characters"
+          : value.length > 50
+          ? "enter less than 50 characters"
+          : null,
+      password: (value) =>
+        value.length < 4
+          ? "enter at least 4 characters"
+          : value.length > 50
+          ? "enter less than 50 characters"
+          : null,
+
+      confirmPassword: (value: string, values: APITeacherPOST) =>
+        value !== values.password
+          ? "passwords did not match"
+          : value.length < 4
+          ? "enter at least 4 characters"
+          : value.length > 50
+          ? "enter less than 50 characters"
+          : null,
     },
   });
 
@@ -86,6 +108,7 @@ function AddItemModal({
 
           <TextInput
             required
+            mb={12}
             withAsterisk
             label="Email"
             placeholder="your@email.com"
@@ -93,22 +116,18 @@ function AddItemModal({
           />
 
           <PasswordInput
-            // required
-            placeholder="Your password"
-            //icon={<Lock size={16} />}
-            radius="xs"
-            mt="sm"
-            size="lg"
+            required
+            placeholder="enter password"
+            label="Password"
+            mb="sm"
             {...form.getInputProps("password")}
           />
 
           <PasswordInput
-            // required
-            placeholder="Confirm password"
-            //icon={<Lock size={16} />}
-            radius="xs"
-            mt="sm"
-            size="lg"
+            required
+            placeholder="confirm password"
+            label="Confirm password"
+            mb="sm"
             {...form.getInputProps("confirmPassword")}
           />
 

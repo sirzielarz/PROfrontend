@@ -56,7 +56,7 @@ const Page = () => {
               setEditingChildrenItem={setEditingChildrenItem}
               setEditingTeachersItem={setEditingTeachersItem}
             />
-            {<div className="jsonout">{JSON.stringify(data, null, 4)}</div>}
+            {/* {<div className="jsonout">{JSON.stringify(data, null, 4)}</div>} */}
           </>
         ) : (
           <Text>No teachers exist.</Text>

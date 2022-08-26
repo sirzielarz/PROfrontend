@@ -38,7 +38,19 @@ function EditModal({
     },
     validate: {
       email: (value: string) =>
-        /^\S+@\S+$/.test(value) ? null : "Invalid email",
+        /^\S+@\S+$/.test(value) ? null : "invalid email",
+      name: (value) =>
+        value.length < 2
+          ? "enter at least 2 characters"
+          : value.length > 50
+          ? "enter less than 50 characters"
+          : null,
+      surname: (value) =>
+        value.length < 2
+          ? "enter at least 2 characters"
+          : value.length > 50
+          ? "enter less than 50 characters"
+          : null,
     },
   });
 
