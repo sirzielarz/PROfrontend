@@ -23,16 +23,17 @@ import {
   ScrollArea,
 } from "@mantine/core";
 import { IconPencil, IconTrash, IconDots } from "@tabler/icons";
-import EditChildrenModal from "./EditGroupsModal";
-import EditTeachersModal from "./EditActivitiesModal";
+import EditGroupsModal from "./EditGroupsModal";
+import EditTeacherActivitiesModal from "./EditActivitiesModal";
 
 const Page = () => {
   const [showAddItem, setShowAddItem] = useState(false);
   const [editingItem, setEditingItem] = useState<ITeacher | null>(null);
   const [deletingItem, setDeletingItem] = useState<ITeacher | null>(null);
-  const [editingChildrenItem, setEditingChildrenItem] =
-    useState<ITeacher | null>(null);
-  const [editingTeachersItem, setEditingTeachersItem] =
+  const [editingGroupsItem, setEditingGroupsItem] = useState<ITeacher | null>(
+    null
+  );
+  const [editingActivitiesItem, setEditingActivitiesItem] =
     useState<ITeacher | null>(null);
 
   const { data, error, mutate } = useSWR<ITeacher[], string>(
@@ -53,8 +54,8 @@ const Page = () => {
               data={data}
               setEditingItem={setEditingItem}
               setDeletingItem={setDeletingItem}
-              setEditingChildrenItem={setEditingChildrenItem}
-              setEditingTeachersItem={setEditingTeachersItem}
+              setEditingGroupsItem={setEditingGroupsItem}
+              setEditingActivitiesItem={setEditingActivitiesItem}
             />
             {/* {<div className="jsonout">{JSON.stringify(data, null, 4)}</div>} */}
           </>
@@ -80,20 +81,20 @@ const Page = () => {
           handleClose={() => setDeletingItem(null)}
         />
       )}
-      {/* {editingChildrenItem && (
-        <EditChildrenModal
-          item={editingChildrenItem}
+      {editingGroupsItem && (
+        <EditGroupsModal
+          item={editingGroupsItem}
           mutate={mutate}
-          handleClose={() => setEditingChildrenItem(null)}
+          handleClose={() => setEditingGroupsItem(null)}
         />
-      )} */}
-      {/* {editingTeachersItem && (
-        <EditTeachersModal
-          item={editingTeachersItem}
+      )}
+      {editingActivitiesItem && (
+        <EditTeacherActivitiesModal
+          item={editingActivitiesItem}
           mutate={mutate}
-          handleClose={() => setEditingTeachersItem(null)}
+          handleClose={() => setEditingActivitiesItem(null)}
         />
-      )} */}
+      )}
       <AddModal open={showAddItem} setOpen={setShowAddItem} mutate={mutate} />
       {<Button onClick={() => setShowAddItem(true)}>Add teacher</Button>}
     </>
@@ -105,14 +106,14 @@ export const ItemsTable = ({
   data,
   setEditingItem,
   setDeletingItem,
-  setEditingChildrenItem,
-  setEditingTeachersItem,
+  setEditingGroupsItem,
+  setEditingActivitiesItem,
 }: {
   data: ITeacher[];
   setEditingItem: (arg0: ITeacher) => void;
   setDeletingItem: (arg0: ITeacher) => void;
-  setEditingChildrenItem: (arg0: ITeacher) => void;
-  setEditingTeachersItem: (arg0: ITeacher) => void;
+  setEditingGroupsItem: (arg0: ITeacher) => void;
+  setEditingActivitiesItem: (arg0: ITeacher) => void;
 }) => {
   const rows = data.map((item: ITeacher) => (
     <tr key={item.id}>
@@ -197,13 +198,13 @@ export const ItemsTable = ({
               </Menu.Item>
               <Menu.Item
                 icon={<IconPencil size={16} stroke={1.5} />}
-                onClick={() => setEditingTeachersItem(item)}
+                onClick={() => setEditingGroupsItem(item)}
               >
                 Edit groups
               </Menu.Item>
               <Menu.Item
                 icon={<IconPencil size={16} stroke={1.5} />}
-                onClick={() => setEditingChildrenItem(item)}
+                onClick={() => setEditingActivitiesItem(item)}
               >
                 Edit additional activities
               </Menu.Item>

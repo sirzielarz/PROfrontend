@@ -1,7 +1,7 @@
 import { apiDelete, apiGet, apiPost, apiPut } from "./../fetch";
 
 //group-teacher
-export async function getGroupTeachers(): Promise<any> {
+export async function getTeachersGroups(): Promise<any> {
   return await apiGet(`${process.env.REACT_APP_URL}/api/group-teacher`);
 }
 export async function addGroupTeacher(

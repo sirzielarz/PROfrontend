@@ -3,7 +3,7 @@ import { useForm } from "@mantine/form";
 import { Button, Chip, Loader, Modal, Space, TextInput } from "@mantine/core";
 import useSWR, { KeyedMutator } from "swr";
 import {
-  getActivityTeachers,
+  getActivitiesTeachers,
   addActivityTeacher,
   deleteActivityTeacher,
 } from "../../api/additional-activity-teacher/index";
@@ -11,17 +11,18 @@ import {
   IActivity,
   IActivityTeacher,
   IPerson,
+  ITeacher,
 } from "../../interfaces/Entities";
 import { sortByValue } from "../../helpers/utils";
 import { fetcher } from "../../api/fetch";
 
-function EditTeachersModal({
+function EditTeacherActivitiesModal({
   item,
   mutate,
   handleClose,
 }: {
-  item: IActivity;
-  mutate: KeyedMutator<IActivity[]>;
+  item: ITeacher;
+  mutate: KeyedMutator<ITeacher[]>;
   handleClose: () => void;
 }) {
   useLayoutEffect(() => {
@@ -34,18 +35,16 @@ function EditTeachersModal({
   const [itemEntriesIDs, setItemEntriesIDs] = useState<IActivityTeacher[]>();
 
   useEffect(() => {
-    getActivityTeachers()
+    getActivitiesTeachers()
       .then((entries: IActivityTeacher[]) => {
-        let result = entries.filter(
-          (el) => el.additionalActivity.id === item.id
-        );
+        let result = entries.filter((el) => el.teacher.id === item.id);
         setItemEntriesIDs(result);
         console.log("result", result);
         let selectedItems = result?.map((x) => {
           return {
-            id: x.teacher.id,
-            value: `${x.teacher.name} ${x.teacher.surname}`,
-            idActivityEntry: x.id,
+            id: x.additionalActivity.id,
+            value: `${x.additionalActivity.activityName}`,
+            idActivityTeacherEntry: x.id,
           };
         });
         let selectedIDs = selectedItems?.map((x) => String(x.id));
@@ -62,15 +61,11 @@ function EditTeachersModal({
   //form
   const form = useForm({
     initialValues: {
-      activityName: item.activityName,
       formSelectedIDs: selected,
     },
   });
   //form submit function
-  async function editActivityEntries(values: {
-    activityName: string;
-    formSelectedIDs: string[];
-  }) {
+  async function editActivityEntries(values: { formSelectedIDs: string[] }) {
     const toRemove: string[] = initialData.filter(
       (el) => !values.formSelectedIDs.includes(el)
     );
@@ -78,7 +73,7 @@ function EditTeachersModal({
       (el) => !initialData.includes(el)
     );
     toAdd.map((x) => {
-      const updated = addActivityTeacher(item.id, Number(x));
+      const updated = addActivityTeacher(Number(x), item.id);
       mutate(updated);
     });
     toRemove.map((x) => {
@@ -94,14 +89,14 @@ function EditTeachersModal({
     handleClose();
   }
 
-  //get all teachers data with swr
-  const { data: allItems, error: errorItems } = useSWR<IPerson[], string>(
-    `${process.env.REACT_APP_URL}/api/teacher`,
+  //get all activities data with swr
+  const { data: allItems, error: errorItems } = useSWR<IActivity[], string>(
+    `${process.env.REACT_APP_URL}/api/additional-activity`,
     fetcher
   );
 
   if (!allItems) return <Loader></Loader>;
-  if (errorItems) return <div>Failed to load teachers data...</div>;
+  if (errorItems) return <div>Failed to load teacher's actvities data...</div>;
   //iterate
 
   interface IItems {
@@ -110,7 +105,7 @@ function EditTeachersModal({
   }
   console.log("allItems", allItems);
   let allItemsData = allItems?.map((x) => {
-    return { id: `${x.id}`, value: `${x.surname} ${x.name}` };
+    return { id: `${x.id}`, value: `${x.activityName}` };
   });
   //sort items data
   allItemsData?.sort(sortByValue);
@@ -120,7 +115,7 @@ function EditTeachersModal({
       <Modal
         opened={open2}
         onClose={() => handleClose()}
-        title="Edit teachers in activity"
+        title="Edit teacher's activities"
       >
         {ready && allItems ? (
           <>
@@ -158,4 +153,4 @@ function EditTeachersModal({
   );
 }
 
-export default EditTeachersModal;
+export default EditTeacherActivitiesModal;

@@ -3,21 +3,28 @@ import { useForm } from "@mantine/form";
 import { Button, Chip, Loader, Modal } from "@mantine/core";
 import useSWR, { KeyedMutator } from "swr";
 import {
-  getActivityEntries,
-  addActivityEntry,
-  deleteActivityEntry,
-} from "../../api/additional-activity-entry/index";
-import { IActivity, IActivityEntry, IPerson } from "../../interfaces/Entities";
+  getTeachersGroups,
+  addGroupTeacher,
+  deleteGroupTeacher,
+} from "../../api/group-teacher/index";
+import {
+  IActivity,
+  IActivityEntry as IActivityTeacher,
+  IGroup,
+  IGroupTeacher,
+  IPerson,
+  ITeacher,
+} from "../../interfaces/Entities";
 import { sortByValue } from "../../helpers/utils";
 import { fetcher } from "../../api/fetch";
 
-function EditChildrenModal({
+function EditGroupsModal({
   item,
   mutate,
   handleClose,
 }: {
-  item: IActivity;
-  mutate: KeyedMutator<IActivity[]>;
+  item: ITeacher;
+  mutate: KeyedMutator<ITeacher[]>;
   handleClose: () => void;
 }) {
   useLayoutEffect(() => {
@@ -27,20 +34,18 @@ function EditChildrenModal({
   const [open2, setOpen2] = useState(false); //setting modal open state
   const [initialData, setInitialData] = useState<string[]>([]); //inital data to remember inital state
   const [selected, setSelected] = useState<string[]>([]); //state for selectiong with Chips
-  const [itemEntriesIDs, setItemsEntriesIDs] = useState<IActivityEntry[]>();
+  const [itemEntriesIDs, setItemsEntriesIDs] = useState<IGroupTeacher[]>();
 
   useEffect(() => {
-    getActivityEntries()
-      .then((entries: IActivityEntry[]) => {
-        let result = entries.filter(
-          (el) => el.additionalActivity.id === item.id
-        );
+    getTeachersGroups()
+      .then((entries: IGroupTeacher[]) => {
+        let result = entries.filter((el) => el.teacher.id === item.id);
         setItemsEntriesIDs(result);
         let selectedItems = result?.map((x) => {
           return {
-            id: x.child.id,
-            value: `${x.child.name} ${x.child.surname}`,
-            idActivityEntry: x.id,
+            id: x.kindergartenGroup.id,
+            value: `${x.kindergartenGroup.groupName}`,
+            idGroupTeacher: x.id,
           };
         });
         let selectedIDs = selectedItems?.map((x) => String(x.id));
@@ -53,20 +58,15 @@ function EditChildrenModal({
         console.log("---error---", error);
       });
     setReady(true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   //form
   const form = useForm({
     initialValues: {
-      activityName: item.activityName,
       formSelectedIDs: selected,
     },
   });
   //form submit function
-  async function editActivityEntries(values: {
-    activityName: string;
-    formSelectedIDs: string[];
-  }) {
+  async function editTeacherGroups(values: { formSelectedIDs: string[] }) {
     const toRemove: string[] = initialData.filter(
       (el) => !values.formSelectedIDs.includes(el)
     );
@@ -74,15 +74,15 @@ function EditChildrenModal({
       (el) => !initialData.includes(el)
     );
     toAdd.forEach((x) => {
-      const updated = addActivityEntry(item.id, Number(x));
+      const updated = addGroupTeacher(Number(x), item.id);
       mutate(updated);
     });
     toRemove.forEach((x) => {
       const entryToDelete = itemEntriesIDs?.filter(
-        (el) => el.child.id === Number(x)
+        (el) => el.kindergartenGroup.id === Number(x)
       );
       entryToDelete?.forEach((x) => {
-        const updated = deleteActivityEntry(x.id);
+        const updated = deleteGroupTeacher(x.id);
         mutate(updated);
       });
     });
@@ -91,16 +91,16 @@ function EditChildrenModal({
   }
 
   //get all children data with swr
-  const { data: allItems, error: errorItems } = useSWR<IPerson[], string>(
-    `${process.env.REACT_APP_URL}/api/child`,
+  const { data: allItems, error: errorItems } = useSWR<IGroup[], string>(
+    `${process.env.REACT_APP_URL}/api/group`,
     fetcher
   );
 
   if (!allItems) return <Loader></Loader>;
-  if (errorItems) return <div>Failed to load children data...</div>;
+  if (errorItems) return <div>Failed to load groups data...</div>;
 
   let allItemsData = allItems?.map((x) => {
-    return { id: `${x.id}`, value: `${x.surname} ${x.name}` };
+    return { id: `${x.id}`, value: `${x.groupName}` };
   });
   //sort items data
   allItemsData?.sort(sortByValue);
@@ -110,12 +110,12 @@ function EditChildrenModal({
       <Modal
         opened={open2}
         onClose={() => handleClose()}
-        title="Edit children in activity"
+        title="Edit teacher's groups"
       >
         {ready && allItems ? (
           <>
-            <form onSubmit={form.onSubmit(editActivityEntries)}>
-              {/* <div className="jsonout">{JSON.stringify(selected, null, 4)}</div>*/}
+            <form onSubmit={form.onSubmit(editTeacherGroups)}>
+              {/* <div className="jsonout">{JSON.stringify(selected, null, 4)}</div> */}
               <Chip.Group
                 sx={{ flexDirection: "column" }}
                 multiple={true}
@@ -144,4 +144,4 @@ function EditChildrenModal({
   );
 }
 
-export default EditChildrenModal;
+export default EditGroupsModal;

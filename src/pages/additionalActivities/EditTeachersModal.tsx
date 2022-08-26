@@ -3,7 +3,7 @@ import { useForm } from "@mantine/form";
 import { Button, Chip, Loader, Modal, Space, TextInput } from "@mantine/core";
 import useSWR, { KeyedMutator } from "swr";
 import {
-  getActivityTeachers,
+  getActivitiesTeachers,
   addActivityTeacher,
   deleteActivityTeacher,
 } from "../../api/additional-activity-teacher/index";
@@ -34,7 +34,7 @@ function EditTeachersModal({
   const [itemEntriesIDs, setItemEntriesIDs] = useState<IActivityTeacher[]>();
 
   useEffect(() => {
-    getActivityTeachers()
+    getActivitiesTeachers()
       .then((entries: IActivityTeacher[]) => {
         let result = entries.filter(
           (el) => el.additionalActivity.id === item.id

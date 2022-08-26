@@ -1,7 +1,7 @@
 import { apiDelete, apiGet, apiPost, apiPut } from "./../fetch";
 
 //additional-activity-teacher
-export async function getActivityTeachers(): Promise<any> {
+export async function getActivitiesTeachers(): Promise<any> {
   return await apiGet(
     `${process.env.REACT_APP_URL}/api/additional-activity-teacher`
   );

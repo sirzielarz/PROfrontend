@@ -3,7 +3,7 @@ import { useForm } from "@mantine/form";
 import { Button, Chip, Loader, Modal, Space, TextInput } from "@mantine/core";
 import useSWR, { KeyedMutator } from "swr";
 import {
-  getGroupTeachers,
+  getTeachersGroups,
   addGroupTeacher,
   deleteGroupTeacher,
 } from "../../api/group-teacher/index";
@@ -30,7 +30,7 @@ function EditTeachersModal({
   const [groupEntriesIDs, setGroupEntriesIDs] = useState<IGroupTeacher[]>();
 
   useEffect(() => {
-    getGroupTeachers()
+    getTeachersGroups()
       .then((entries: IGroupTeacher[]) => {
         let result = entries.filter(
           (el) => el.kindergartenGroup.id === item.id

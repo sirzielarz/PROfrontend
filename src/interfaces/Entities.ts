@@ -48,7 +48,7 @@ export interface IActivityEntry extends IEntity {
 export interface IActivityTeacher extends IEntity {
   additionalActivity: {
     id: number;
-    groupName: string;
+    activityName: string;
   };
   teacher: IPerson;
 }
