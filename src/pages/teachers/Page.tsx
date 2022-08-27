@@ -25,11 +25,13 @@ import {
 import { IconPencil, IconTrash, IconDots } from "@tabler/icons";
 import EditGroupsModal from "./EditGroupsModal";
 import EditTeacherActivitiesModal from "./EditActivitiesModal";
+import ResetPasswordModal from "./ResetPasswordModal";
 
 const Page = () => {
   const [showAddItem, setShowAddItem] = useState(false);
   const [editingItem, setEditingItem] = useState<ITeacher | null>(null);
   const [deletingItem, setDeletingItem] = useState<ITeacher | null>(null);
+  const [passwordItem, setPasswordItem] = useState<ITeacher | null>(null);
   const [editingGroupsItem, setEditingGroupsItem] = useState<ITeacher | null>(
     null
   );
@@ -56,6 +58,7 @@ const Page = () => {
               setDeletingItem={setDeletingItem}
               setEditingGroupsItem={setEditingGroupsItem}
               setEditingActivitiesItem={setEditingActivitiesItem}
+              setPasswordItem={setPasswordItem}
             />
             {/* {<div className="jsonout">{JSON.stringify(data, null, 4)}</div>} */}
           </>
@@ -88,6 +91,13 @@ const Page = () => {
           handleClose={() => setEditingGroupsItem(null)}
         />
       )}
+      {passwordItem && (
+        <ResetPasswordModal
+          item={passwordItem}
+          mutate={mutate}
+          handleClose={() => setPasswordItem(null)}
+        />
+      )}
       {editingActivitiesItem && (
         <EditTeacherActivitiesModal
           item={editingActivitiesItem}
@@ -108,12 +118,14 @@ export const ItemsTable = ({
   setDeletingItem,
   setEditingGroupsItem,
   setEditingActivitiesItem,
+  setPasswordItem,
 }: {
   data: ITeacher[];
   setEditingItem: (arg0: ITeacher) => void;
   setDeletingItem: (arg0: ITeacher) => void;
   setEditingGroupsItem: (arg0: ITeacher) => void;
   setEditingActivitiesItem: (arg0: ITeacher) => void;
+  setPasswordItem: (arg0: ITeacher) => void;
 }) => {
   const rows = data.map((item: ITeacher) => (
     <tr key={item.id}>
@@ -195,6 +207,12 @@ export const ItemsTable = ({
                 onClick={() => setEditingItem(item)}
               >
                 Edit teacher data
+              </Menu.Item>
+              <Menu.Item
+                icon={<IconPencil size={16} stroke={1.5} />}
+                onClick={() => setPasswordItem(item)}
+              >
+                Reset password
               </Menu.Item>
               <Menu.Item
                 icon={<IconPencil size={16} stroke={1.5} />}

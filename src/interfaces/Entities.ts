@@ -97,6 +97,15 @@ export interface ITeacher extends IPerson {
   additionalActivities: additionalActivitiesDTO[];
 }
 
+export interface ResetPassword {
+  password: string;
+  confirmPassword: string;
+}
+
+export interface APIResetPassword {
+  newPassword: string;
+}
+
 export interface APITeacherPOST {
   name: string;
   surname: string;

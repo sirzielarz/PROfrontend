@@ -1,5 +1,6 @@
 import { apiDelete, apiGet, apiPost, apiPut } from "./../fetch";
 import {
+  APIResetPassword,
   APITeacherPOST,
   APITeacherPUT,
   ITeacher,
@@ -15,6 +16,16 @@ export async function deleteTeacher(id: number): Promise<any> {
 }
 export async function createTeacher(values: APITeacherPOST): Promise<any> {
   return await apiPost(`${process.env.REACT_APP_URL}/api/teacher/`, values);
+}
+
+export async function resetTeacherPassword(
+  id: number,
+  newPassword: string
+): Promise<any> {
+  return await apiPut(
+    `${process.env.REACT_APP_URL}/api/teacher/reset-password/${id}`,
+    newPassword
+  );
 }
 
 export async function editTeacher(

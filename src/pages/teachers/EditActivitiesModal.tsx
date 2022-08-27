@@ -124,9 +124,9 @@ function EditTeacherActivitiesModal({
           <>
             <form onSubmit={form.onSubmit(editActivityEntries)}>
               {
-                <div className="jsonout">
-                  {JSON.stringify(selected, null, 4)}
-                </div>
+                // <div className="jsonout">
+                //   {JSON.stringify(selected, null, 4)}
+                // </div>
               }
               <Chip.Group
                 sx={{ flexDirection: "column" }}
