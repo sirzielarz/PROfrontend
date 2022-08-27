@@ -66,19 +66,22 @@ function EditTeacherActivitiesModal({
   });
   //form submit function
   async function editActivityEntries(values: { formSelectedIDs: string[] }) {
+    // console.log("itemEntriesIDs", itemEntriesIDs);
     const toRemove: string[] = initialData.filter(
       (el) => !values.formSelectedIDs.includes(el)
     );
+    // console.log("toRemove", toRemove);
     const toAdd: string[] = values.formSelectedIDs.filter(
       (el) => !initialData.includes(el)
     );
+    // console.log("toAdd", toAdd);
     toAdd.map((x) => {
       const updated = addActivityTeacher(Number(x), item.id);
       mutate(updated);
     });
     toRemove.map((x) => {
       const entryToDelete = itemEntriesIDs?.filter(
-        (el) => el.teacher.id === Number(x)
+        (el) => el.additionalActivity.id === Number(x)
       );
       entryToDelete?.map((x) => {
         const updated = deleteActivityTeacher(x.id);
@@ -122,7 +125,7 @@ function EditTeacherActivitiesModal({
             <form onSubmit={form.onSubmit(editActivityEntries)}>
               {
                 <div className="jsonout">
-                  {/* {JSON.stringify(selected, null, 4)} */}
+                  {JSON.stringify(selected, null, 4)}
                 </div>
               }
               <Chip.Group
