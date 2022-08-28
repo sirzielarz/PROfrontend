@@ -8,15 +8,16 @@ import {
   TextInput,
 } from "@mantine/core";
 import { KeyedMutator } from "swr";
-import { resetTeacherPassword } from "../../api/teacher/index";
+import { resetParentPassword } from "../../api/parent/index";
 import {
-  ITeacher,
-  APITeacherPOST,
+  IParent,
+  APIParentPOST,
   ResetPassword,
   APIResetPassword,
 } from "../../interfaces/Entities";
 
 import { useLayoutEffect, useState } from "react";
+import { IconDeviceFloppy } from "@tabler/icons";
 
 // interface FormValues {
 //   name: string; // regular field, same as inferred type
@@ -36,8 +37,8 @@ function ResetPasswordModal({
   mutate,
   handleClose,
 }: {
-  item: ITeacher;
-  mutate: KeyedMutator<ITeacher[]>;
+  item: IParent;
+  mutate: KeyedMutator<IParent[]>;
   handleClose: () => void;
 }) {
   // visual bug fix in mantine modal
@@ -64,13 +65,13 @@ function ResetPasswordModal({
           : value.length < 4
           ? "enter at least 4 characters"
           : value.length > 50
-          ? "enter max 50 characters"
+          ? "enter less than 50 characters"
           : null,
     },
   });
 
   async function resetPassword(values: ResetPassword) {
-    const updated = await resetTeacherPassword(item.id, values.password);
+    const updated = await resetParentPassword(item.id, values.password);
     mutate(updated);
     form.reset();
     handleClose();
@@ -81,7 +82,7 @@ function ResetPasswordModal({
       <Modal
         opened={open2}
         onClose={() => handleClose()}
-        title="Reset teacher's password"
+        title="Reset parent's password"
       >
         <form onSubmit={form.onSubmit(resetPassword)}>
           <PasswordInput
@@ -101,7 +102,9 @@ function ResetPasswordModal({
           />
           <Space h="lg" />
 
-          <Button type="submit">Set password</Button>
+          <Button type="submit" leftIcon={<IconDeviceFloppy />}>
+            Set password
+          </Button>
         </form>
       </Modal>
     </>

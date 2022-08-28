@@ -10,6 +10,7 @@ import {
 import { IActivity, IActivityEntry, IPerson } from "../../interfaces/Entities";
 import { sortByValue } from "../../helpers/utils";
 import { fetcher } from "../../api/fetch";
+import { IconDeviceFloppy } from "@tabler/icons";
 
 function EditChildrenModal({
   item,
@@ -131,7 +132,9 @@ function EditChildrenModal({
                   return <Chip value={String(x.id)}>{x.value}</Chip>;
                 })}
               </Chip.Group>
-              <Button type="submit">Save</Button>
+              <Button type="submit" leftIcon={<IconDeviceFloppy />}>
+                Save
+              </Button>
             </form>
           </>
         ) : (

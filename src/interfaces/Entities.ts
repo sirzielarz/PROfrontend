@@ -70,6 +70,12 @@ export interface IGroupEntry extends IEntity {
   child: IPerson;
 }
 
+//api/parent-child
+export interface IParentChild extends IEntity {
+  parent: IPerson;
+  child: IPerson;
+}
+
 //api/group-teacher
 export interface IGroupTeacher extends IEntity {
   kindergartenGroup: {
@@ -104,6 +110,46 @@ export interface ResetPassword {
 
 export interface APIResetPassword {
   newPassword: string;
+}
+
+export interface IParent extends IPerson {
+  email: string;
+  password: string;
+  identityDocumentNumber: string;
+  phoneNumber: string;
+  bankAccountNumber?: string;
+  address: IAddress;
+  children: ChildrenDTO[];
+}
+
+export interface APIParentPOST {
+  name: string;
+  surname: string;
+  email: string;
+  password: string;
+  confirmPassword?: string;
+  identityDocumentNumber: string;
+  bankAccountNumber?: string;
+  phoneNumber: string;
+  address: IAddress;
+}
+export interface APIParentPUT {
+  name: string;
+  surname: string;
+  email: string;
+  identityDocumentNumber: string;
+  bankAccountNumber?: string;
+  phoneNumber: string;
+  address: IAddress;
+}
+
+export interface IAddress {
+  city: string;
+  street?: string;
+  buildingNumber: string;
+  flatNumber?: string;
+  zipCode: string;
+  isWorkAddress: boolean;
 }
 
 export interface APITeacherPOST {

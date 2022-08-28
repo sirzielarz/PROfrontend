@@ -1,9 +1,10 @@
 import { useLayoutEffect, useState } from "react";
 import { useForm } from "@mantine/form";
-import { Button, Modal } from "@mantine/core";
+import { Button, Modal, Space } from "@mantine/core";
 import { KeyedMutator } from "swr";
 import { deleteGroupItem } from "../../api/group/index";
 import { IGroup } from "../../interfaces/Entities";
+import { IconTrash } from "@tabler/icons";
 
 function DeleteModal({
   item,
@@ -36,9 +37,10 @@ function DeleteModal({
   return (
     <>
       <Modal opened={open2} onClose={() => handleClose()} title="Delete group">
-        You are going to delete {item.groupName} group. Are you sure about that?
-        <br />
-        <Button color="red" onClick={deleteItem}>
+        You are going to delete group: <b>{item.groupName}</b>.
+        <Space h={"lg"}></Space> Are you sure about that?
+        <Space h={"lg"}></Space>
+        <Button color="red" leftIcon={<IconTrash />} onClick={deleteItem}>
           Delete {item.groupName}
         </Button>
       </Modal>

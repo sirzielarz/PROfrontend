@@ -3,6 +3,7 @@ import { Button, Modal, TextInput } from "@mantine/core";
 import { KeyedMutator } from "swr";
 import { createActivity } from "../../api/additional-activity/index";
 import { IActivity } from "../../interfaces/Entities";
+import { IconCirclePlus } from "@tabler/icons";
 
 function AddItemModal({
   mutate,
@@ -41,7 +42,9 @@ function AddItemModal({
             placeholder="Enter activity name"
             {...form.getInputProps("activityName")}
           />
-          <Button type="submit">Create activity</Button>
+          <Button type="submit" leftIcon={<IconCirclePlus />}>
+            Create activity
+          </Button>
         </form>
       </Modal>
     </>

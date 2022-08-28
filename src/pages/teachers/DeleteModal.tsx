@@ -1,9 +1,10 @@
 import { useLayoutEffect, useState } from "react";
 import { useForm } from "@mantine/form";
-import { Button, Modal } from "@mantine/core";
+import { Button, Modal, Space } from "@mantine/core";
 import { KeyedMutator } from "swr";
 import { deleteTeacher } from "../../api/teacher/index";
 import { ITeacher } from "../../interfaces/Entities";
+import { IconTrash } from "@tabler/icons";
 
 function DeleteModal({
   item,
@@ -41,9 +42,9 @@ function DeleteModal({
         title="Delete teacher"
       >
         You are going to delete teacher:<b> {item.surname + " " + item.name}</b>
-        .<br></br> Are you sure about that?
-        <br />
-        <Button color="red" onClick={deleteItem}>
+        .<Space h={"lg"}></Space> Are you sure about that?
+        <Space h={"lg"}></Space>
+        <Button color="red" leftIcon={<IconTrash />} onClick={deleteItem}>
           Delete {item.surname + " " + item.name}
         </Button>
       </Modal>

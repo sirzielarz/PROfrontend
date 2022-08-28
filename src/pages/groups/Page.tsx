@@ -17,7 +17,7 @@ import {
   Menu,
   ScrollArea,
 } from "@mantine/core";
-import { IconPencil, IconTrash, IconDots } from "@tabler/icons";
+import { IconPencil, IconTrash, IconDots, IconCirclePlus } from "@tabler/icons";
 import EditChildrenModal from "./EditChildrenModal";
 import EditTeachersModal from "./EditTeachersModal";
 
@@ -92,7 +92,14 @@ const Page = () => {
         />
       )}
       <AddModal open={showAddItem} setOpen={setShowAddItem} mutate={mutate} />
-      {<Button onClick={() => setShowAddItem(true)}>Add group</Button>}
+      {
+        <Button
+          onClick={() => setShowAddItem(true)}
+          leftIcon={<IconCirclePlus />}
+        >
+          Add group
+        </Button>
+      }
     </>
   );
 };

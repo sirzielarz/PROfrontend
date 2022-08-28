@@ -10,6 +10,7 @@ import {
 import { KeyedMutator } from "swr";
 import { createTeacher } from "../../api/teacher/index";
 import { ITeacher, APITeacherPOST } from "../../interfaces/Entities";
+import { IconCirclePlus } from "@tabler/icons";
 
 // interface FormValues {
 //   name: string; // regular field, same as inferred type
@@ -44,24 +45,30 @@ function AddItemModal({
     },
     validate: {
       email: (value: string) =>
-        /^\S+@\S+$/.test(value) ? null : "invalid email",
+        value.length < 5
+          ? "enter at least 5 characters"
+          : value.length > 50
+          ? "enter max 50 characters"
+          : /^\S+@\S+$/.test(value)
+          ? null
+          : "invalid email",
       name: (value) =>
         value.length < 2
           ? "enter at least 2 characters"
           : value.length > 50
-          ? "enter less than 50 characters"
+          ? "enter max 50 characters"
           : null,
       surname: (value) =>
         value.length < 2
           ? "enter at least 2 characters"
           : value.length > 50
-          ? "enter less than 50 characters"
+          ? "enter max 50 characters"
           : null,
       password: (value) =>
         value.length < 4
           ? "enter at least 4 characters"
           : value.length > 50
-          ? "enter less than 50 characters"
+          ? "enter max 50 characters"
           : null,
 
       confirmPassword: (value: string, values: APITeacherPOST) =>
@@ -70,7 +77,7 @@ function AddItemModal({
           : value.length < 4
           ? "enter at least 4 characters"
           : value.length > 50
-          ? "enter less than 50 characters"
+          ? "enter max 50 characters"
           : null,
     },
   });
@@ -138,7 +145,9 @@ function AddItemModal({
           />
           <Space h="lg" />
 
-          <Button type="submit">Create teacher</Button>
+          <Button type="submit" leftIcon={<IconCirclePlus />}>
+            Create teacher
+          </Button>
         </form>
       </Modal>
     </>

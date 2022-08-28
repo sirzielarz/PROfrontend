@@ -12,16 +12,18 @@ import {
 import { KeyedMutator } from "swr";
 import { editTeacher } from "../../api/teacher/index";
 import { APITeacherPUT, ITeacher } from "../../interfaces/Entities";
-import { IconDeviceFloppy } from "@tabler/icons";
+import { IconArrowBack, IconEdit } from "@tabler/icons";
 
-function EditModal({
+function DetailsModal({
   item,
   mutate,
   handleClose,
+  handleEdit,
 }: {
   item: ITeacher;
   mutate: KeyedMutator<ITeacher[]>;
   handleClose: () => void;
+  handleEdit: () => void;
 }) {
   // visual bug fix in mantine modal
   const [open2, setOpen2] = useState(false);
@@ -60,22 +62,24 @@ function EditModal({
     },
   });
 
-  async function editItem(values: APITeacherPUT) {
-    const updated = await editTeacher(item.id, values);
-    mutate(updated);
-    form.reset();
+  function editDetailsItem() {
+    handleEdit();
     handleClose();
   }
 
+  function goBackToList() {
+    handleClose();
+  }
   return (
     <>
       <Modal
         opened={open2}
         onClose={() => handleClose()}
-        title="Edit teacher data"
+        title="Teacher details"
       >
-        <form onSubmit={form.onSubmit(editItem)}>
+        <form>
           <TextInput
+            disabled
             required
             mb={12}
             label="Name"
@@ -83,6 +87,7 @@ function EditModal({
             {...form.getInputProps("name")}
           />
           <TextInput
+            disabled
             required
             mb={12}
             label="Surname"
@@ -90,6 +95,7 @@ function EditModal({
             {...form.getInputProps("surname")}
           />
           <TextInput
+            disabled
             withAsterisk
             label="Email"
             placeholder="your@email.com"
@@ -97,13 +103,26 @@ function EditModal({
           />
 
           <Checkbox
+            disabled
             mt="md"
             label="User is administrator ?"
             {...form.getInputProps("isAdmin", { type: "checkbox" })}
           />
           <Space h="lg" />
-          <Button type="submit" leftIcon={<IconDeviceFloppy />}>
-            Save
+          <Button
+            type="button"
+            leftIcon={<IconEdit size={14} />}
+            onClick={editDetailsItem}
+            mr={"sm"}
+          >
+            Edit teacher
+          </Button>
+          <Button
+            type="button"
+            leftIcon={<IconArrowBack size={14} />}
+            onClick={goBackToList}
+          >
+            Go back to list
           </Button>
         </form>
       </Modal>
@@ -111,4 +130,4 @@ function EditModal({
   );
 }
 
-export default EditModal;
+export default DetailsModal;

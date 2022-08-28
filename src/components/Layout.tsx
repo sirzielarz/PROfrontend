@@ -16,9 +16,9 @@ import LightDarkButton from "./LightDarkButton";
 import NavbarComponent from "./NavbarComponent";
 import GlobalContext from "../helpers/GlobalContext";
 import MissingPathPage from "../pages/MissingPathPage";
-import Page from "../pages/teachers/Page";
+import TeachersPage from "../pages/teachers/Page";
 import UnauthorizedPage from "../pages/UnauthorizedPage";
-import ParentsPage from "../pages/parents/ParentsPage";
+import ParentsPage from "../pages/parents/Page";
 import GroupsPage from "../pages/groups/Page";
 import HomePage from "../pages/HomePage";
 import ChildrenPage from "../pages/children/ChildrenPage";
@@ -100,7 +100,7 @@ const AppShellComponent = () => {
 
             {/*private routes*/}
             <Route element={<RequireAuth allowedRoles={["admin"]} />}>
-              <Route path="/teachers" element={<Page />} />
+              <Route path="/teachers" element={<TeachersPage />} />
               <Route path="/groups" element={<GroupsPage />} />
             </Route>
             <Route

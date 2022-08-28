@@ -13,6 +13,7 @@ import {
 import useAuth from "../api/useAuth";
 import React, { useState } from "react";
 import { showNotification } from "@mantine/notifications";
+import { IconLogin } from "@tabler/icons";
 
 const LoginForm = (props: PaperProps) => {
   const [email, setEmail] = useState("");
@@ -105,7 +106,9 @@ const LoginForm = (props: PaperProps) => {
                 "Password should include at least 3 characters"
               }
             />
-            <Button type="submit">Login</Button>
+            <Button type="submit" leftIcon={<IconLogin />}>
+              Login
+            </Button>
           </Stack>
         </form>
       </Paper>
