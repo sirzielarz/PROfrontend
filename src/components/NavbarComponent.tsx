@@ -20,6 +20,7 @@ import {
   IconListNumbers,
   IconSchool,
   IconMoodKid,
+  IconTransferOut,
 } from "@tabler/icons";
 
 const useStyles = createStyles((theme, _params, getRef) => {
@@ -182,6 +183,15 @@ function NavbarComponent(props: Omit<NavbarProps, "children">) {
                   component={Link}
                   to="/children"
                   active={location.pathname === "/children"}
+                  onClick={clickHandler}
+                />
+                <NavLink
+                  label="Authorized persons"
+                  key="/authorized"
+                  icon={<IconTransferOut />}
+                  component={Link}
+                  to="/authorized"
+                  active={location.pathname === "/authorized"}
                   onClick={clickHandler}
                 />
                 <NavLink

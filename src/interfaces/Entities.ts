@@ -176,6 +176,46 @@ export interface IAuthorizedPersonDTO extends IPerson {
   relationship: string;
 }
 
+// /api/authorized-person
+export interface AuthorizationChildToPickUpDTO extends IEntity {
+  child: IPerson;
+  authorizationDateFrom: Date;
+  authorizationDateTo: Date;
+}
+export interface IAuthorizedPerson extends IPerson {
+  relationship: string;
+  identityDocumentNumber: string;
+  phoneNumber: string;
+  authorizationsToPickUp: AuthorizationChildToPickUpDTO[];
+}
+
+export interface APIAuthorizedPerson {
+  name: string;
+  surname: string;
+  relationship: string;
+  identityDocumentNumber: string;
+  phoneNumber: string;
+}
+
+// authorization-to-pickup
+export interface IAuthorizationToPickup extends IEntity {
+  authorizedPerson: AuthorizedPersonDTO;
+  child: IPerson;
+  authorizationDateFrom: Date;
+  authorizationDateTo: Date;
+}
+
+export interface AuthorizedPersonDTO extends IPerson {
+  relationship: string;
+}
+
+export interface APIAuthorizationToPickup {
+  authorizedPersonId: number;
+  childId: number;
+  authorizationDateFrom: Date;
+  authorizationDateTo: Date;
+}
+
 export interface IAddress {
   city: string;
   street?: string;

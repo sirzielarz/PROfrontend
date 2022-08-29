@@ -7,15 +7,27 @@ import {
   IActivity,
   additionalActivityDTO,
   additionalActivitiesDTO,
+  AuthorizationChildToPickUpDTO,
 } from "../interfaces/Entities";
 export interface IItems {
   id: string;
   value: string;
 }
 
+export interface IItemsToSelect {
+  value: string;
+  label: string;
+}
+
 export function sortByValue(a: IItems, b: IItems) {
   const x = a.value.toLowerCase();
   const y = b.value.toLowerCase();
+  return ("" + x).localeCompare("" + y);
+}
+
+export function sortByValueToSelect(a: IItemsToSelect, b: IItemsToSelect) {
+  const x = a.label.toLowerCase();
+  const y = b.label.toLowerCase();
   return ("" + x).localeCompare("" + y);
 }
 
@@ -25,6 +37,14 @@ export function sortTeachers(a: TeachersDTO, b: TeachersDTO) {
 }
 
 export function sortChildren(a: ChildrenDTO, b: ChildrenDTO) {
+  const result = a.child.surname.localeCompare(b.child.surname);
+  return result !== 0 ? result : a.child.name.localeCompare(b.child.name);
+}
+
+export function sortAuthorized(
+  a: AuthorizationChildToPickUpDTO,
+  b: AuthorizationChildToPickUpDTO
+) {
   const result = a.child.surname.localeCompare(b.child.surname);
   return result !== 0 ? result : a.child.name.localeCompare(b.child.name);
 }
