@@ -40,7 +40,6 @@ function AddItemModal({
       name: "",
       surname: "",
       pesel: "",
-      birthDate: new Date("2022-01-01"),
       address: {
         city: "",
         street: "",
@@ -100,13 +99,6 @@ function AddItemModal({
                 label="Pesel"
                 placeholder="pesel"
                 {...form.getInputProps("pesel")}
-              />
-              <TextInput
-                required
-                mb={12}
-                label="Birthday"
-                placeholder="birthday"
-                {...form.getInputProps("birthDay")}
               />
             </Grid.Col>
             <Grid.Col span={6}>

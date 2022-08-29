@@ -51,7 +51,7 @@ const useStyles = createStyles((theme) => ({
 
     "@media (max-width: 520px)": {
       fontSize: 28,
-      textAlign: "left",
+      // textAlign: "left",
     },
   },
 
@@ -64,7 +64,7 @@ const useStyles = createStyles((theme) => ({
     textAlign: "center",
 
     "@media (max-width: 520px)": {
-      textAlign: "left",
+      // textAlign: "left",
       fontSize: theme.fontSizes.md,
     },
   },
@@ -90,13 +90,12 @@ export default function HomePage() {
           app
         </Title>
 
-        <Image src="https://images.unsplash.com/long-image-url-was-here.jpg" />
-
         <Container p={0} size={600}>
           <Text size="lg" color="dimmed" className={classes.description}>
-            Our app is probably the best thing you can have to
+            ...everything you need in your kindergarten...
           </Text>
         </Container>
+        <Image mt={"lg"} src={imagefront} />
       </div>
     </Container>
   );

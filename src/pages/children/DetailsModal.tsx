@@ -38,7 +38,6 @@ function DetailsModal({
       name: item.name,
       surname: item.surname,
       pesel: item.pesel,
-      birthDate: item.birthDate,
       address: {
         city: item.address.city,
         street: item.address.street,
@@ -84,6 +83,7 @@ function DetailsModal({
           <Grid>
             <Grid.Col span={6}>
               <TextInput
+                disabled
                 required
                 mb={12}
                 label="Name"
@@ -92,6 +92,7 @@ function DetailsModal({
               />
 
               <TextInput
+                disabled
                 required
                 mb={12}
                 label="Surname"
@@ -100,6 +101,7 @@ function DetailsModal({
               />
 
               <TextInput
+                disabled
                 required
                 mb={12}
                 label="Pesel"
@@ -107,11 +109,12 @@ function DetailsModal({
                 {...form.getInputProps("pesel")}
               />
               <TextInput
+                disabled
                 required
                 mb={12}
-                label="Birthday"
-                placeholder="birthday"
-                {...form.getInputProps("birthDay")}
+                label="Birth date"
+                placeholder="birthDate"
+                {...form.getInputProps("birthDate")}
               />
             </Grid.Col>
             <Grid.Col span={6}>
@@ -123,12 +126,14 @@ function DetailsModal({
                 {...form.getInputProps("address.city")}
               />
               <TextInput
+                disabled
                 mb={12}
                 label="Street"
                 placeholder="street"
                 {...form.getInputProps("address.street")}
               />
               <TextInput
+                disabled
                 required
                 mb={12}
                 label="Building number"
@@ -136,12 +141,14 @@ function DetailsModal({
                 {...form.getInputProps("address.buildingNumber")}
               />
               <TextInput
+                disabled
                 mb={12}
                 label="Flat number"
                 placeholder="flat number"
                 {...form.getInputProps("address.flatNumber")}
               />
               <TextInput
+                disabled
                 mb={12}
                 label="Zip code"
                 placeholder="zip code"
@@ -152,12 +159,13 @@ function DetailsModal({
 
           <Space h="lg" />
           <Button
+            disabled
             type="button"
             leftIcon={<IconEdit size={14} />}
             onClick={editDetailsItem}
             mr={"sm"}
           >
-            Edit parent
+            Edit child
           </Button>
           <Button
             type="button"

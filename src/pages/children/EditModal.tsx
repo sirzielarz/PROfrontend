@@ -35,7 +35,6 @@ function EditModal({
       name: item.name,
       surname: item.surname,
       pesel: item.pesel,
-      birthDate: item.birthDate,
       address: {
         city: item.address.city,
         street: item.address.street,
@@ -100,13 +99,6 @@ function EditModal({
                 label="Pesel"
                 placeholder="pesel"
                 {...form.getInputProps("pesel")}
-              />
-              <TextInput
-                required
-                mb={12}
-                label="Birthday"
-                placeholder="birthday"
-                {...form.getInputProps("birthDay")}
               />
             </Grid.Col>
             <Grid.Col span={6}>

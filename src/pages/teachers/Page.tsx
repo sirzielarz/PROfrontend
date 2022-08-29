@@ -159,7 +159,7 @@ export const ItemsTable = ({
         <Group spacing="sm">
           <div>
             <Text size="sm" weight={500}>
-              {item.surname}
+              {item.surname} {item.name}
             </Text>
             <Text color="dimmed" size="xs">
               ID: {item.id}
@@ -167,15 +167,7 @@ export const ItemsTable = ({
           </div>
         </Group>
       </td>
-      <td>
-        <Group spacing="sm">
-          <div>
-            <Text size="sm" weight={500}>
-              {item.name}
-            </Text>
-          </div>
-        </Group>
-      </td>
+
       <td>
         <Group spacing="sm">
           <div>
@@ -276,8 +268,7 @@ export const ItemsTable = ({
       <Table sx={{}} verticalSpacing="md" highlightOnHover>
         <thead>
           <tr>
-            <th style={{ textAlign: "left" }}>Surname</th>
-            <th style={{ textAlign: "left" }}>Name</th>
+            <th style={{ textAlign: "left" }}>Teacher</th>
             <th style={{ textAlign: "left" }}>Email</th>
             <th style={{ textAlign: "left" }}>Groups</th>
             <th style={{ textAlign: "left" }}>Additional activities</th>

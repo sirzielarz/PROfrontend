@@ -153,7 +153,6 @@ export interface APIChild {
   name: string;
   surname: string;
   pesel: string;
-  birthDate: Date;
   address: IAddressChild;
 }
 
