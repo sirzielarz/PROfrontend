@@ -3,17 +3,17 @@ import { useForm } from "@mantine/form";
 import { Button, Chip, Loader, Modal } from "@mantine/core";
 import useSWR, { KeyedMutator } from "swr";
 import {
-  getTeachersGroups,
-  addGroupTeacher,
-  deleteGroupTeacher,
-} from "../../api/group-teacher/index";
+  getGroupEntries,
+  addGroupEntry,
+  deleteGroupEntry,
+} from "../../api/group-entry/index";
 import {
   IActivity,
-  IActivityTeacher,
+  IActivityEntry as IActivityTeacher,
   IGroup,
-  IGroupTeacher,
+  IGroupEntry,
   IPerson,
-  ITeacher,
+  IChild,
 } from "../../interfaces/Entities";
 import { sortByValue } from "../../helpers/utils";
 import { fetcher } from "../../api/fetch";
@@ -24,8 +24,8 @@ function EditGroupsModal({
   mutate,
   handleClose,
 }: {
-  item: ITeacher;
-  mutate: KeyedMutator<ITeacher[]>;
+  item: IChild;
+  mutate: KeyedMutator<IChild[]>;
   handleClose: () => void;
 }) {
   useLayoutEffect(() => {
@@ -35,12 +35,12 @@ function EditGroupsModal({
   const [open2, setOpen2] = useState(false); //setting modal open state
   const [initialData, setInitialData] = useState<string[]>([]); //inital data to remember inital state
   const [selected, setSelected] = useState<string[]>([]); //state for selectiong with Chips
-  const [itemEntriesIDs, setItemsEntriesIDs] = useState<IGroupTeacher[]>();
+  const [itemEntriesIDs, setItemsEntriesIDs] = useState<IGroupEntry[]>();
 
   useEffect(() => {
-    getTeachersGroups()
-      .then((entries: IGroupTeacher[]) => {
-        let result = entries.filter((el) => el.teacher.id === item.id);
+    getGroupEntries()
+      .then((entries: IGroupEntry[]) => {
+        let result = entries.filter((el) => el.child.id === item.id);
         setItemsEntriesIDs(result);
         let selectedItems = result?.map((x) => {
           return {
@@ -75,7 +75,7 @@ function EditGroupsModal({
       (el) => !initialData.includes(el)
     );
     toAdd.forEach((x) => {
-      const updated = addGroupTeacher(Number(x), item.id);
+      const updated = addGroupEntry(Number(x), item.id);
       mutate(updated);
     });
     toRemove.forEach((x) => {
@@ -83,7 +83,7 @@ function EditGroupsModal({
         (el) => el.kindergartenGroup.id === Number(x)
       );
       entryToDelete?.forEach((x) => {
-        const updated = deleteGroupTeacher(x.id);
+        const updated = deleteGroupEntry(x.id);
         mutate(updated);
       });
     });
@@ -111,7 +111,7 @@ function EditGroupsModal({
       <Modal
         opened={open2}
         onClose={() => handleClose()}
-        title="Edit teacher's groups"
+        title="Edit child's groups"
       >
         {ready && allItems ? (
           <>

@@ -28,18 +28,22 @@ import {
 import EditParentsModal from "./EditParentsModal";
 // import ResetPasswordModal from "./ResetPasswordModal";
 import DetailsModal from "./DetailsModal";
+import EditGroupsModal from "./EditGroupsModal";
+import EditActivitiesModal from "./EditActivitiesModal";
 
 const ChildrenPage = () => {
   const [showAddItem, setShowAddItem] = useState(false);
   const [editingItem, setEditingItem] = useState<IChild | null>(null);
   const [detailsItem, setDetailsItem] = useState<IChild | null>(null);
-
   const [deletingItem, setDeletingItem] = useState<IChild | null>(null);
-  // const [passwordItem, setPasswordItem] = useState<IChild | null>(null);
-
+  const [editingGroupsItem, setEditingGroupsItem] = useState<IChild | null>(
+    null
+  );
   const [editingParentsItem, setEditingParentsItem] = useState<IChild | null>(
     null
   );
+  const [editingActivitiesItem, setEditingActivitiesItem] =
+    useState<IChild | null>(null);
 
   const { data, error, mutate } = useSWR<IChild[], string>(
     `${process.env.REACT_APP_URL}/api/child`,
@@ -61,7 +65,8 @@ const ChildrenPage = () => {
               setDeletingItem={setDeletingItem}
               setDetailsItem={setDetailsItem}
               setEditingParentsItem={setEditingParentsItem}
-              // setPasswordItem={setPasswordItem}
+              setEditingGroupsItem={setEditingGroupsItem}
+              setEditingActivitiesItem={setEditingActivitiesItem}
             />
             {<div className="jsonout">{JSON.stringify(data, null, 4)}</div>}
           </>
@@ -95,18 +100,25 @@ const ChildrenPage = () => {
           handleClose={() => setDetailsItem(null)}
         />
       )}
-      {/* {passwordItem && (
-        <ResetPasswordModal
-          item={passwordItem}
+      {editingGroupsItem && (
+        <EditGroupsModal
+          item={editingGroupsItem}
           mutate={mutate}
-          handleClose={() => setPasswordItem(null)}
+          handleClose={() => setEditingGroupsItem(null)}
         />
-      )} */}
+      )}
       {editingParentsItem && (
         <EditParentsModal
           item={editingParentsItem}
           mutate={mutate}
           handleClose={() => setEditingParentsItem(null)}
+        />
+      )}
+      {editingActivitiesItem && (
+        <EditActivitiesModal
+          item={editingActivitiesItem}
+          mutate={mutate}
+          handleClose={() => setEditingActivitiesItem(null)}
         />
       )}
       <AddModal open={showAddItem} setOpen={setShowAddItem} mutate={mutate} />
@@ -129,12 +141,16 @@ export const ItemsTable = ({
   setDeletingItem,
   setDetailsItem,
   setEditingParentsItem,
+  setEditingGroupsItem,
+  setEditingActivitiesItem,
 }: {
   data: IChild[];
   setEditingItem: (arg0: IChild) => void;
   setDeletingItem: (arg0: IChild) => void;
   setDetailsItem: (arg0: IChild) => void;
   setEditingParentsItem: (arg0: IChild) => void;
+  setEditingGroupsItem: (arg0: IChild) => void;
+  setEditingActivitiesItem: (arg0: IChild) => void;
 }) => {
   const rows = data.map((item: IChild) => (
     <tr key={item.id}>
@@ -150,22 +166,6 @@ export const ItemsTable = ({
           </div>
         </Group>
       </td>
-      {/* <td>
-        <Group spacing="sm">
-          <div>
-            <Text size="sm" weight={500}></Text>
-          </div>
-        </Group>
-      </td> */}
-      {/* <td>
-        <Group spacing="sm">
-          <div>
-            <Text size="sm" weight={500}>
-              <>{item.birthDate.toISOString.toString}</>
-            </Text>
-          </div>
-        </Group>
-      </td> */}
       <td>
         <Text size="sm">
           {item.groups.sort(sortGroups).map((g, i) => (
@@ -227,12 +227,23 @@ export const ItemsTable = ({
               >
                 Reset password
               </Menu.Item> */}
-
+              <Menu.Item
+                icon={<IconPencil size={16} stroke={1.5} />}
+                onClick={() => setEditingGroupsItem(item)}
+              >
+                Edit groups
+              </Menu.Item>
               <Menu.Item
                 icon={<IconPencil size={16} stroke={1.5} />}
                 onClick={() => setEditingParentsItem(item)}
               >
                 Edit parents
+              </Menu.Item>
+              <Menu.Item
+                icon={<IconPencil size={16} stroke={1.5} />}
+                onClick={() => setEditingActivitiesItem(item)}
+              >
+                Edit additional activities
               </Menu.Item>
               <Menu.Item
                 icon={<IconTrash size={16} stroke={1.5} />}

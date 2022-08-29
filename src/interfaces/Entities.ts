@@ -44,7 +44,7 @@ export interface IActivityDTO extends IEntity {
 export interface IActivityEntry extends IEntity {
   additionalActivity: {
     id: number;
-    groupName: string;
+    activityName: string;
     teachers: TeachersDTO[];
   };
   child: IPerson;
