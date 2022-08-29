@@ -14,6 +14,7 @@ import { KeyedMutator } from "swr";
 import { editChild } from "../../api/child/index";
 import { APIChild, IChild } from "../../interfaces/Entities";
 import { IconArrowBack, IconEdit } from "@tabler/icons";
+import { validatePesel } from "../../helpers/utils";
 
 function DetailsModal({
   item,
@@ -37,6 +38,7 @@ function DetailsModal({
     initialValues: {
       name: item.name,
       surname: item.surname,
+      birthDate: item.birthDate,
       pesel: item.pesel,
       address: {
         city: item.address.city,
@@ -58,6 +60,14 @@ function DetailsModal({
           ? "enter at least 2 characters"
           : value.length > 50
           ? "enter max 50 characters"
+          : null,
+      pesel: (value) =>
+        value.length != 11
+          ? "pesel must have 11 characters"
+          : !/^\d+$/.test(value)
+          ? "pesel should contain only digits"
+          : !validatePesel(value)
+          ? "pesel is invalid"
           : null,
     },
   });
@@ -119,6 +129,7 @@ function DetailsModal({
             </Grid.Col>
             <Grid.Col span={6}>
               <TextInput
+                disabled
                 required
                 mb={12}
                 label="City"
@@ -159,7 +170,6 @@ function DetailsModal({
 
           <Space h="lg" />
           <Button
-            disabled
             type="button"
             leftIcon={<IconEdit size={14} />}
             onClick={editDetailsItem}

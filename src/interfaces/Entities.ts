@@ -153,12 +153,13 @@ export interface APIChild {
   name: string;
   surname: string;
   pesel: string;
+  birthDate?: string;
   address: IAddressChild;
 }
 
 export interface IChild extends IPerson {
   pesel: string;
-  birthDate: Date;
+  birthDate: string;
   address: IAddressChild;
   parents: IPerson[];
   groups: GroupsDTO[];

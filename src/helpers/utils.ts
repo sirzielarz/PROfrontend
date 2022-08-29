@@ -44,3 +44,19 @@ export function sortActivities(
   );
   return result;
 }
+/**
+ *  pesel validation based on https://www.modestprogrammer.pl/walidacja-pesel-w-javascript
+ * @param pesel string
+ * @returns boolean
+ */
+export function validatePesel(pesel: string): boolean {
+  let weights = [1, 3, 7, 9, 1, 3, 7, 9, 1, 3];
+  let sum = 0;
+  let controlNumber = parseInt(pesel.substring(10, 11));
+  //loop
+  for (let i = 0; i < weights.length; i++) {
+    sum += parseInt(pesel.substring(i, i + 1)) * weights[i];
+  }
+  sum = sum % 10;
+  return (10 - sum) % 10 === controlNumber;
+}

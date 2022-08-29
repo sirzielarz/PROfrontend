@@ -67,8 +67,8 @@ const LoginForm = (props: PaperProps) => {
     validate: {
       email: (val) => (/^\S+@\S+$/.test(val) ? null : "Invalid email"),
       password: (val) =>
-        val.length <= 3
-          ? "Password should include at least 3 characters"
+        val.length <= 4
+          ? "Password should include at least 4 characters"
           : null,
     },
   });
@@ -83,7 +83,7 @@ const LoginForm = (props: PaperProps) => {
             <TextInput
               {...form.getInputProps("email")}
               required={true}
-              label="email"
+              label="Email"
               placeholder="your@email.com"
               value={form.values.email}
               onChange={(event) => {
