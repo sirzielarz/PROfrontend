@@ -75,14 +75,15 @@ const LoginForm = (props: PaperProps) => {
 
   return (
     <Container>
-      <Paper radius="md" p="xl" {...props}>
+      <Paper radius="md" p="xl">
         <Title order={1}>Login to app:</Title>
         <Space h="lg" />
         <form onSubmit={form.onSubmit((values) => handleSubmit())}>
           <Stack>
             <TextInput
-              required
-              label="Email"
+              {...form.getInputProps("email")}
+              required={true}
+              label="email"
               placeholder="your@email.com"
               value={form.values.email}
               onChange={(event) => {
@@ -93,6 +94,7 @@ const LoginForm = (props: PaperProps) => {
             />
 
             <PasswordInput
+              {...form.getInputProps("password")}
               required
               label="Password"
               placeholder="Your password"
@@ -103,7 +105,7 @@ const LoginForm = (props: PaperProps) => {
               }}
               error={
                 form.errors.password &&
-                "Password should include at least 3 characters"
+                "Password should include at least 4 characters"
               }
             />
             <Button type="submit" leftIcon={<IconLogin />}>

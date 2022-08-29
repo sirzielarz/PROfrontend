@@ -35,6 +35,11 @@ export interface IActivity extends IEntity {
   teachers: TeachersDTO[];
   children: ChildrenDTO[];
 }
+
+export interface IActivityDTO extends IEntity {
+  activityName: string;
+  teachers: TeachersDTO[];
+}
 //api/additional-activity-entry
 export interface IActivityEntry extends IEntity {
   additionalActivity: {
@@ -87,6 +92,7 @@ export interface IGroupTeacher extends IEntity {
 
 export interface GroupDTO extends IEntity {
   groupName: string;
+  teachers?: TeachersDTO[];
 }
 
 export interface GroupsDTO extends IEntity {
@@ -143,6 +149,33 @@ export interface APIParentPUT {
   address: IAddress;
 }
 
+export interface APIChild {
+  name: string;
+  surname: string;
+  pesel: string;
+  birthDate: Date;
+  address: IAddressChild;
+}
+
+export interface IChild extends IPerson {
+  pesel: string;
+  birthDate: Date;
+  address: IAddressChild;
+  parents: IPerson[];
+  groups: GroupsDTO[];
+  additionalActivities: IActivityDTO[];
+}
+
+export interface AuthorizationToPickUpDTO extends IEntity {
+  authorizedPerson: IAuthorizedPersonDTO;
+  authorizationDateFrom: Date;
+  authorizationDateTo: Date;
+}
+
+export interface IAuthorizedPersonDTO extends IPerson {
+  relationship: string;
+}
+
 export interface IAddress {
   city: string;
   street?: string;
@@ -150,6 +183,13 @@ export interface IAddress {
   flatNumber?: string;
   zipCode: string;
   isWorkAddress: boolean;
+}
+export interface IAddressChild {
+  city: string;
+  street?: string;
+  buildingNumber: string;
+  flatNumber?: string;
+  zipCode: string;
 }
 
 export interface APITeacherPOST {

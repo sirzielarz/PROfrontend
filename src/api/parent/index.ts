@@ -13,7 +13,7 @@ export async function deleteParent(id: number): Promise<any> {
   return await apiDelete(`${process.env.REACT_APP_URL}/api/parent/${id}`);
 }
 export async function createParent(values: APIParentPOST): Promise<any> {
-  console.log("setting Parent: ", values);
+  console.log("setting Parent: ", values); //toremove
   return await apiPost(`${process.env.REACT_APP_URL}/api/parent/`, values);
 }
 
@@ -31,7 +31,7 @@ export async function editParent(
   id: number,
   values: APIParentPUT
 ): Promise<any> {
-  console.log("updateding Parent: ", values);
+  console.log("updateding Parent: ", values); //toremove
   return await apiPut(`${process.env.REACT_APP_URL}/api/parent/${id}`, values);
 }
 export async function getParent(id: number): Promise<any> {

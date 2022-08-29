@@ -21,7 +21,7 @@ import UnauthorizedPage from "../pages/UnauthorizedPage";
 import ParentsPage from "../pages/parents/Page";
 import GroupsPage from "../pages/groups/Page";
 import HomePage from "../pages/HomePage";
-import ChildrenPage from "../pages/children/ChildrenPage";
+import ChildrenPage from "../pages/children/Page";
 import ActivitiesPage from "../pages/additionalActivities/Page";
 
 const AppShellComponent = () => {
