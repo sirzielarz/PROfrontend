@@ -25,6 +25,7 @@ import ChildrenPage from "../pages/children/Page";
 import ActivitiesPage from "../pages/additionalActivities/Page";
 import AuthorizedPage from "../pages/authorized/Page";
 import AnnouncementsPage from "../pages/announcements/Page";
+import PresencePage from "../pages/presence/Page";
 
 const AppShellComponent = () => {
   const { loaded } = useAuth();
@@ -92,14 +93,6 @@ const AppShellComponent = () => {
             <Route path="/login" element={<LoginForm />} />
             <Route path="/unauthorized" element={<UnauthorizedPage />} />
 
-            <Route
-              element={
-                <RequireAuth allowedRoles={["teacher", "admin", "parent"]} />
-              }
-            >
-              <Route path="/" element={<HomePage />} />
-            </Route>
-
             {/*private routes*/}
             <Route element={<RequireAuth allowedRoles={["admin"]} />}>
               <Route path="/teachers" element={<TeachersPage />} />
@@ -113,6 +106,15 @@ const AppShellComponent = () => {
               <Route path="/activities" element={<ActivitiesPage />} />
               <Route path="/authorized" element={<AuthorizedPage />} />
               <Route path="/announcements" element={<AnnouncementsPage />} />
+            </Route>
+
+            <Route
+              element={
+                <RequireAuth allowedRoles={["teacher", "admin", "parent"]} />
+              }
+            >
+              <Route path="/" element={<HomePage />} />
+              <Route path="/presence" element={<PresencePage />} />
             </Route>
             {/*catch all other*/}
             <Route path="*" element={<MissingPathPage />} />

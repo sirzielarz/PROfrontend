@@ -21,6 +21,7 @@ import {
   IconSchool,
   IconMoodKid,
   IconTransferOut,
+  IconChecklist,
 } from "@tabler/icons";
 
 const useStyles = createStyles((theme, _params, getRef) => {
@@ -137,6 +138,15 @@ function NavbarComponent(props: Omit<NavbarProps, "children">) {
               active={location.pathname === "/"}
               onClick={clickHandler}
             />
+            <NavLink
+              label="Presence"
+              key="/"
+              icon={<IconChecklist />}
+              component={Link}
+              to="/presence"
+              active={location.pathname === "/presence"}
+              onClick={clickHandler}
+            />
             {/* {admin links start} */}
             {user.roles?.includes("admin") ? (
               <>
@@ -204,13 +214,13 @@ function NavbarComponent(props: Omit<NavbarProps, "children">) {
                   onClick={clickHandler}
                 />
                 <NavLink
-                    label="Announcements"
-                    key="/announcements"
-                    icon={<IconListCheck />}
-                    component={Link}
-                    to="/announcements"
-                    active={location.pathname === "/announcements"}
-                    onClick={clickHandler}
+                  label="Announcements"
+                  key="/announcements"
+                  icon={<IconListCheck />}
+                  component={Link}
+                  to="/announcements"
+                  active={location.pathname === "/announcements"}
+                  onClick={clickHandler}
                 />
               </>
             ) : (
