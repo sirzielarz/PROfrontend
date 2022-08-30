@@ -203,6 +203,15 @@ function NavbarComponent(props: Omit<NavbarProps, "children">) {
                   active={location.pathname === "/activities"}
                   onClick={clickHandler}
                 />
+                <NavLink
+                    label="Announcements"
+                    key="/announcements"
+                    icon={<IconListCheck />}
+                    component={Link}
+                    to="/announcements"
+                    active={location.pathname === "/announcements"}
+                    onClick={clickHandler}
+                />
               </>
             ) : (
               <></>

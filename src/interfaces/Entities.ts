@@ -253,7 +253,16 @@ export interface AnnouncementDTO {
   // kindergartenGroup: GroupDTO;
 }
 
-export interface Announcement {
+export interface IAnnouncement extends IEntity {
+  kindergartenGroup: {
+    id: number;
+    groupName: string;
+  };
+  subject: string;
+  announcementText: string;
+}
+
+export interface APIAnnouncement {
   groupId: number;
   subject: string;
   announcementText: string;

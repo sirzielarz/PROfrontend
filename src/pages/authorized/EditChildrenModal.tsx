@@ -23,7 +23,6 @@ import { fetcher } from "../../api/fetch";
 import { IconDeviceFloppy, IconTrash } from "@tabler/icons";
 import { DatePicker } from "@mantine/dates";
 import { resourceLimits } from "worker_threads";
-import { formatNamedParameters } from "sequelize/types/utils";
 
 function EditChildrenModal({
   item,
