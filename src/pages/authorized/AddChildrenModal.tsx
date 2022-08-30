@@ -8,7 +8,6 @@ import {
   addAuthorizationToPickupEntry,
   updateAuthorizationToPickupEntry,
   deleteAuthorizationToPickupEntry,
-  getAuthorizationToPickupEntry,
 } from "../../api/authorization-to-pickup/index";
 import {
   IAuthorizedPerson,
@@ -20,16 +19,13 @@ import { sortByValueToSelect } from "../../helpers/utils";
 import { fetcher } from "../../api/fetch";
 import { IconDeviceFloppy } from "@tabler/icons";
 import { DatePicker } from "@mantine/dates";
-import { resourceLimits } from "worker_threads";
 
-function EditChildrenModal({
-  //item,
-  entryId,
+function AddChildrenModal({
+  item,
   mutate,
   handleClose,
 }: {
-  //item: IAuthorizationToPickup;
-  entryId: number;
+  item: IAuthorizedPerson;
   mutate: KeyedMutator<IAuthorizedPerson[]>;
   handleClose: () => void;
 }) {
@@ -39,14 +35,24 @@ function EditChildrenModal({
   const [ready, setReady] = useState(false);
   const [open2, setOpen2] = useState(false); //setting modal open state
   const [selected, setSelected] = useState<string[]>([]); //state for selectiong with Chips
-  const [itemEntry, setItemEntry] = useState<IAuthorizationToPickup>();
+  const [itemEntriesIDs, setItemEntriesIDs] =
+    useState<IAuthorizationToPickup[]>();
   const [value, setValue] = useState<string | null>(null);
 
   useEffect(() => {
-    getAuthorizationToPickupEntry(entryId)
-      .then((result: IAuthorizationToPickup) => {
-        setItemEntry(result);
-        console.log("-----result", result);
+    getAuthorizationToPickupEntries()
+      .then((entries: IAuthorizationToPickup[]) => {
+        let result = entries.filter((el) => el.authorizedPerson.id === item.id);
+        setItemEntriesIDs(result);
+        let selectedItems = result?.map((x) => {
+          return {
+            id: x.child.id,
+            value: `${x.child.name} ${x.child.surname}`,
+            idEntry: x.id,
+          };
+        });
+        let selectedIDs = selectedItems?.map((x) => String(x.id));
+        setSelected(selectedIDs);
       })
       .catch((error) => {
         console.log("---error---", error);
@@ -55,19 +61,13 @@ function EditChildrenModal({
   }, []);
 
   interface CustomFormValues {
-    childId: number;
+    childId: string;
     authorizationDateFrom: Date;
     authorizationDateTo: Date;
   }
 
   //form
   const form = useForm<CustomFormValues>({
-    initialValues: {
-      childId: Number(itemEntry.child.id),
-      authorizationDateFrom: itemEntry.authorizationDateFrom,
-      authorizationDateTo: itemEntry.authorizationDateTo,
-    },
-
     validate: {
       authorizationDateTo: (value, values) =>
         value <= values.authorizationDateFrom
@@ -80,10 +80,10 @@ function EditChildrenModal({
     // console.log("valueeeeeees:", valuesFromForm);
 
     const valuesToAdd: APIAuthorizationToPickup = {
-      childId: Number(itemEntry.child.id),
-      authorizationDateFrom: itemEntry.authorizationDateFrom,
-      authorizationDateTo: itemEntry.authorizationDateTo,
-      authorizedPersonId: itemEntry.authorizedPerson.id,
+      childId: Number(valuesFromForm.childId),
+      authorizationDateFrom: valuesFromForm.authorizationDateFrom,
+      authorizationDateTo: valuesFromForm.authorizationDateTo,
+      authorizedPersonId: item.id,
     };
 
     console.log("valuesToAdd:", valuesToAdd);
@@ -94,9 +94,7 @@ function EditChildrenModal({
     handleClose();
   }
 
-  console.log("itemEntry", itemEntry);
-
-  // //get all children data with swr
+  //get all children data with swr
   const { data: allItems, error: errorItems } = useSWR<IPerson[], string>(
     `${process.env.REACT_APP_URL}/api/child`,
     fetcher
@@ -113,12 +111,22 @@ function EditChildrenModal({
     disabled: boolean;
   }
 
+  let allItemsData = allItems?.map((x) => {
+    return {
+      value: `${x.id}`,
+      label: `${x.surname} ${x.name}`,
+      disabled: selected.includes(String(x.id)),
+    };
+  });
+  //sort items data
+  allItemsData?.sort(sortByValueToSelect);
+
   return (
     <>
       <Modal
         opened={open2}
         onClose={() => handleClose()}
-        title="Edit children to pickup"
+        title="Add children to pickup"
       >
         {ready && allItems ? (
           <>
@@ -129,13 +137,8 @@ function EditChildrenModal({
                 placeholder="select child"
                 searchable
                 nothingFound="No child to choose"
-                data={[
-                  {
-                    value: `${itemEntry?.id}`,
-                    label: `${itemEntry?.child.surname} ${itemEntry?.child.name}`,
-                  },
-                ]}
-                value={`${itemEntry?.id}`}
+                data={allItemsData}
+                value={value}
                 onChange={setValue}
                 {...form.getInputProps("childId")}
               />
@@ -173,4 +176,4 @@ function EditChildrenModal({
   );
 }
 
-export default EditChildrenModal;
+export default AddChildrenModal;

@@ -1,7 +1,10 @@
 import useSWR from "swr";
 import { fetcher } from "../../api/fetch";
-import { Button, Loader } from "@mantine/core";
-import { IAuthorizedPerson } from "../../interfaces/Entities";
+import { Button, List, Loader, Stack } from "@mantine/core";
+import {
+  IAuthorizationToPickup,
+  IAuthorizedPerson,
+} from "../../interfaces/Entities";
 import { useState } from "react";
 import AddModal from "./AddModal";
 import EditModal from "./EditModal";
@@ -26,11 +29,14 @@ import {
   IconListDetails,
   IconCirclePlus,
   IconPlus,
+  IconSettings,
+  IconDatabase,
 } from "@tabler/icons";
 import EditChildrenModal from "./EditChildrenModal";
 // import ResetPasswordModal from "./ResetPasswordModal";
 import DetailsModal from "./DetailsModal";
 import { isTemplateExpression } from "typescript";
+import AddChildrenModal from "./AddChildrenModal";
 
 const AuthorizedPage = () => {
   const [showAddItem, setShowAddItem] = useState(false);
@@ -40,22 +46,19 @@ const AuthorizedPage = () => {
   const [detailsItem, setDetailsItem] = useState<IAuthorizedPerson | null>(
     null
   );
-
   const [deletingItem, setDeletingItem] = useState<IAuthorizedPerson | null>(
     null
   );
-  // const [passwordItem, setPasswordItem] = useState<IAuthorizedPerson | null>(
-  //   null
-  // );
-
-  const [editingChildrenItem, setEditingChildrenItem] =
+  const [addChildrenItem, setAddChildrenItem] =
     useState<IAuthorizedPerson | null>(null);
+  const [editingChildrenItem, setEditingChildrenItem] =
+    useState<IAuthorizationToPickup | null>(null);
+  const [selectedEntry, setSelectedEntry] = useState<number | null>(null);
 
   const { data, error, mutate } = useSWR<IAuthorizedPerson[], string>(
     `${process.env.REACT_APP_URL}/api/authorized-person`,
     fetcher
   );
-  //console.log("out", data);
 
   return (
     <>
@@ -67,13 +70,15 @@ const AuthorizedPage = () => {
           <>
             <ItemsTable
               data={data}
+              setSelectedEntry={setSelectedEntry}
               setEditingItem={setEditingItem}
               setDeletingItem={setDeletingItem}
               setDetailsItem={setDetailsItem}
-              setEditingChildrenItem={setEditingChildrenItem}
+              setAddChildrenItem={setAddChildrenItem}
+              //setEditingChildrenItem={setEditingChildrenItem}
               // setPasswordItem={setPasswordItem}
             />
-            {<div className="jsonout">{JSON.stringify(data, null, 4)}</div>}
+            {/* {<div className="jsonout">{JSON.stringify(data, null, 4)}</div>} */}
           </>
         ) : (
           <Text>No authorized persons exist.</Text>
@@ -112,11 +117,21 @@ const AuthorizedPage = () => {
           handleClose={() => setPasswordItem(null)}
         />
       )} */}
-      {editingChildrenItem && (
+      {selectedEntry && (
         <EditChildrenModal
-          item={editingChildrenItem}
+          // item={editingChildrenItem}
+          entryId={selectedEntry}
           mutate={mutate}
-          handleClose={() => setEditingChildrenItem(null)}
+          handleClose={() => {
+            setSelectedEntry(null);
+          }}
+        />
+      )}
+      {addChildrenItem && (
+        <AddChildrenModal
+          item={addChildrenItem}
+          mutate={mutate}
+          handleClose={() => setAddChildrenItem(null)}
         />
       )}
       <AddModal open={showAddItem} setOpen={setShowAddItem} mutate={mutate} />
@@ -136,16 +151,18 @@ export default AuthorizedPage;
 export const ItemsTable = ({
   data,
   setEditingItem,
+  setSelectedEntry: setSelectedEntry,
   setDeletingItem,
   setDetailsItem,
-  setEditingChildrenItem,
-}: // setPasswordItem,
-{
+  setAddChildrenItem,
+}: {
   data: IAuthorizedPerson[];
   setEditingItem: (arg0: IAuthorizedPerson) => void;
+  setSelectedEntry: (agr0: number) => void;
   setDeletingItem: (arg0: IAuthorizedPerson) => void;
   setDetailsItem: (arg0: IAuthorizedPerson) => void;
-  setEditingChildrenItem: (arg0: IAuthorizedPerson) => void;
+  setAddChildrenItem: (arg0: IAuthorizedPerson) => void;
+  // setEditingChildrenItem: (arg0: number) => void;
   // setPasswordItem: (arg0: IAuthorizedPerson) => void;
 }) => {
   const rows = data.map((item: IAuthorizedPerson) => (
@@ -189,8 +206,8 @@ export const ItemsTable = ({
             : "No groups added"}
         </Text>
       </td> */}
-      <td key={item.id}>
-        <Text size="sm">
+      {/*     <td key={item.id}>
+      <Text size="sm">
           {item.authorizationsToPickUp?.sort(sortAuthorized).map((c, i) => (
             <Text span key={c.child.id}>
               <>
@@ -200,6 +217,37 @@ export const ItemsTable = ({
             </Text>
           ))}
         </Text>
+        <Text size="xs" color="dimmed">
+          {item.authorizationsToPickUp.length
+            ? `Total: ${item.authorizationsToPickUp.length}`
+            : "No children added"}
+        </Text>
+      </td> */}
+      <td key={item.id} align={"right"}>
+        <Stack align="flex-end" spacing="xs">
+          {item.authorizationsToPickUp.sort(sortAuthorized).map((c, i) => (
+            <Group>
+              <Text span inline weight={650}>
+                {`${c.child.surname} ${c.child.name}`}
+              </Text>
+              <Text span inline size="xs">
+                {`${c.authorizationDateFrom} to ${c.authorizationDateTo} `}
+                {/* {i + 1 < item.authorizationsToPickUp?.length ? ", <br>" : ""} */}
+              </Text>
+              <Text span inline size="xs">
+                <ActionIcon size={"xs"} variant="filled">
+                  <IconSettings
+                    size={"xs"}
+                    onClick={() => {
+                      console.log("test", c);
+                      setSelectedEntry(c.id);
+                    }}
+                  />
+                </ActionIcon>
+              </Text>
+            </Group>
+          ))}
+        </Stack>
         <Text size="xs" color="dimmed">
           {item.authorizationsToPickUp.length
             ? `Total: ${item.authorizationsToPickUp.length}`
@@ -236,7 +284,7 @@ export const ItemsTable = ({
 
               <Menu.Item
                 icon={<IconPlus size={16} stroke={1.5} />}
-                onClick={() => setEditingChildrenItem(item)}
+                onClick={() => setAddChildrenItem(item)}
               >
                 Add children to pickup
               </Menu.Item>
@@ -262,7 +310,7 @@ export const ItemsTable = ({
             <th style={{ textAlign: "left" }}>Document number</th>
             {/* <th style={{ textAlign: "left" }}>Email</th> */}
             {/* <th style={{ textAlign: "left" }}>Groups</th> */}
-            <th style={{ textAlign: "left" }}>Children to pickup</th>
+            <th style={{ textAlign: "right" }}>Children to pickup</th>
             <th style={{ textAlign: "right" }}>Actions</th>
           </tr>
         </thead>
