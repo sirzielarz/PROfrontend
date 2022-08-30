@@ -68,7 +68,6 @@ const ChildrenPage = () => {
               setEditingGroupsItem={setEditingGroupsItem}
               setEditingActivitiesItem={setEditingActivitiesItem}
             />
-            {<div className="jsonout">{JSON.stringify(data, null, 4)}</div>}
           </>
         ) : (
           <Text>No children exist.</Text>
