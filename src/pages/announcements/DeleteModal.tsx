@@ -5,7 +5,7 @@ import { KeyedMutator } from "swr";
 import { deleteActivityItem } from "../../api/additional-activity/index";
 import { IAnnouncement } from "../../interfaces/Entities";
 import { IconTrash } from "@tabler/icons";
-import {deleteAnnouncement} from "../../api/announcement";
+import { deleteAnnouncement } from "../../api/announcement";
 
 function DeleteModal({
   item,
@@ -26,7 +26,7 @@ function DeleteModal({
     initialValues: {
       subject: item.subject,
       announcementText: item.announcementText,
-      kindergartenGroup: item.kindergartenGroup
+      kindergartenGroup: item.kindergartenGroup,
     },
   });
 
@@ -42,7 +42,7 @@ function DeleteModal({
       <Modal
         opened={open2}
         onClose={() => handleClose()}
-        title="Delete additional activity"
+        title="Delete announcement"
       >
         You are going to delete announcement: <b>{item.subject}</b>.
         <Space h={"lg"}></Space> Are you sure about that?
