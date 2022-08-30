@@ -1,17 +1,26 @@
 import { useLayoutEffect, useState } from "react";
 import { useForm } from "@mantine/form";
-import { Button, Modal, TextInput } from "@mantine/core";
+import {
+  Button,
+  Checkbox,
+  Modal,
+  PasswordInput,
+  Popover,
+  Space,
+  TextInput,
+} from "@mantine/core";
 import { KeyedMutator } from "swr";
-import { editActivityName } from "../../api/index";
-import { IActivity } from "../../interfaces/Entities";
+import { editTeacher } from "../../api/teacher/index";
+import { APITeacherPUT, ITeacher } from "../../interfaces/Entities";
+import { IconDeviceFloppy } from "@tabler/icons";
 
 function EditModal({
   item,
   mutate,
   handleClose,
 }: {
-  item: IActivity;
-  mutate: KeyedMutator<IActivity[]>;
+  item: ITeacher;
+  mutate: KeyedMutator<ITeacher[]>;
   handleClose: () => void;
 }) {
   // visual bug fix in mantine modal
@@ -20,14 +29,39 @@ function EditModal({
     setOpen2(true);
   }, []);
 
-  const form = useForm({
+  const form = useForm<APITeacherPUT>({
     initialValues: {
-      activityName: item.activityName,
+      name: item.name,
+      surname: item.surname,
+      email: item.email,
+      isAdmin: item.isAdmin,
+    },
+    validate: {
+      email: (value: string) =>
+        value.length < 5
+          ? "enter at least 5 characters"
+          : value.length > 50
+          ? "enter max 50 characters"
+          : /^\S+@\S+$/.test(value)
+          ? null
+          : "invalid email",
+      name: (value) =>
+        value.length < 2
+          ? "enter at least 2 characters"
+          : value.length > 50
+          ? "enter max 50 characters"
+          : null,
+      surname: (value) =>
+        value.length < 2
+          ? "enter at least 2 characters"
+          : value.length > 50
+          ? "enter max 50 characters"
+          : null,
     },
   });
 
-  async function editItem(values: { activityName: string }) {
-    const updated = await editActivityName(item.id, values.activityName);
+  async function editItem(values: APITeacherPUT) {
+    const updated = await editTeacher(item.id, values);
     mutate(updated);
     form.reset();
     handleClose();
@@ -38,17 +72,39 @@ function EditModal({
       <Modal
         opened={open2}
         onClose={() => handleClose()}
-        title="Edit activity name"
+        title="Edit teacher data"
       >
         <form onSubmit={form.onSubmit(editItem)}>
           <TextInput
             required
             mb={12}
-            label="Activity name"
-            placeholder="Enter activity name"
-            {...form.getInputProps("activityName")}
+            label="Name"
+            placeholder="enter name"
+            {...form.getInputProps("name")}
           />
-          <Button type="submit">Edit activity</Button>
+          <TextInput
+            required
+            mb={12}
+            label="Surname"
+            placeholder="enter surname"
+            {...form.getInputProps("surname")}
+          />
+          <TextInput
+            withAsterisk
+            label="Email"
+            placeholder="your@email.com"
+            {...form.getInputProps("email")}
+          />
+
+          <Checkbox
+            mt="md"
+            label="User is administrator ?"
+            {...form.getInputProps("isAdmin", { type: "checkbox" })}
+          />
+          <Space h="lg" />
+          <Button type="submit" leftIcon={<IconDeviceFloppy />}>
+            Save
+          </Button>
         </form>
       </Modal>
     </>

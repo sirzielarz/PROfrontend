@@ -2,8 +2,9 @@ import { useLayoutEffect, useState } from "react";
 import { useForm } from "@mantine/form";
 import { Button, Modal, TextInput } from "@mantine/core";
 import { KeyedMutator } from "swr";
-import { editActivityName } from "../../api/index";
+import { editActivityName } from "../../api/additional-activity/index";
 import { IActivity } from "../../interfaces/Entities";
+import { IconDeviceFloppy } from "@tabler/icons";
 
 function EditModal({
   item,
@@ -48,7 +49,9 @@ function EditModal({
             placeholder="Enter activity name"
             {...form.getInputProps("activityName")}
           />
-          <Button type="submit">Edit activity</Button>
+          <Button type="submit" leftIcon={<IconDeviceFloppy />}>
+            Save
+          </Button>
         </form>
       </Modal>
     </>

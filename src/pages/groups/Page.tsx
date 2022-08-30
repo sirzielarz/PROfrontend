@@ -17,7 +17,7 @@ import {
   Menu,
   ScrollArea,
 } from "@mantine/core";
-import { IconPencil, IconTrash, IconDots } from "@tabler/icons";
+import { IconPencil, IconTrash, IconDots, IconCirclePlus } from "@tabler/icons";
 import EditChildrenModal from "./EditChildrenModal";
 import EditTeachersModal from "./EditTeachersModal";
 
@@ -33,7 +33,7 @@ const Page = () => {
   );
 
   const { data, error, mutate } = useSWR<IGroup[], string>(
-    `${process.env.REACT_APP_API}/group`,
+    `${process.env.REACT_APP_URL}/api/group`,
     fetcher
   );
   // console.log("out", data);
@@ -92,7 +92,14 @@ const Page = () => {
         />
       )}
       <AddModal open={showAddItem} setOpen={setShowAddItem} mutate={mutate} />
-      {<Button onClick={() => setShowAddItem(true)}>Add group</Button>}
+      {
+        <Button
+          onClick={() => setShowAddItem(true)}
+          leftIcon={<IconCirclePlus />}
+        >
+          Add group
+        </Button>
+      }
     </>
   );
 };
@@ -120,7 +127,7 @@ export const ItemsTable = ({
               {item.groupName}
             </Text>
             <Text color="dimmed" size="xs">
-              Group ID: {item.id}
+              ID: {item.id}
             </Text>
           </div>
         </Group>

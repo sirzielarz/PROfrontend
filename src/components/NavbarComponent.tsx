@@ -11,7 +11,17 @@ import {
 import GlobalContext from "../helpers/GlobalContext";
 import useAuth from "../api/useAuth";
 
-import { IconLogout, IconLogin, IconHome, IconUsers } from "@tabler/icons";
+import {
+  IconLogout,
+  IconLogin,
+  IconHome,
+  IconUsers,
+  IconListCheck,
+  IconListNumbers,
+  IconSchool,
+  IconMoodKid,
+  IconTransferOut,
+} from "@tabler/icons";
 
 const useStyles = createStyles((theme, _params, getRef) => {
   const icon = getRef("icon");
@@ -133,7 +143,7 @@ function NavbarComponent(props: Omit<NavbarProps, "children">) {
                 <NavLink
                   label="Teachers"
                   key="/teachers"
-                  icon={<IconUsers />}
+                  icon={<IconSchool />}
                   component={Link}
                   to="/teachers"
                   active={location.pathname === "/teachers"}
@@ -142,7 +152,7 @@ function NavbarComponent(props: Omit<NavbarProps, "children">) {
                 <NavLink
                   label="Groups"
                   key="/groups"
-                  icon={<IconUsers />}
+                  icon={<IconListNumbers />}
                   component={Link}
                   to="/groups"
                   active={location.pathname === "/groups"}
@@ -169,16 +179,25 @@ function NavbarComponent(props: Omit<NavbarProps, "children">) {
                 <NavLink
                   label="Children"
                   key="/children"
-                  icon={<IconUsers />}
+                  icon={<IconMoodKid />}
                   component={Link}
                   to="/children"
                   active={location.pathname === "/children"}
                   onClick={clickHandler}
                 />
                 <NavLink
+                  label="Authorized persons"
+                  key="/authorized"
+                  icon={<IconTransferOut />}
+                  component={Link}
+                  to="/authorized"
+                  active={location.pathname === "/authorized"}
+                  onClick={clickHandler}
+                />
+                <NavLink
                   label="Additional activities"
                   key="/activities"
-                  icon={<IconUsers />}
+                  icon={<IconListCheck />}
                   component={Link}
                   to="/activities"
                   active={location.pathname === "/activities"}

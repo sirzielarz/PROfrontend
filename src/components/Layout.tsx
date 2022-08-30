@@ -16,13 +16,14 @@ import LightDarkButton from "./LightDarkButton";
 import NavbarComponent from "./NavbarComponent";
 import GlobalContext from "../helpers/GlobalContext";
 import MissingPathPage from "../pages/MissingPathPage";
-import TeachersPage from "../pages/teachers/TeachersPage";
+import TeachersPage from "../pages/teachers/Page";
 import UnauthorizedPage from "../pages/UnauthorizedPage";
-import ParentsPage from "../pages/parents/ParentsPage";
+import ParentsPage from "../pages/parents/Page";
 import GroupsPage from "../pages/groups/Page";
 import HomePage from "../pages/HomePage";
-import ChildrenPage from "../pages/children/ChildrenPage";
+import ChildrenPage from "../pages/children/Page";
 import ActivitiesPage from "../pages/additionalActivities/Page";
+import AuthorizedPage from "../pages/authorized/Page";
 
 const AppShellComponent = () => {
   const { loaded } = useAuth();
@@ -109,6 +110,7 @@ const AppShellComponent = () => {
               <Route path="/parents" element={<ParentsPage />} />
               <Route path="/children" element={<ChildrenPage />} />
               <Route path="/activities" element={<ActivitiesPage />} />
+              <Route path="/authorized" element={<AuthorizedPage />} />
             </Route>
             {/*catch all other*/}
             <Route path="*" element={<MissingPathPage />} />

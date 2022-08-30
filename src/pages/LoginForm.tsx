@@ -13,6 +13,7 @@ import {
 import useAuth from "../api/useAuth";
 import React, { useState } from "react";
 import { showNotification } from "@mantine/notifications";
+import { IconLogin } from "@tabler/icons";
 
 const LoginForm = (props: PaperProps) => {
   const [email, setEmail] = useState("");
@@ -66,21 +67,22 @@ const LoginForm = (props: PaperProps) => {
     validate: {
       email: (val) => (/^\S+@\S+$/.test(val) ? null : "Invalid email"),
       password: (val) =>
-        val.length <= 3
-          ? "Password should include at least 3 characters"
+        val.length <= 4
+          ? "Password should include at least 4 characters"
           : null,
     },
   });
 
   return (
     <Container>
-      <Paper radius="md" p="xl" {...props}>
+      <Paper radius="md" p="xl">
         <Title order={1}>Login to app:</Title>
         <Space h="lg" />
         <form onSubmit={form.onSubmit((values) => handleSubmit())}>
           <Stack>
             <TextInput
-              required
+              {...form.getInputProps("email")}
+              required={true}
               label="Email"
               placeholder="your@email.com"
               value={form.values.email}
@@ -92,6 +94,7 @@ const LoginForm = (props: PaperProps) => {
             />
 
             <PasswordInput
+              {...form.getInputProps("password")}
               required
               label="Password"
               placeholder="Your password"
@@ -102,10 +105,12 @@ const LoginForm = (props: PaperProps) => {
               }}
               error={
                 form.errors.password &&
-                "Password should include at least 3 characters"
+                "Password should include at least 4 characters"
               }
             />
-            <Button type="submit">Login</Button>
+            <Button type="submit" leftIcon={<IconLogin />}>
+              Login
+            </Button>
           </Stack>
         </form>
       </Paper>

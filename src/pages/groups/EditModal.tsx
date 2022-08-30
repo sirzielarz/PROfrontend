@@ -2,8 +2,9 @@ import { useLayoutEffect, useState } from "react";
 import { useForm } from "@mantine/form";
 import { Button, Modal, TextInput } from "@mantine/core";
 import { KeyedMutator } from "swr";
-import { editGroupName } from "../../api/index";
+import { editGroupName } from "../../api/group/index";
 import { IGroup } from "../../interfaces/Entities";
+import { IconDeviceFloppy } from "@tabler/icons";
 
 function EditModal({
   item,
@@ -48,7 +49,9 @@ function EditModal({
             placeholder="Enter group name"
             {...form.getInputProps("groupName")}
           />
-          <Button type="submit">Edit group</Button>
+          <Button type="submit" leftIcon={<IconDeviceFloppy />}>
+            Save
+          </Button>
         </form>
       </Modal>
     </>

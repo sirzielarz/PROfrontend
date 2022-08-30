@@ -1,8 +1,9 @@
 import { useForm } from "@mantine/form";
 import { Button, Modal, TextInput } from "@mantine/core";
 import { KeyedMutator } from "swr";
-import { createGroup } from "../../api/index";
+import { createGroup } from "../../api/group/index";
 import { IGroup } from "../../interfaces/Entities";
+import { IconCirclePlus } from "@tabler/icons";
 
 function AddItemModal({
   mutate,
@@ -37,7 +38,9 @@ function AddItemModal({
             placeholder="Enter group name"
             {...form.getInputProps("groupName")}
           />
-          <Button type="submit">Create group</Button>
+          <Button type="submit" leftIcon={<IconCirclePlus />}>
+            Create group
+          </Button>
         </form>
       </Modal>
     </>

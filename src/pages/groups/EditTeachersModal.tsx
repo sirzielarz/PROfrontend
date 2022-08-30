@@ -3,13 +3,14 @@ import { useForm } from "@mantine/form";
 import { Button, Chip, Loader, Modal, Space, TextInput } from "@mantine/core";
 import useSWR, { KeyedMutator } from "swr";
 import {
-  getGroupTeachers,
+  getTeachersGroups,
   addGroupTeacher,
   deleteGroupTeacher,
-} from "../../api/index";
+} from "../../api/group-teacher/index";
 import { IGroup, IGroupTeacher, IPerson } from "../../interfaces/Entities";
 import { sortByValue } from "../../helpers/utils";
 import { fetcher } from "../../api/fetch";
+import { IconDeviceFloppy } from "@tabler/icons";
 
 function EditTeachersModal({
   item,
@@ -30,7 +31,7 @@ function EditTeachersModal({
   const [groupEntriesIDs, setGroupEntriesIDs] = useState<IGroupTeacher[]>();
 
   useEffect(() => {
-    getGroupTeachers()
+    getTeachersGroups()
       .then((entries: IGroupTeacher[]) => {
         let result = entries.filter(
           (el) => el.kindergartenGroup.id === item.id
@@ -92,7 +93,7 @@ function EditTeachersModal({
 
   //get all teachers data with swr
   const { data: allItems, error: errorItems } = useSWR<IPerson[], string>(
-    `${process.env.REACT_APP_API}/teacher`,
+    `${process.env.REACT_APP_URL}/api/teacher`,
     fetcher
   );
 
@@ -141,7 +142,9 @@ function EditTeachersModal({
                   return <Chip value={String(x.id)}>{x.value}</Chip>;
                 })}
               </Chip.Group>
-              <Button type="submit">Save</Button>
+              <Button type="submit" leftIcon={<IconDeviceFloppy />}>
+                Save
+              </Button>
             </form>
           </>
         ) : (

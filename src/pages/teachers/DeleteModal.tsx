@@ -1,17 +1,18 @@
 import { useLayoutEffect, useState } from "react";
 import { useForm } from "@mantine/form";
-import { Button, Modal } from "@mantine/core";
+import { Button, Modal, Space } from "@mantine/core";
 import { KeyedMutator } from "swr";
-import { deleteActivityItem } from "../../api/index";
-import { IActivity } from "../../interfaces/Entities";
+import { deleteTeacher } from "../../api/teacher/index";
+import { ITeacher } from "../../interfaces/Entities";
+import { IconTrash } from "@tabler/icons";
 
 function DeleteModal({
   item,
   mutate,
   handleClose,
 }: {
-  item: IActivity;
-  mutate: KeyedMutator<IActivity[]>;
+  item: ITeacher;
+  mutate: KeyedMutator<ITeacher[]>;
   handleClose: () => void;
 }) {
   // visual bug fix in mantine modal
@@ -22,12 +23,12 @@ function DeleteModal({
 
   const form = useForm({
     initialValues: {
-      activityName: item.activityName,
+      name: item.name,
     },
   });
 
   async function deleteItem() {
-    const updated = await deleteActivityItem(item.id);
+    const updated = await deleteTeacher(item.id);
     mutate(updated);
     form.reset();
     handleClose();
@@ -38,13 +39,13 @@ function DeleteModal({
       <Modal
         opened={open2}
         onClose={() => handleClose()}
-        title="Delete additional activity"
+        title="Delete teacher"
       >
-        You are going to delete {item.activityName} additional activity. Are you
-        sure about that?
-        <br />
-        <Button color="red" onClick={deleteItem}>
-          Delete {item.activityName}
+        You are going to delete teacher:<b> {item.surname + " " + item.name}</b>
+        .<Space h={"lg"}></Space> Are you sure about that?
+        <Space h={"lg"}></Space>
+        <Button color="red" leftIcon={<IconTrash />} onClick={deleteItem}>
+          Delete {item.surname + " " + item.name}
         </Button>
       </Modal>
     </>
