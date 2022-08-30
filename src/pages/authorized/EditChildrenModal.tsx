@@ -15,21 +15,23 @@ import {
   IPerson,
   IAuthorizationToPickup,
   APIAuthorizationToPickup,
+  AuthorizationChildToPickUpDTO,
 } from "../../interfaces/Entities";
 import { sortByValueToSelect } from "../../helpers/utils";
 import { fetcher } from "../../api/fetch";
 import { IconDeviceFloppy } from "@tabler/icons";
 import { DatePicker } from "@mantine/dates";
 import { resourceLimits } from "worker_threads";
+import { formatNamedParameters } from "sequelize/types/utils";
 
 function EditChildrenModal({
-  //item,
-  entryId,
+  item,
+  childItem,
   mutate,
   handleClose,
 }: {
-  //item: IAuthorizationToPickup;
-  entryId: number;
+  item: IAuthorizedPerson;
+  childItem: AuthorizationChildToPickUpDTO;
   mutate: KeyedMutator<IAuthorizedPerson[]>;
   handleClose: () => void;
 }) {
@@ -38,24 +40,37 @@ function EditChildrenModal({
   }, []);
   const [ready, setReady] = useState(false);
   const [open2, setOpen2] = useState(false); //setting modal open state
-  const [selected, setSelected] = useState<string[]>([]); //state for selectiong with Chips
-  const [itemEntry, setItemEntry] = useState<IAuthorizationToPickup>();
+
+  // const [valueFrom, onChangeFrom] = useState<Date>();
+  // const [valueTo, onChangeTo] = useState<Date>();
+
+  const [itemEntry, setItemEntry] = useState<IAuthorizedPerson>();
+  const [stateChildItem, setStateChildItem] =
+    useState<AuthorizationChildToPickUpDTO>();
   const [value, setValue] = useState<string | null>(null);
 
   useEffect(() => {
-    getAuthorizationToPickupEntry(entryId)
-      .then((result: IAuthorizationToPickup) => {
-        setItemEntry(result);
-        console.log("-----result", result);
-      })
-      .catch((error) => {
-        console.log("---error---", error);
-      });
+    setItemEntry(item);
+    setStateChildItem(childItem);
+    //setValue(String(childItem.child.id));
+    // onChangeFrom(new Date(childItem.authorizationDateFrom));
+    // onChangeTo(new Date(childItem.authorizationDateTo));
+
+    // form.setFieldValue(
+    //   "authorizationDateFrom",
+    //   new Date(childItem.authorizationDateFrom)
+    // );
+
+    // form.setFieldValue(
+    //   "authorizationDateTo",
+    //   new Date(childItem.authorizationDateTo)
+    // );
+
     setReady(true);
   }, []);
 
   interface CustomFormValues {
-    childId: number;
+    childId: string;
     authorizationDateFrom: Date;
     authorizationDateTo: Date;
   }
@@ -63,9 +78,9 @@ function EditChildrenModal({
   //form
   const form = useForm<CustomFormValues>({
     initialValues: {
-      childId: Number(itemEntry.child.id),
-      authorizationDateFrom: itemEntry.authorizationDateFrom,
-      authorizationDateTo: itemEntry.authorizationDateTo,
+      childId: String(childItem.child.id),
+      authorizationDateFrom: new Date(childItem.authorizationDateFrom),
+      authorizationDateTo: new Date(childItem.authorizationDateTo),
     },
 
     validate: {
@@ -77,18 +92,18 @@ function EditChildrenModal({
   });
   //form submit function
   async function editGroupEntries(valuesFromForm: CustomFormValues) {
-    // console.log("valueeeeeees:", valuesFromForm);
+    console.log("valueeeeeees:", valuesFromForm);
 
-    const valuesToAdd: APIAuthorizationToPickup = {
-      childId: Number(itemEntry.child.id),
-      authorizationDateFrom: itemEntry.authorizationDateFrom,
-      authorizationDateTo: itemEntry.authorizationDateTo,
-      authorizedPersonId: itemEntry.authorizedPerson.id,
+    const valuesToUpdate: APIAuthorizationToPickup = {
+      childId: Number(valuesFromForm.childId),
+      authorizationDateFrom: valuesFromForm.authorizationDateFrom,
+      authorizationDateTo: valuesFromForm.authorizationDateTo,
+      authorizedPersonId: item.id,
     };
 
-    console.log("valuesToAdd:", valuesToAdd);
+    console.log("valuesToUpdate:", valuesToUpdate);
 
-    const updated = await addAuthorizationToPickupEntry(valuesToAdd);
+    const updated = await updateAuthorizationToPickupEntry(valuesToUpdate);
     mutate(updated);
     form.reset();
     handleClose();
@@ -96,14 +111,14 @@ function EditChildrenModal({
 
   console.log("itemEntry", itemEntry);
 
-  // //get all children data with swr
-  const { data: allItems, error: errorItems } = useSWR<IPerson[], string>(
-    `${process.env.REACT_APP_URL}/api/child`,
-    fetcher
-  );
+  // // //get all children data with swr
+  // const { data: allItems, error: errorItems } = useSWR<IPerson[], string>(
+  //   `${process.env.REACT_APP_URL}/api/child`,
+  //   fetcher
+  // );
 
-  if (!allItems) return <Loader></Loader>;
-  if (errorItems) return <div>Failed to load children to pickup data...</div>;
+  // if (!allItems) return <Loader></Loader>;
+  // if (errorItems) return <div>Failed to load children to pickup data...</div>;
   //iterate
 
   interface IItemsChild {
@@ -113,6 +128,8 @@ function EditChildrenModal({
     disabled: boolean;
   }
 
+  // console.log("valueFrom", valueFrom);
+
   return (
     <>
       <Modal
@@ -120,23 +137,23 @@ function EditChildrenModal({
         onClose={() => handleClose()}
         title="Edit children to pickup"
       >
-        {ready && allItems ? (
+        {ready ? (
           <>
             <form onSubmit={form.onSubmit(editGroupEntries)}>
               <Select
                 required
                 label="Child"
                 placeholder="select child"
-                searchable
+                // searchable
                 nothingFound="No child to choose"
                 data={[
                   {
-                    value: `${itemEntry?.id}`,
-                    label: `${itemEntry?.child.surname} ${itemEntry?.child.name}`,
+                    value: `${childItem.child.id}`,
+                    label: `${childItem.child.surname} ${childItem.child.name}`,
                   },
                 ]}
-                value={`${itemEntry?.id}`}
-                onChange={setValue}
+                defaultValue={`${childItem.child.id}`}
+                readOnly
                 {...form.getInputProps("childId")}
               />
 
@@ -144,16 +161,16 @@ function EditChildrenModal({
                 required
                 placeholder="Date from"
                 label="Date from"
-                {...form.getInputProps("authorizationDateFrom")}
                 withAsterisk
+                {...form.getInputProps("authorizationDateFrom")}
               />
 
               <DatePicker
                 required
                 placeholder="Date to"
                 label="Date to"
-                {...form.getInputProps("authorizationDateTo")}
                 withAsterisk
+                {...form.getInputProps("authorizationDateTo")}
               />
 
               <Space h={"lg"} />

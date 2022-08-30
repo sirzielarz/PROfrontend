@@ -2,8 +2,8 @@ import useSWR from "swr";
 import { fetcher } from "../../api/fetch";
 import { Button, List, Loader, Stack } from "@mantine/core";
 import {
-  IAuthorizationToPickup,
   IAuthorizedPerson,
+  AuthorizationChildToPickUpDTO,
 } from "../../interfaces/Entities";
 import { useState } from "react";
 import AddModal from "./AddModal";
@@ -51,9 +51,13 @@ const AuthorizedPage = () => {
   );
   const [addChildrenItem, setAddChildrenItem] =
     useState<IAuthorizedPerson | null>(null);
-  const [editingChildrenItem, setEditingChildrenItem] =
-    useState<IAuthorizationToPickup | null>(null);
+
   const [selectedEntry, setSelectedEntry] = useState<number | null>(null);
+
+  const [editingPersonItem, setEditingPersonItem] =
+    useState<IAuthorizedPerson | null>(null);
+  const [editingChildItem, setEditingChildItem] =
+    useState<AuthorizationChildToPickUpDTO | null>(null);
 
   const { data, error, mutate } = useSWR<IAuthorizedPerson[], string>(
     `${process.env.REACT_APP_URL}/api/authorized-person`,
@@ -75,8 +79,8 @@ const AuthorizedPage = () => {
               setDeletingItem={setDeletingItem}
               setDetailsItem={setDetailsItem}
               setAddChildrenItem={setAddChildrenItem}
-              //setEditingChildrenItem={setEditingChildrenItem}
-              // setPasswordItem={setPasswordItem}
+              setEditingChildItem={setEditingChildItem}
+              setEditingPersonItem={setEditingPersonItem}
             />
             {/* {<div className="jsonout">{JSON.stringify(data, null, 4)}</div>} */}
           </>
@@ -117,13 +121,14 @@ const AuthorizedPage = () => {
           handleClose={() => setPasswordItem(null)}
         />
       )} */}
-      {selectedEntry && (
+      {editingPersonItem && editingChildItem && (
         <EditChildrenModal
-          // item={editingChildrenItem}
-          entryId={selectedEntry}
+          item={editingPersonItem}
+          childItem={editingChildItem}
           mutate={mutate}
           handleClose={() => {
-            setSelectedEntry(null);
+            setEditingPersonItem(null);
+            setEditingChildItem(null);
           }}
         />
       )}
@@ -151,19 +156,21 @@ export default AuthorizedPage;
 export const ItemsTable = ({
   data,
   setEditingItem,
-  setSelectedEntry: setSelectedEntry,
+  setSelectedEntry,
   setDeletingItem,
   setDetailsItem,
   setAddChildrenItem,
+  setEditingChildItem,
+  setEditingPersonItem,
 }: {
   data: IAuthorizedPerson[];
   setEditingItem: (arg0: IAuthorizedPerson) => void;
-  setSelectedEntry: (agr0: number) => void;
+  setSelectedEntry: (arg0: number) => void;
   setDeletingItem: (arg0: IAuthorizedPerson) => void;
   setDetailsItem: (arg0: IAuthorizedPerson) => void;
   setAddChildrenItem: (arg0: IAuthorizedPerson) => void;
-  // setEditingChildrenItem: (arg0: number) => void;
-  // setPasswordItem: (arg0: IAuthorizedPerson) => void;
+  setEditingChildItem: (arg0: AuthorizationChildToPickUpDTO) => void;
+  setEditingPersonItem: (arg0: IAuthorizedPerson) => void;
 }) => {
   const rows = data.map((item: IAuthorizedPerson) => (
     <tr key={item.id}>
@@ -239,8 +246,8 @@ export const ItemsTable = ({
                   <IconSettings
                     size={"xs"}
                     onClick={() => {
-                      console.log("test", c);
-                      setSelectedEntry(c.id);
+                      setEditingPersonItem(item);
+                      setEditingChildItem(c);
                     }}
                   />
                 </ActionIcon>
