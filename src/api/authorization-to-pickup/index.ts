@@ -19,10 +19,12 @@ export async function addAuthorizationToPickupEntry(
 }
 
 export async function updateAuthorizationToPickupEntry(
+  id: number,
   values: APIAuthorizationToPickup
 ): Promise<any> {
   return await apiPut(
-    `${process.env.REACT_APP_URL}/api/authorization-to-pickup`
+    `${process.env.REACT_APP_URL}/api/authorization-to-pickup/${id}`,
+    values
   );
 }
 
