@@ -37,6 +37,7 @@ import EditChildrenModal from "./EditChildrenModal";
 import DetailsModal from "./DetailsModal";
 import { isTemplateExpression } from "typescript";
 import AddChildrenModal from "./AddChildrenModal";
+import DeleteChildrenModal from "./DeleteChildrenModal";
 
 const AuthorizedPage = () => {
   const [showAddItem, setShowAddItem] = useState(false);
@@ -57,6 +58,9 @@ const AuthorizedPage = () => {
   const [editingPersonItem, setEditingPersonItem] =
     useState<IAuthorizedPerson | null>(null);
   const [editingChildItem, setEditingChildItem] =
+    useState<AuthorizationChildToPickUpDTO | null>(null);
+
+  const [deleteChildItem, setDeleteChildItem] =
     useState<AuthorizationChildToPickUpDTO | null>(null);
 
   const { data, error, mutate } = useSWR<IAuthorizedPerson[], string>(
@@ -81,6 +85,7 @@ const AuthorizedPage = () => {
               setAddChildrenItem={setAddChildrenItem}
               setEditingChildItem={setEditingChildItem}
               setEditingPersonItem={setEditingPersonItem}
+              setDeleteChildItem={setDeleteChildItem}
             />
             {/* {<div className="jsonout">{JSON.stringify(data, null, 4)}</div>} */}
           </>
@@ -114,13 +119,13 @@ const AuthorizedPage = () => {
           handleClose={() => setDetailsItem(null)}
         />
       )}
-      {/* {passwordItem && (
-        <ResetPasswordModal
-          item={passwordItem}
+      {deleteChildItem && (
+        <DeleteChildrenModal
+          item={deleteChildItem}
           mutate={mutate}
-          handleClose={() => setPasswordItem(null)}
+          handleClose={() => setDeleteChildItem(null)}
         />
-      )} */}
+      )}
       {editingPersonItem && editingChildItem && (
         <EditChildrenModal
           item={editingPersonItem}
@@ -161,6 +166,7 @@ export const ItemsTable = ({
   setDetailsItem,
   setAddChildrenItem,
   setEditingChildItem,
+  setDeleteChildItem,
   setEditingPersonItem,
 }: {
   data: IAuthorizedPerson[];
@@ -171,6 +177,7 @@ export const ItemsTable = ({
   setAddChildrenItem: (arg0: IAuthorizedPerson) => void;
   setEditingChildItem: (arg0: AuthorizationChildToPickUpDTO) => void;
   setEditingPersonItem: (arg0: IAuthorizedPerson) => void;
+  setDeleteChildItem: (arg0: AuthorizationChildToPickUpDTO) => void;
 }) => {
   const rows = data.map((item: IAuthorizedPerson) => (
     <tr key={item.id}>
@@ -196,40 +203,6 @@ export const ItemsTable = ({
           </div>
         </Group>
       </td>
-      {/* <td>
-        <Text size="sm">
-          {item.groups.sort(sortGroups).map((g, i) => (
-            <Text span key={g.kindergartenGroup.id}>
-              <>
-                {`${g.kindergartenGroup.groupName}`}
-                {i + 1 < item.groups?.length ? ", " : ""}
-              </>
-            </Text>
-          ))}
-        </Text>
-        <Text size="xs" color="dimmed">
-          {item.groups.length
-            ? `Total: ${item.groups.length}`
-            : "No groups added"}
-        </Text>
-      </td> */}
-      {/*     <td key={item.id}>
-      <Text size="sm">
-          {item.authorizationsToPickUp?.sort(sortAuthorized).map((c, i) => (
-            <Text span key={c.child.id}>
-              <>
-                {`${c.child.surname} ${c.child.name} from: ${c.authorizationDateFrom} to: ${c.authorizationDateTo}`}
-                {i + 1 < item.authorizationsToPickUp?.length ? ", <br>" : ""}
-              </>
-            </Text>
-          ))}
-        </Text>
-        <Text size="xs" color="dimmed">
-          {item.authorizationsToPickUp.length
-            ? `Total: ${item.authorizationsToPickUp.length}`
-            : "No children added"}
-        </Text>
-      </td> */}
       <td key={item.id} align={"right"}>
         <Stack align="flex-end" spacing="xs">
           {item.authorizationsToPickUp.sort(sortAuthorized).map((c, i) => (
@@ -241,16 +214,29 @@ export const ItemsTable = ({
                 {`${c.authorizationDateFrom} to ${c.authorizationDateTo} `}
                 {/* {i + 1 < item.authorizationsToPickUp?.length ? ", <br>" : ""} */}
               </Text>
-              <Text span inline size="xs">
-                <ActionIcon size={"xs"} variant="filled">
-                  <IconSettings
-                    size={"xs"}
-                    onClick={() => {
-                      setEditingPersonItem(item);
-                      setEditingChildItem(c);
-                    }}
-                  />
-                </ActionIcon>
+
+              <Text size="xs">
+                <Group spacing="xs">
+                  <ActionIcon size={"xs"} color={"blue"}>
+                    <IconSettings
+                      size={"xs"}
+                      onClick={() => {
+                        setEditingPersonItem(item);
+                        setEditingChildItem(c);
+                      }}
+                    />
+                  </ActionIcon>
+
+                  <ActionIcon size={"xs"}>
+                    <IconTrash
+                      size={"xs"}
+                      color={"red"}
+                      onClick={() => {
+                        setDeleteChildItem(c);
+                      }}
+                    />
+                  </ActionIcon>
+                </Group>
               </Text>
             </Group>
           ))}
@@ -282,12 +268,6 @@ export const ItemsTable = ({
               >
                 Edit authorized person
               </Menu.Item>
-              {/* <Menu.Item
-                icon={<IconPencil size={16} stroke={1.5} />}
-                onClick={() => setPasswordItem(item)}
-              >
-                Reset password
-              </Menu.Item> */}
 
               <Menu.Item
                 icon={<IconPlus size={16} stroke={1.5} />}
@@ -315,8 +295,6 @@ export const ItemsTable = ({
           <tr>
             <th style={{ textAlign: "left" }}>Authorized person</th>
             <th style={{ textAlign: "left" }}>Document number</th>
-            {/* <th style={{ textAlign: "left" }}>Email</th> */}
-            {/* <th style={{ textAlign: "left" }}>Groups</th> */}
             <th style={{ textAlign: "right" }}>Children to pickup</th>
             <th style={{ textAlign: "right" }}>Actions</th>
           </tr>

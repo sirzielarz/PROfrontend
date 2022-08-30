@@ -44,27 +44,13 @@ function EditChildrenModal({
   const [itemEntry, setItemEntry] = useState<IAuthorizedPerson>();
   const [stateChildItem, setStateChildItem] =
     useState<AuthorizationChildToPickUpDTO>();
-  const [value, setValue] = useState<string | null>(null);
 
   useEffect(() => {
-    setItemEntry(item);
-    setStateChildItem(childItem);
+    // setItemEntry(item);
+    // setStateChildItem(childItem);
 
     console.log("start item", item);
     console.log("start childItem", childItem);
-    //setValue(String(childItem.child.id));
-    // onChangeFrom(new Date(childItem.authorizationDateFrom));
-    // onChangeTo(new Date(childItem.authorizationDateTo));
-
-    // form.setFieldValue(
-    //   "authorizationDateFrom",
-    //   new Date(childItem.authorizationDateFrom)
-    // );
-
-    // form.setFieldValue(
-    //   "authorizationDateTo",
-    //   new Date(childItem.authorizationDateTo)
-    // );
 
     setReady(true);
   }, []);
@@ -166,14 +152,6 @@ function EditChildrenModal({
               <Group>
                 <Button type="submit" leftIcon={<IconDeviceFloppy />}>
                   Save
-                </Button>
-
-                <Button
-                  leftIcon={<IconTrash />}
-                  color="red"
-                  onClick={deleteItem}
-                >
-                  Delete entry
                 </Button>
               </Group>
             </form>

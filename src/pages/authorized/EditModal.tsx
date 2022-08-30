@@ -76,7 +76,7 @@ function EditModal({
         size={600}
         opened={open2}
         onClose={() => handleClose()}
-        title="Edit parent data"
+        title="Edit authorized person data"
       >
         <form onSubmit={form.onSubmit(editItem)}>
           <TextInput

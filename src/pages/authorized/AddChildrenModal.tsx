@@ -77,8 +77,6 @@ function AddChildrenModal({
   });
   //form submit function
   async function editGroupEntries(valuesFromForm: CustomFormValues) {
-    // console.log("valueeeeeees:", valuesFromForm);
-
     const valuesToAdd: APIAuthorizationToPickup = {
       childId: Number(valuesFromForm.childId),
       authorizationDateFrom: valuesFromForm.authorizationDateFrom,
