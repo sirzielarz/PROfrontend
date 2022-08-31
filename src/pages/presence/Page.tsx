@@ -188,12 +188,12 @@ const PresencePage = () => {
             radius="md"
             variant="outline"
           >
-            Please select group and date
+            Please select group and date to display presence data
           </Alert>
         )}
       </Grid.Col>
 
-      <Grid.Col sm={6} md={4}>
+      <Grid.Col xs={12} sm={12} md={4}>
         <Title order={3}>Date:</Title>
         <Calendar value={dateSelected} onChange={setDateSelected} />
         {/* <Space h="xl" />
