@@ -156,9 +156,14 @@ const PresencePage = () => {
                         .map((c) => {
                           return (
                             <Chip
-                              readOnly
+                              readOnly={true}
                               key={"child_" + c.child.id}
                               value={String(c.child.id)}
+                              disabled={
+                                !dataPresenceFiltered?.some(
+                                  (x) => x.child.id === c.child.id
+                                )
+                              }
                               checked={dataPresenceFiltered?.some(
                                 (x) => x.child.id === c.child.id
                               )}
