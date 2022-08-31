@@ -83,7 +83,9 @@ const PresencePage = () => {
     const chipsItems = data.map((item) => {
       return (
         <>
-          <Chip value={String(item.id)}>{item.groupName}</Chip>
+          <Chip key={"group_" + item.id} value={String(item.id)}>
+            {item.groupName}
+          </Chip>
         </>
       );
     });
@@ -93,14 +95,14 @@ const PresencePage = () => {
         value={groupIDSelected}
         onChange={setGroupIDSelected}
       >
-        <Stack>{chipsItems}</Stack>
+        {chipsItems}
       </Chip.Group>
     );
   };
 
   return (
     <Grid>
-      <Grid.Col span={4}>
+      <Grid.Col sm={3} md={4}>
         <Title order={3}>Groups:</Title>
         <Space h="xl" />
         {errorGroups ? errorGroups : ""}
@@ -108,10 +110,10 @@ const PresencePage = () => {
           dataGroups.length > 0 ? (
             <>
               <GroupsChips data={dataGroups} /> <Space h="xl" />
-              <Text>Groups fetched data: {}</Text>
+              {/* <Text>Groups fetched data: {}</Text>
               <div className="jsonout">
                 {JSON.stringify(dataGroups, null, 4)}
-              </div>
+              </div> */}
             </>
           ) : (
             <Text>No groups exist.</Text>
@@ -119,20 +121,11 @@ const PresencePage = () => {
         ) : (
           <Loader />
         )}
-        <Space h="lg" />
       </Grid.Col>
-      <Grid.Col span={4}>
-        <Title order={3}>Date:</Title>
-        <Calendar value={dateSelected} onChange={setDateSelected} />
-        <Space h="xl" />
-        <Text size={"lg"} weight={"bold"}>
-          Presence all fetched data: {}
-        </Text>
-        <div className="jsonout">{JSON.stringify(dataPresence, null, 4)}</div>
-      </Grid.Col>
-      <Grid.Col span={4}>
+
+      <Grid.Col sm={3} md={4}>
         <Title order={3}>Presence:</Title>
-        <Space h="xl" />
+        <Space h="xs" />
 
         {groupIDSelected && dateSelected ? (
           !dataPresence && !errorPresence ? (
@@ -176,13 +169,13 @@ const PresencePage = () => {
                 </Stack>
               </Chip.Group>
 
-              <Space h="xl" />
+              {/* <Space h="xl" />
               <Text size={"lg"} weight={"bold"}>
                 Filtered fetched data: {}
-              </Text>
-              <div className="jsonout">
+              </Text> */}
+              {/* <div className="jsonout">
                 {JSON.stringify(dataPresenceFiltered, null, 4)}
-              </div>
+              </div> */}
 
               {/* // eswssssssssssssssssssssssssss */}
             </>
@@ -198,6 +191,16 @@ const PresencePage = () => {
             Please select group and date
           </Alert>
         )}
+      </Grid.Col>
+
+      <Grid.Col sm={6} md={4}>
+        <Title order={3}>Date:</Title>
+        <Calendar value={dateSelected} onChange={setDateSelected} />
+        {/* <Space h="xl" />
+        <Text size={"lg"} weight={"bold"}>
+          Presence all fetched data: {}
+        </Text>
+        <div className="jsonout">{JSON.stringify(dataPresence, null, 4)}</div> */}
       </Grid.Col>
     </Grid>
   );
