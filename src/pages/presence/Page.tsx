@@ -1,18 +1,21 @@
 import useSWR from "swr";
 import { fetcher } from "../../api/fetch";
-import { Chip, Grid, Loader } from "@mantine/core";
+import { Alert, Chip, Grid, Loader, Stack } from "@mantine/core";
 import { IGroup, IPresence } from "../../interfaces/Entities";
 import { useEffect, useState } from "react";
-import { getPrettyDate } from "./../../helpers/utils";
+import { getPrettyDate, formatDateToPattern } from "./../../helpers/utils";
 
 import { sortTeachers, sortChildren } from "../../helpers/utils";
 import { Title, Text, Space, Table, Group, ScrollArea } from "@mantine/core";
 import { Calendar, DatePicker } from "@mantine/dates";
+import { IconAlertCircle } from "@tabler/icons";
 
 const PresencePage = () => {
   const [groupIDSelected, setGroupIDSelected] = useState<string>();
   const [groupNameSelected, setGroupNameSelected] = useState<string>();
   const [dateSelected, setDateSelected] = useState<Date | null>(new Date());
+  const [dataPresenceFiltered, setDataPresenceFiltered] =
+    useState<IPresence[]>();
 
   useEffect(() => {
     const groupName =
@@ -23,7 +26,38 @@ const PresencePage = () => {
     if (groupName) {
       setGroupNameSelected(groupName);
     }
-  }, [groupIDSelected]);
+    if (dataPresence && dateSelected && groupIDSelected) {
+      const dataFiltered = dataPresence.filter((x) => {
+        // console.log("checking  -------------------");
+        // console.log("checking groups ids");
+        // console.log("selected:", Number(groupIDSelected));
+        // console.log("from presence array", x.kindergartenGroup.id);
+        // console.log(
+        //   "test groups: ",
+        //   x.kindergartenGroup.id === Number(groupIDSelected)
+        // );
+        // console.log("checking dates");
+        // console.log("selected:", formatDateToPattern(dateSelected));
+        // console.log("from presence array", formatDateToPattern(x.date));
+        // console.log(
+        //   "test dates: ",
+        //   formatDateToPattern(x.date) === formatDateToPattern(dateSelected)
+        // );
+        // console.log(
+        //   "FINAL: ",
+        //   x.kindergartenGroup.id === Number(groupIDSelected) &&
+        //     formatDateToPattern(x.date) === formatDateToPattern(dateSelected)
+        // );
+        return (
+          x.kindergartenGroup.id === Number(groupIDSelected) &&
+          formatDateToPattern(x.date) === formatDateToPattern(dateSelected)
+        );
+      });
+      setDataPresenceFiltered(dataFiltered);
+    } else {
+      setDataPresenceFiltered([]);
+    }
+  }, [groupIDSelected, dateSelected]);
 
   //get groups
   const {
@@ -59,14 +93,14 @@ const PresencePage = () => {
         value={groupIDSelected}
         onChange={setGroupIDSelected}
       >
-        {chipsItems}
+        <Stack>{chipsItems}</Stack>
       </Chip.Group>
     );
   };
 
   return (
     <Grid>
-      <Grid.Col span={2}>
+      <Grid.Col span={4}>
         <Title order={3}>Groups:</Title>
         <Space h="xl" />
         {errorGroups ? errorGroups : ""}
@@ -91,11 +125,12 @@ const PresencePage = () => {
         <Title order={3}>Date:</Title>
         <Calendar value={dateSelected} onChange={setDateSelected} />
         <Space h="xl" />
-
-        <Text>Presence fetched data: {}</Text>
+        <Text size={"lg"} weight={"bold"}>
+          Presence all fetched data: {}
+        </Text>
         <div className="jsonout">{JSON.stringify(dataPresence, null, 4)}</div>
       </Grid.Col>
-      <Grid.Col span={6}>
+      <Grid.Col span={4}>
         <Title order={3}>Presence:</Title>
         <Space h="xl" />
 
@@ -111,15 +146,52 @@ const PresencePage = () => {
                 Presence on: <b>{getPrettyDate(dateSelected)}</b> for group:{" "}
                 <b>{groupNameSelected}</b>
               </Text>
+              <Space h="xl" />
+              <Chip.Group>
+                <Stack>
+                  {dataGroups && groupIDSelected
+                    ? dataGroups
+                        .find((x) => x.id === Number(groupIDSelected))
+                        ?.children.sort(sortChildren)
+                        .map((c) => {
+                          return (
+                            <Chip
+                              readOnly
+                              key={"child_" + c.child.id}
+                              value={String(c.child.id)}
+                              checked={dataPresenceFiltered?.some(
+                                (x) => x.child.id === c.child.id
+                              )}
+                            >
+                              {c.child.surname + " " + c.child.name}
+                            </Chip>
+                          );
+                        })
+                    : null}
+                </Stack>
+              </Chip.Group>
 
+              <Space h="xl" />
+              <Text size={"lg"} weight={"bold"}>
+                Filtered fetched data: {}
+              </Text>
               <div className="jsonout">
-                {JSON.stringify(dataPresence, null, 4)}
+                {JSON.stringify(dataPresenceFiltered, null, 4)}
               </div>
+
               {/* // eswssssssssssssssssssssssssss */}
             </>
           )
         ) : (
-          "Please select group and date..."
+          <Alert
+            icon={<IconAlertCircle size={16} />}
+            title="Waiting for data..."
+            color="teal"
+            radius="md"
+            variant="outline"
+          >
+            Please select group and date
+          </Alert>
         )}
       </Grid.Col>
     </Grid>
