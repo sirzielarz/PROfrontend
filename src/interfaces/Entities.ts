@@ -58,6 +58,13 @@ export interface IActivityTeacher extends IEntity {
   teacher: IPerson;
 }
 
+//api/presence
+export interface IPresence extends IEntity {
+  kindergartenGroup: IKindergartenGroupDTO;
+  child: IPerson;
+  date: Date;
+}
+
 // api/group
 export interface IGroup extends IEntity {
   groupName: string;
@@ -253,11 +260,12 @@ export interface AnnouncementDTO {
   // kindergartenGroup: GroupDTO;
 }
 
+export interface IKindergartenGroupDTO extends IEntity {
+  groupName: string;
+}
+
 export interface IAnnouncement extends IEntity {
-  kindergartenGroup: {
-    id: number;
-    groupName: string;
-  };
+  kindergartenGroup: IKindergartenGroupDTO;
   subject: string;
   announcementText: string;
 }

@@ -80,3 +80,14 @@ export function validatePesel(pesel: string): boolean {
   sum = sum % 10;
   return (10 - sum) % 10 === controlNumber;
 }
+
+export function getPrettyDate(date: Date | null) {
+  if (!date) {
+    return "";
+  }
+  return date.toLocaleDateString("pl-PL", {
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+  });
+}
