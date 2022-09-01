@@ -15,7 +15,7 @@ import {
   IGroup,
 } from "../../interfaces/Entities";
 import { IconCirclePlus } from "@tabler/icons";
-import { addAnnouncement, updateAnnouncement } from "../../api/announcement";
+import { addAnnouncement } from "../../api/announcement";
 import { useState } from "react";
 import { fetcher } from "../../api/fetch";
 import { sortByValueToSelect } from "../../helpers/utils";
@@ -36,7 +36,7 @@ function AddItemModal({
       groupId: 0,
     },
   });
-  const [selected, setSelected] = useState<string[]>([]); //state for selectiong with Chips
+  const [selected] = useState<string[]>([]); //state for selectiong with Chips
   const [value, setValue] = useState<string | null>(null);
 
   async function createItem(values: APIAnnouncement) {

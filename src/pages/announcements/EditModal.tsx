@@ -39,8 +39,17 @@ function EditModal({
     setOpen2(true);
   }, []);
 
+  const form = useForm({
+    initialValues: {
+      subject: item.subject,
+      announcementText: item.announcementText,
+      groupId: String(item.kindergartenGroup.id),
+    },
+  });
+
   useEffect(() => {
     form.setFieldValue("groupId", String(item.kindergartenGroup.id));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const { data: allItems, error: errorItems } = useSWR<IGroup[], string>(
@@ -58,14 +67,6 @@ function EditModal({
   });
   //sort items data
   allItemsData?.sort(sortByValueToSelect);
-
-  const form = useForm({
-    initialValues: {
-      subject: item.subject,
-      announcementText: item.announcementText,
-      groupId: String(item.kindergartenGroup.id),
-    },
-  });
 
   async function editItem(values: APIAnnouncementEdit) {
     console.log(values);

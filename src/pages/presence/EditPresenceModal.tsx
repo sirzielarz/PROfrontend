@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useState } from "react";
 import { useForm } from "@mantine/form";
-import { Button, Chip, Loader, Modal, Space, TextInput } from "@mantine/core";
+import { Button, Chip, Loader, Modal } from "@mantine/core";
 import useSWR, { KeyedMutator } from "swr";
 import {
   getPresenceEntries,
@@ -66,6 +66,7 @@ function EditPresenceModal({
         console.log("---error---", error);
       });
     setReady(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   //form
   const form = useForm({
@@ -82,7 +83,7 @@ function EditPresenceModal({
       (el) => !initialData.includes(el)
     );
 
-    toAdd.map((x) => {
+    toAdd.forEach((x) => {
       const updated = addPresenceEntry(
         Number(groupIDSelected),
         Number(x),
@@ -91,11 +92,11 @@ function EditPresenceModal({
       mutate(updated);
     });
 
-    toRemove.map((x) => {
+    toRemove.forEach((x) => {
       const entryToDelete = itemEntriesIDs?.filter(
         (el) => el.child.id === Number(x)
       );
-      entryToDelete?.map((x) => {
+      entryToDelete?.forEach((x) => {
         const updated = deletePresenceEntry(x.id);
         mutate(updated);
       });
@@ -113,13 +114,6 @@ function EditPresenceModal({
   if (!allItems) return <Loader></Loader>;
   if (errorItems) return <div>Failed to load children data...</div>;
   //iterate
-
-  console.log();
-
-  interface IItems {
-    id: string;
-    value: string;
-  }
   let allItemsData = allItems.children.map((x) => {
     return { id: `${x.child.id}`, value: `${x.child.surname} ${x.child.name}` };
   });

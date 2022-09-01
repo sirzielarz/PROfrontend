@@ -88,7 +88,7 @@ const AppShellComponent = () => {
         }
       >
         <Routes>
-          <Route path="/" element={<Outlet />}>
+          <Route path="/" key={"outlet"} element={<Outlet />}>
             {/*public routes*/}
             <Route path="/login" element={<LoginForm />} />
             <Route path="/unauthorized" element={<UnauthorizedPage />} />
@@ -113,7 +113,7 @@ const AppShellComponent = () => {
                 <RequireAuth allowedRoles={["teacher", "admin", "parent"]} />
               }
             >
-              <Route path="/" element={<HomePage />} />
+              <Route path="/" key={"home"} element={<HomePage />} />
               <Route path="/presence" element={<PresencePage />} />
             </Route>
             {/*catch all other*/}

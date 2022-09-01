@@ -141,7 +141,7 @@ function NavbarComponent(props: Omit<NavbarProps, "children">) {
             />
             <NavLink
               label="Presence"
-              key="/"
+              key="/presence"
               icon={<IconChecklist />}
               component={Link}
               to="/presence"
