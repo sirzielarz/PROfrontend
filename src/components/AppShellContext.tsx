@@ -14,11 +14,6 @@ type AppShellProviderProps = {
 export const AppShellContext = createContext(null);
 
 const AppShellContextProvider = ({ children }: AppShellProviderProps) => {
-  // const [opened, setOpen] = useState<AppShellOpenedType>({
-  //   open: false,
-  //   setOpen: () => {},
-  // });
-
   return (
     <AppShellContext.Provider value={null}>{children}</AppShellContext.Provider>
   );

@@ -14,13 +14,27 @@ export interface TeachersDTO {
   teacher: IPerson;
 }
 
-export interface privateMessageDTO extends IEntity {
+export interface PrivateMessageDTO extends IEntity {
   teacher: IPerson;
   parent: IPerson;
   subject: string;
   messageText: string;
   sender: string;
 }
+
+enum MessageSender {
+  teacher = "teacher",
+  parent = "parent",
+}
+
+export interface PrivateMessageAPI {
+  teacherId: Number;
+  parentId: Number;
+  subject: string;
+  messageText: string;
+  sender: MessageSender;
+}
+
 export interface additionalActivityDTO extends IEntity {
   activityName: string;
 }
@@ -112,7 +126,7 @@ export interface ITeacher extends IPerson {
   password: string;
   isAdmin: boolean;
   groups: GroupsDTO[];
-  privateMessages: privateMessageDTO[];
+  privateMessages: PrivateMessageDTO[];
   additionalActivities: additionalActivitiesDTO[];
 }
 
@@ -280,4 +294,38 @@ export interface APIAnnouncementEdit {
   groupId: string;
   subject: string;
   announcementText: string;
+}
+
+export interface APIPhotoAlbumEdit {
+  groupId: string;
+  albumName: string;
+}
+
+export interface PhotoDTO extends IEntity {
+  fileName: string;
+}
+
+// api/photo-album
+export interface IPhotoAlbum extends IEntity {
+  albumName: string;
+  group: IKindergartenGroupDTO;
+  photos: PhotoDTO[];
+}
+export interface APIPhotoAlbum {
+  albumName: string;
+  groupId: number;
+}
+
+export interface PhotoAlbumDTO extends IEntity {
+  albumName: string;
+}
+// api/photo
+export interface IPhoto extends IEntity {
+  fileName: string;
+  album: PhotoAlbumDTO;
+  url: string;
+}
+
+export interface APIPhoto {
+  file: string;
 }

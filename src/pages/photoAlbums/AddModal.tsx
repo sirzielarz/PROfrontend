@@ -1,46 +1,41 @@
 import { useForm } from "@mantine/form";
-import {
-  Button,
-  Loader,
-  Modal,
-  Select,
-  Space,
-  Textarea,
-  TextInput,
-} from "@mantine/core";
+import { Button, Loader, Modal, Select, Space, TextInput } from "@mantine/core";
 import useSWR, { KeyedMutator } from "swr";
-import {
-  APIAnnouncement,
-  IAnnouncement,
-  IGroup,
-} from "../../interfaces/Entities";
+import { addPhotoAlbum } from "../../api/photo-album/index";
+import { IPhotoAlbum, APIPhotoAlbum, IGroup } from "../../interfaces/Entities";
 import { IconCirclePlus } from "@tabler/icons";
-import { addAnnouncement } from "../../api/announcement";
+import { sortByValueToSelect } from "../../helpers/utils";
 import { useState } from "react";
 import { fetcher } from "../../api/fetch";
-import { sortByValueToSelect } from "../../helpers/utils";
 
 function AddItemModal({
   mutate,
   open,
   setOpen,
 }: {
-  mutate: KeyedMutator<IAnnouncement[]>;
+  mutate: KeyedMutator<IPhotoAlbum[]>;
   open: boolean;
   setOpen: (arg0: boolean) => void;
 }) {
-  const form = useForm({
+  const form = useForm<APIPhotoAlbum>({
     initialValues: {
-      subject: "",
-      announcementText: "",
+      albumName: "",
       groupId: 0,
+    },
+    validate: {
+      albumName: (value) =>
+        value.length < 2
+          ? "enter at least 2 characters"
+          : value.length > 50
+          ? "enter max 50 characters"
+          : null,
     },
   });
 
   const [value, setValue] = useState<string | null>(null);
 
-  async function createItem(values: APIAnnouncement) {
-    const updated = await addAnnouncement(values);
+  async function createItem(values: APIPhotoAlbum) {
+    const updated = await addPhotoAlbum(values);
     mutate(updated);
     form.reset();
     setOpen(false);
@@ -70,22 +65,15 @@ function AddItemModal({
       <Modal
         opened={open}
         onClose={() => setOpen(false)}
-        title="Create announcement"
+        title="Create photo album"
       >
         <form onSubmit={form.onSubmit(createItem)}>
           <TextInput
             required
             mb={12}
-            label="Subject"
-            placeholder="Enter announcement subject"
-            {...form.getInputProps("subject")}
-          />
-          <Textarea
-            required
-            mb={12}
-            label="Announcement Text"
-            placeholder="Enter announcement text"
-            {...form.getInputProps("announcementText")}
+            label="Album name"
+            placeholder="Enter album name"
+            {...form.getInputProps("albumName")}
           />
           <Select
             required
@@ -100,7 +88,7 @@ function AddItemModal({
           />
           <Space h={"xl"}></Space>
           <Button type="submit" leftIcon={<IconCirclePlus />}>
-            Create announcement
+            Create photo album
           </Button>
         </form>
       </Modal>

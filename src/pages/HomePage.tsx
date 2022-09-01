@@ -1,13 +1,4 @@
-import {
-  createStyles,
-  Space,
-  Title,
-  Text,
-  Button,
-  Container,
-  BackgroundImage,
-  Image,
-} from "@mantine/core";
+import { createStyles, Title, Text, Container, Image } from "@mantine/core";
 
 import imagefront from "./../../src/images/image.jpg";
 

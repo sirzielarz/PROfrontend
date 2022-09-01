@@ -23,6 +23,7 @@ import {
   IconTransferOut,
   IconChecklist,
   IconAlertCircle,
+  IconPhoto,
 } from "@tabler/icons";
 
 const useStyles = createStyles((theme, _params, getRef) => {
@@ -107,7 +108,7 @@ function NavbarComponent(props: Omit<NavbarProps, "children">) {
   const location = useLocation();
   const { user, signout } = useAuth();
   useEffect(() => {
-    console.log("useEffect from navbar");
+    // console.log("useEffect from navbar");
   }, [user]);
   const context = useContext(GlobalContext);
 
@@ -146,6 +147,15 @@ function NavbarComponent(props: Omit<NavbarProps, "children">) {
               component={Link}
               to="/presence"
               active={location.pathname === "/presence"}
+              onClick={clickHandler}
+            />
+            <NavLink
+              label="Photo albums"
+              key="/photo-albums"
+              icon={<IconPhoto />}
+              component={Link}
+              to="/photo-albums"
+              active={location.pathname === "/photo-albums"}
               onClick={clickHandler}
             />
             {/* {admin links start} */}

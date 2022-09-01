@@ -1,31 +1,10 @@
 import { useForm } from "@mantine/form";
-import {
-  Button,
-  Checkbox,
-  Grid,
-  Modal,
-  PasswordInput,
-  Space,
-  TextInput,
-} from "@mantine/core";
+import { Button, Grid, Modal, Space, TextInput } from "@mantine/core";
 import { KeyedMutator } from "swr";
 import { createChild } from "../../api/child/index";
 import { IChild, APIChild } from "../../interfaces/Entities";
 import { IconCirclePlus } from "@tabler/icons";
 import { validatePesel } from "../../helpers/utils";
-
-// interface FormValues {
-//   name: string; // regular field, same as inferred type
-//   role: "user" | "admin"; // union, more specific than inferred string type
-
-//   // values that may be undefined or null
-//   // cannot be correctly inferred in strict mode
-//   age: number | undefined;
-//   registeredAt: Date | null;
-
-//   // Arrays that are empty cannot be inferred correctly
-//   jobs: string[];
-// }
 
 function AddItemModal({
   mutate,
