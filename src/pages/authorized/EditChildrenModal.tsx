@@ -18,7 +18,7 @@ import {
   APIAuthorizationToPickup,
   AuthorizationChildToPickUpDTO,
 } from "../../interfaces/Entities";
-import { sortByValueToSelect } from "../../helpers/utils";
+import { prepareDate, sortByValueToSelect } from "../../helpers/utils";
 import { fetcher } from "../../api/fetch";
 import { IconDeviceFloppy, IconTrash } from "@tabler/icons";
 import { DatePicker } from "@mantine/dates";
@@ -89,8 +89,8 @@ function EditChildrenModal({
   async function editGroupEntries(valuesFromForm: CustomFormValues) {
     const valuesToUpdate: APIAuthorizationToPickup = {
       childId: Number(valuesFromForm.childId),
-      authorizationDateFrom: valuesFromForm.authorizationDateFrom,
-      authorizationDateTo: valuesFromForm.authorizationDateTo,
+      authorizationDateFrom: prepareDate(valuesFromForm.authorizationDateFrom),
+      authorizationDateTo: prepareDate(valuesFromForm.authorizationDateTo),
       authorizedPersonId: item.id,
     };
     const idEntry = childItem.id;

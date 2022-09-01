@@ -19,6 +19,7 @@ import { sortByValueToSelect } from "../../helpers/utils";
 import { fetcher } from "../../api/fetch";
 import { IconDeviceFloppy } from "@tabler/icons";
 import { DatePicker } from "@mantine/dates";
+import { prepareDate } from "./../../helpers/utils";
 
 function AddChildrenModal({
   item,
@@ -79,8 +80,8 @@ function AddChildrenModal({
   async function editGroupEntries(valuesFromForm: CustomFormValues) {
     const valuesToAdd: APIAuthorizationToPickup = {
       childId: Number(valuesFromForm.childId),
-      authorizationDateFrom: valuesFromForm.authorizationDateFrom,
-      authorizationDateTo: valuesFromForm.authorizationDateTo,
+      authorizationDateFrom: prepareDate(valuesFromForm.authorizationDateFrom),
+      authorizationDateTo: prepareDate(valuesFromForm.authorizationDateTo),
       authorizedPersonId: item.id,
     };
 
