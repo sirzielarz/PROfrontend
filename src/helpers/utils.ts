@@ -106,3 +106,11 @@ export function formatDateToPattern(date: Date | null) {
 
   return [year, month, day].join("-");
 }
+export function prepareDate(date: Date | null): Date {
+  if (!date) {
+    return new Date();
+  }
+  return new Date(
+    Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
+  );
+}

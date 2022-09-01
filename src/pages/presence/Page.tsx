@@ -1,14 +1,15 @@
 import useSWR from "swr";
 import { fetcher } from "../../api/fetch";
-import { Alert, Chip, Grid, Loader, Stack } from "@mantine/core";
+import { Alert, Button, Chip, Grid, Loader, Stack } from "@mantine/core";
 import { IGroup, IPresence } from "../../interfaces/Entities";
 import { useEffect, useState } from "react";
 import { getPrettyDate, formatDateToPattern } from "./../../helpers/utils";
 
-import { sortTeachers, sortChildren } from "../../helpers/utils";
-import { Title, Text, Space, Table, Group, ScrollArea } from "@mantine/core";
-import { Calendar, DatePicker } from "@mantine/dates";
-import { IconAlertCircle } from "@tabler/icons";
+import { sortChildren } from "../../helpers/utils";
+import { Title, Text, Space } from "@mantine/core";
+import { Calendar } from "@mantine/dates";
+import { IconAlertCircle, IconPencil } from "@tabler/icons";
+import EditPresenceModal from "./EditPresenceModal";
 
 const PresencePage = () => {
   const [groupIDSelected, setGroupIDSelected] = useState<string>();
@@ -16,48 +17,7 @@ const PresencePage = () => {
   const [dateSelected, setDateSelected] = useState<Date | null>(new Date());
   const [dataPresenceFiltered, setDataPresenceFiltered] =
     useState<IPresence[]>();
-
-  useEffect(() => {
-    const groupName =
-      dataGroups && groupIDSelected
-        ? dataGroups.find((x) => x.id === Number(groupIDSelected))?.groupName
-        : null;
-
-    if (groupName) {
-      setGroupNameSelected(groupName);
-    }
-    if (dataPresence && dateSelected && groupIDSelected) {
-      const dataFiltered = dataPresence.filter((x) => {
-        // console.log("checking  -------------------");
-        // console.log("checking groups ids");
-        // console.log("selected:", Number(groupIDSelected));
-        // console.log("from presence array", x.kindergartenGroup.id);
-        // console.log(
-        //   "test groups: ",
-        //   x.kindergartenGroup.id === Number(groupIDSelected)
-        // );
-        // console.log("checking dates");
-        // console.log("selected:", formatDateToPattern(dateSelected));
-        // console.log("from presence array", formatDateToPattern(x.date));
-        // console.log(
-        //   "test dates: ",
-        //   formatDateToPattern(x.date) === formatDateToPattern(dateSelected)
-        // );
-        // console.log(
-        //   "FINAL: ",
-        //   x.kindergartenGroup.id === Number(groupIDSelected) &&
-        //     formatDateToPattern(x.date) === formatDateToPattern(dateSelected)
-        // );
-        return (
-          x.kindergartenGroup.id === Number(groupIDSelected) &&
-          formatDateToPattern(x.date) === formatDateToPattern(dateSelected)
-        );
-      });
-      setDataPresenceFiltered(dataFiltered);
-    } else {
-      setDataPresenceFiltered([]);
-    }
-  }, [groupIDSelected, dateSelected]);
+  const [editingPresence, setEditingPresence] = useState(false);
 
   //get groups
   const {
@@ -79,6 +39,32 @@ const PresencePage = () => {
     fetcher
   );
 
+  //save data
+  useEffect(() => {
+    const groupName =
+      dataGroups && groupIDSelected
+        ? dataGroups.find((x) => x.id === Number(groupIDSelected))?.groupName
+        : null;
+
+    if (groupName) {
+      setGroupNameSelected(groupName);
+    }
+    if (dataPresence && dateSelected && groupIDSelected) {
+      if (dataPresence.length > 0) {
+        const dataFiltered = dataPresence.filter((x) => {
+          return (
+            x.kindergartenGroup.id === Number(groupIDSelected) &&
+            formatDateToPattern(x.date) === formatDateToPattern(dateSelected)
+          );
+        });
+        setDataPresenceFiltered(dataFiltered);
+      }
+    } else {
+      setDataPresenceFiltered([]);
+    }
+  }, [groupIDSelected, dateSelected, dataGroups, dataPresence]);
+
+  //generate groups chips
   const GroupsChips = ({ data }: { data: IGroup[] }) => {
     const chipsItems = data.map((item) => {
       return (
@@ -102,7 +88,7 @@ const PresencePage = () => {
 
   return (
     <Grid>
-      <Grid.Col sm={3} md={4}>
+      <Grid.Col sm={3} md={2}>
         <Title order={3}>Groups:</Title>
         <Space h="xl" />
         {errorGroups ? errorGroups : ""}
@@ -116,7 +102,7 @@ const PresencePage = () => {
               </div> */}
             </>
           ) : (
-            <Text>No groups exist.</Text>
+            <Text>No groups available.</Text>
           )
         ) : (
           <Loader />
@@ -136,7 +122,7 @@ const PresencePage = () => {
             <>
               {/* // eeeeeeeeeeeeeeeeeeeeeeeee */}
               <Text>
-                Presence on: <b>{getPrettyDate(dateSelected)}</b> for group:{" "}
+                Presence on <b>{getPrettyDate(dateSelected)}</b> for group{" "}
                 <b>{groupNameSelected}</b>
               </Text>
               <Space h="xl" />
@@ -168,6 +154,31 @@ const PresencePage = () => {
                     : null}
                 </Stack>
               </Chip.Group>
+              <Space h="xl" />
+
+              {dataGroups && dataGroups.length > 0 && groupIDSelected && (
+                <Button
+                  leftIcon={<IconPencil size={16} stroke={1.5} />}
+                  onClick={() => setEditingPresence(true)}
+                >
+                  Edit this presence
+                </Button>
+              )}
+
+              {editingPresence &&
+                dataGroups &&
+                groupIDSelected &&
+                groupNameSelected &&
+                dataPresenceFiltered && (
+                  <EditPresenceModal
+                    groupIDSelected={groupIDSelected}
+                    groupNameSelected={groupNameSelected}
+                    dateSelected={dateSelected}
+                    dataPresenceFiltered={dataPresenceFiltered}
+                    mutate={mutatePresence}
+                    handleClose={() => setEditingPresence(false)}
+                  />
+                )}
 
               {/* <Space h="xl" />
               <Text size={"lg"} weight={"bold"}>

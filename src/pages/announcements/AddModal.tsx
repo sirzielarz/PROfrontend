@@ -1,5 +1,5 @@
 import { useForm } from "@mantine/form";
-import { Button, Loader, Modal, Select, TextInput } from "@mantine/core";
+import { Button, Loader, Modal, Select, Space, TextInput } from "@mantine/core";
 import useSWR, { KeyedMutator } from "swr";
 import {
   APIAnnouncement,
@@ -91,6 +91,7 @@ function AddItemModal({
             onChange={setValue}
             {...form.getInputProps("groupId")}
           />
+          <Space h={"xl"}></Space>
           <Button type="submit" leftIcon={<IconCirclePlus />}>
             Create announcement
           </Button>
