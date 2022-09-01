@@ -22,6 +22,7 @@ import {
   IconMoodKid,
   IconTransferOut,
   IconChecklist,
+  IconAlertCircle,
 } from "@tabler/icons";
 
 const useStyles = createStyles((theme, _params, getRef) => {
@@ -216,7 +217,7 @@ function NavbarComponent(props: Omit<NavbarProps, "children">) {
                 <NavLink
                   label="Announcements"
                   key="/announcements"
-                  icon={<IconListCheck />}
+                  icon={<IconAlertCircle />}
                   component={Link}
                   to="/announcements"
                   active={location.pathname === "/announcements"}

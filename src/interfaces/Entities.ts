@@ -275,3 +275,9 @@ export interface APIAnnouncement {
   subject: string;
   announcementText: string;
 }
+
+export interface APIAnnouncementEdit {
+  groupId: string;
+  subject: string;
+  announcementText: string;
+}

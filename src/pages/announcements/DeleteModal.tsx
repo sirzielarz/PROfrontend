@@ -2,7 +2,6 @@ import { useLayoutEffect, useState } from "react";
 import { useForm } from "@mantine/form";
 import { Button, Modal, Space } from "@mantine/core";
 import { KeyedMutator } from "swr";
-import { deleteActivityItem } from "../../api/additional-activity/index";
 import { IAnnouncement } from "../../interfaces/Entities";
 import { IconTrash } from "@tabler/icons";
 import { deleteAnnouncement } from "../../api/announcement";

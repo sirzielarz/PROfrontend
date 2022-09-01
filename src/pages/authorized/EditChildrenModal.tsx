@@ -1,28 +1,18 @@
 import { useEffect, useLayoutEffect, useState } from "react";
-import moment from "moment";
 import { useForm } from "@mantine/form";
 import { Button, Group, Loader, Modal, Select, Space } from "@mantine/core";
-import useSWR, { KeyedMutator } from "swr";
+import { KeyedMutator } from "swr";
 import "dayjs/locale/pl";
-import {
-  getAuthorizationToPickupEntries,
-  addAuthorizationToPickupEntry,
-  updateAuthorizationToPickupEntry,
-  deleteAuthorizationToPickupEntry,
-  getAuthorizationToPickupEntry,
-} from "../../api/authorization-to-pickup/index";
+import { updateAuthorizationToPickupEntry } from "../../api/authorization-to-pickup/index";
 import {
   IAuthorizedPerson,
-  IPerson,
-  IAuthorizationToPickup,
   APIAuthorizationToPickup,
   AuthorizationChildToPickUpDTO,
 } from "../../interfaces/Entities";
-import { prepareDate, sortByValueToSelect } from "../../helpers/utils";
-import { fetcher } from "../../api/fetch";
-import { IconDeviceFloppy, IconTrash } from "@tabler/icons";
+import { prepareDate } from "../../helpers/utils";
+
+import { IconDeviceFloppy } from "@tabler/icons";
 import { DatePicker } from "@mantine/dates";
-import { resourceLimits } from "worker_threads";
 
 function EditChildrenModal({
   item,
@@ -40,17 +30,8 @@ function EditChildrenModal({
   }, []);
   const [ready, setReady] = useState(false);
   const [open2, setOpen2] = useState(false); //setting modal open state
-  const [itemEntry, setItemEntry] = useState<IAuthorizedPerson>();
-  const [stateChildItem, setStateChildItem] =
-    useState<AuthorizationChildToPickUpDTO>();
 
   useEffect(() => {
-    // setItemEntry(item);
-    // setStateChildItem(childItem);
-
-    console.log("start item", item);
-    console.log("start childItem", childItem);
-
     setReady(true);
   }, []);
 
@@ -76,16 +57,6 @@ function EditChildrenModal({
     },
   });
 
-  //form delete
-
-  async function deleteItem() {
-    const updated = await deleteAuthorizationToPickupEntry(childItem.id);
-    mutate(updated);
-    form.reset();
-    handleClose();
-  }
-
-  //form submit function
   async function editGroupEntries(valuesFromForm: CustomFormValues) {
     const valuesToUpdate: APIAuthorizationToPickup = {
       childId: Number(valuesFromForm.childId),

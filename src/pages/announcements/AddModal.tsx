@@ -1,5 +1,13 @@
 import { useForm } from "@mantine/form";
-import { Button, Loader, Modal, Select, Space, TextInput } from "@mantine/core";
+import {
+  Button,
+  Loader,
+  Modal,
+  Select,
+  Space,
+  Textarea,
+  TextInput,
+} from "@mantine/core";
 import useSWR, { KeyedMutator } from "swr";
 import {
   APIAnnouncement,
@@ -73,7 +81,7 @@ function AddItemModal({
             placeholder="Enter announcement subject"
             {...form.getInputProps("subject")}
           />
-          <TextInput
+          <Textarea
             required
             mb={12}
             label="Announcement Text"

@@ -20,11 +20,7 @@ const PresencePage = () => {
   const [editingPresence, setEditingPresence] = useState(false);
 
   //get groups
-  const {
-    data: dataGroups,
-    error: errorGroups,
-    mutate: mutateGroups,
-  } = useSWR<IGroup[], string>(
+  const { data: dataGroups, error: errorGroups } = useSWR<IGroup[], string>(
     `${process.env.REACT_APP_URL}/api/group`,
     fetcher
   );
@@ -88,7 +84,7 @@ const PresencePage = () => {
 
   return (
     <Grid>
-      <Grid.Col sm={3} md={2}>
+      <Grid.Col sm={3} md={3}>
         <Title order={3}>Groups:</Title>
         <Space h="xl" />
         {errorGroups ? errorGroups : ""}
@@ -108,7 +104,15 @@ const PresencePage = () => {
           <Loader />
         )}
       </Grid.Col>
-
+      <Grid.Col xs={12} sm={12} md={4}>
+        <Title order={3}>Date:</Title>
+        <Calendar value={dateSelected} onChange={setDateSelected} />
+        {/* <Space h="xl" />
+        <Text size={"lg"} weight={"bold"}>
+          Presence all fetched data: {}
+        </Text>
+        <div className="jsonout">{JSON.stringify(dataPresence, null, 4)}</div> */}
+      </Grid.Col>
       <Grid.Col sm={3} md={4}>
         <Title order={3}>Presence:</Title>
         <Space h="xs" />
@@ -120,7 +124,7 @@ const PresencePage = () => {
             errorPresence
           ) : (
             <>
-              {/* // eeeeeeeeeeeeeeeeeeeeeeeee */}
+              {/* ///////// */}
               <Text>
                 Presence on <b>{getPrettyDate(dateSelected)}</b> for group{" "}
                 <b>{groupNameSelected}</b>
@@ -202,16 +206,6 @@ const PresencePage = () => {
             Please select group and date to display presence data
           </Alert>
         )}
-      </Grid.Col>
-
-      <Grid.Col xs={12} sm={12} md={4}>
-        <Title order={3}>Date:</Title>
-        <Calendar value={dateSelected} onChange={setDateSelected} />
-        {/* <Space h="xl" />
-        <Text size={"lg"} weight={"bold"}>
-          Presence all fetched data: {}
-        </Text>
-        <div className="jsonout">{JSON.stringify(dataPresence, null, 4)}</div> */}
       </Grid.Col>
     </Grid>
   );

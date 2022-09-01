@@ -1,21 +1,25 @@
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { useForm } from "@mantine/form";
-import {Button, Loader, Modal, Select, TextInput} from "@mantine/core";
+import {
+  Button,
+  Loader,
+  Modal,
+  Select,
+  Space,
+  Textarea,
+  TextInput,
+} from "@mantine/core";
 import useSWR, { KeyedMutator } from "swr";
 import {
   APIAnnouncement,
-  APIAuthorizedPerson,
-  IActivity,
+  APIAnnouncementEdit,
   IAnnouncement,
   IGroup,
-  IPerson
 } from "../../interfaces/Entities";
 import { IconDeviceFloppy } from "@tabler/icons";
-import {updateAnnouncement} from "../../api/announcement";
-import {fetcher} from "../../api/fetch";
-import {sortByValueToSelect} from "../../helpers/utils";
-
-
+import { updateAnnouncement } from "../../api/announcement";
+import { fetcher } from "../../api/fetch";
+import { sortByValueToSelect } from "../../helpers/utils";
 
 function EditModal({
   item,
@@ -28,26 +32,61 @@ function EditModal({
 }) {
   // visual bug fix in mantine modal
 
+  const [value, setValue] = useState<string>("");
+
   const [open2, setOpen2] = useState(false);
   useLayoutEffect(() => {
     setOpen2(true);
   }, []);
 
+  useEffect(() => {
+    form.setFieldValue("groupId", String(item.kindergartenGroup.id));
+  }, []);
+
+  const { data: allItems, error: errorItems } = useSWR<IGroup[], string>(
+    `${process.env.REACT_APP_URL}/api/group`,
+    fetcher
+  );
+
+  //iterate
+
+  let allItemsData = allItems?.map((x) => {
+    return {
+      value: `${x.id}`,
+      label: `${x.groupName}`,
+    };
+  });
+  //sort items data
+  allItemsData?.sort(sortByValueToSelect);
+
   const form = useForm({
     initialValues: {
       subject: item.subject,
       announcementText: item.announcementText,
-      groupId: item.kindergartenGroup.id
+      groupId: String(item.kindergartenGroup.id),
     },
   });
 
-  async function editItem(values: APIAnnouncement) {
-    const updated = await updateAnnouncement(item.id, values);
+  async function editItem(values: APIAnnouncementEdit) {
+    console.log(values);
+
+    const valuesToAPI: APIAnnouncement = {
+      groupId: Number(values.groupId),
+      subject: values.subject,
+      announcementText: values.announcementText,
+    };
+
+    console.log("valuesToAPI", valuesToAPI);
+
+    const updated = await updateAnnouncement(item.id, valuesToAPI);
     mutate(updated);
     form.reset();
     handleClose();
   }
 
+  if (errorItems)
+    return <div>Failed to load groups to announcement data...</div>;
+  if (!allItems && !errorItems) return <Loader></Loader>;
   return (
     <>
       <Modal
@@ -63,13 +102,25 @@ function EditModal({
             placeholder="Enter announcement subject"
             {...form.getInputProps("subject")}
           />
-          <TextInput
-              required
-              mb={12}
-              label="Announcement Text"
-              placeholder="Enter announcement text"
-              {...form.getInputProps("announcementText")}
+          <Textarea
+            required
+            mb={12}
+            label="Announcement Text"
+            placeholder="Enter announcement text"
+            {...form.getInputProps("announcementText")}
           />
+          <Select
+            required
+            label="Group"
+            placeholder="select group"
+            searchable
+            nothingFound="No group to choose"
+            data={allItemsData}
+            value={value}
+            onChange={setValue}
+            {...form.getInputProps("groupId")}
+          />
+          <Space h={"xl"} />
           <Button type="submit" leftIcon={<IconDeviceFloppy />}>
             Save
           </Button>

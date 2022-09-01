@@ -1,13 +1,10 @@
 import { useEffect, useLayoutEffect, useState } from "react";
-import moment from "moment";
 import { useForm } from "@mantine/form";
 import { Button, Loader, Modal, Select, Space } from "@mantine/core";
 import useSWR, { KeyedMutator } from "swr";
 import {
   getAuthorizationToPickupEntries,
   addAuthorizationToPickupEntry,
-  updateAuthorizationToPickupEntry,
-  deleteAuthorizationToPickupEntry,
 } from "../../api/authorization-to-pickup/index";
 import {
   IAuthorizedPerson,
@@ -36,15 +33,15 @@ function AddChildrenModal({
   const [ready, setReady] = useState(false);
   const [open2, setOpen2] = useState(false); //setting modal open state
   const [selected, setSelected] = useState<string[]>([]); //state for selectiong with Chips
-  const [itemEntriesIDs, setItemEntriesIDs] =
-    useState<IAuthorizationToPickup[]>();
+  // const [itemEntriesIDs, setItemEntriesIDs] =
+  //   useState<IAuthorizationToPickup[]>();
   const [value, setValue] = useState<string | null>(null);
 
   useEffect(() => {
     getAuthorizationToPickupEntries()
       .then((entries: IAuthorizationToPickup[]) => {
         let result = entries.filter((el) => el.authorizedPerson.id === item.id);
-        setItemEntriesIDs(result);
+        // setItemEntriesIDs(result);
         let selectedItems = result?.map((x) => {
           return {
             id: x.child.id,
@@ -59,7 +56,7 @@ function AddChildrenModal({
         console.log("---error---", error);
       });
     setReady(true);
-  }, []);
+  }, [item.id]);
 
   interface CustomFormValues {
     childId: string;
@@ -103,12 +100,12 @@ function AddChildrenModal({
   if (errorItems) return <div>Failed to load children to pickup data...</div>;
   //iterate
 
-  interface IItemsChild {
-    id: string;
-    value: string;
-    label: string;
-    disabled: boolean;
-  }
+  // interface IItemsChild {
+  //   id: string;
+  //   value: string;
+  //   label: string;
+  //   disabled: boolean;
+  // }
 
   let allItemsData = allItems?.map((x) => {
     return {
