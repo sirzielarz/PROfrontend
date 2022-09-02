@@ -11,7 +11,10 @@ export function apiPost(uri: string, body?: any) {
 
 export function apiPostFile(uri: string, body?: any) {
   const flag = true;
-  return fetchWrapper(uri, "POST", body, flag);
+  const formData = new FormData();
+  formData.append("file", body.file, body.file.fileName);
+  formData.append("id", body.id);
+  return fetchWrapper(uri, "POST", formData, flag);
 }
 
 export function apiPut(uri: string, body?: any) {
@@ -49,18 +52,19 @@ function fetchWrapper(
     headers["Content-Type"] = "application/json";
   }
 
-  if (flag) {
-    console.log("found a flag");
-    headers["Content-Type"] = "multipart/form-data";
-  }
-
   if (token) {
     headers["Authorization"] = `Bearer ${token}`;
   }
 
+  if (flag) {
+    headers["Accept"] = "application/json";
+    delete headers["Content-Type"];
+    console.log(headers.hasOwnProperty("Content-Type"));
+  }
+
   return fetch(uri, {
     method,
-    body: JSON.stringify(body),
+    body: flag ? body : JSON.stringify(body),
     headers,
   }).then(handleResponse);
 }

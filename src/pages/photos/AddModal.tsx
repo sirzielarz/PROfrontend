@@ -75,9 +75,10 @@ function AddItemModal({
       id: Number(values.groupId),
       file: values.file,
     };
+
     console.log("values-to-API", valuesToAPI);
 
-    const updated = await addPhoto(values.file);
+    const updated = await addPhoto(valuesToAPI);
     mutate(updated);
     form.reset();
     setOpen(false);
