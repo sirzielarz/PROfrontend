@@ -3,15 +3,17 @@ import { fetcher } from "../../api/fetch";
 import { Alert, Button, Chip, Grid, Loader, Stack } from "@mantine/core";
 import { IGroup, IPresence } from "../../interfaces/Entities";
 import { useEffect, useState } from "react";
-import { getPrettyDate, formatDateToPattern } from "./../../helpers/utils";
-
+import { getPrettyDate, formatDateToPattern } from "../../helpers/utils";
 import { sortChildren } from "../../helpers/utils";
 import { Title, Text, Space } from "@mantine/core";
 import { Calendar } from "@mantine/dates";
 import { IconAlertCircle, IconPencil } from "@tabler/icons";
 import EditPresenceModal from "./EditPresenceModal";
+import useAuth from "../../api/useAuth";
 
-const PresencePage = () => {
+const Page = () => {
+  const { isAdmin, isParent } = useAuth();
+
   const [groupIDSelected, setGroupIDSelected] = useState<string>();
   const [groupNameSelected, setGroupNameSelected] = useState<string>();
   const [dateSelected, setDateSelected] = useState<Date | null>(new Date());
@@ -19,7 +21,12 @@ const PresencePage = () => {
     useState<IPresence[]>();
   const [editingPresence, setEditingPresence] = useState(false);
 
-  //get groups
+  // conditionally fetch
+  const { data: myData, error } = useSWR(
+    isParent ? "/api/parent/my-data" : "/api/teacher/my-data",
+    fetcher
+  );
+
   const { data: dataGroups, error: errorGroups } = useSWR<IGroup[], string>(
     `${process.env.REACT_APP_URL}/api/group`,
     fetcher
@@ -65,10 +72,7 @@ const PresencePage = () => {
     const chipsItems = data.map((item) => {
       return (
         <>
-          <Chip
-            key={"group_" + item.id + "_" + item.groupName}
-            value={String(item.id)}
-          >
+          <Chip key={"group_" + item.id} value={String(item.id)}>
             {item.groupName}
           </Chip>
         </>
@@ -76,7 +80,6 @@ const PresencePage = () => {
     });
     return (
       <Chip.Group
-        key={"Test"}
         multiple={false}
         value={groupIDSelected}
         onChange={setGroupIDSelected}
@@ -102,7 +105,7 @@ const PresencePage = () => {
               </div> */}
             </>
           ) : (
-            <Text>No groups available.</Text>
+            <Text>No recent conversations.</Text>
           )
         ) : (
           <Loader />
@@ -110,6 +113,7 @@ const PresencePage = () => {
       </Grid.Col>
       <Grid.Col xs={12} sm={12} md={4}>
         <Title order={3}>Date:</Title>
+        <Text>Welcome </Text>
         <Calendar value={dateSelected} onChange={setDateSelected} />
         {/* <Space h="xl" />
         <Text size={"lg"} weight={"bold"}>
@@ -118,7 +122,7 @@ const PresencePage = () => {
         <div className="jsonout">{JSON.stringify(dataPresence, null, 4)}</div> */}
       </Grid.Col>
       <Grid.Col sm={3} md={4}>
-        <Title order={3}>Presence:</Title>
+        <Title order={3}>Messages:</Title>
         <Space h="xs" />
 
         {groupIDSelected && dateSelected ? (
@@ -130,8 +134,8 @@ const PresencePage = () => {
             <>
               {/* ///////// */}
               <Text>
-                Presence on <b>{getPrettyDate(dateSelected)}</b> for group{" "}
-                <b>{groupNameSelected}</b>
+                Conversation with on <b>{getPrettyDate(dateSelected)}</b> for
+                group <b>{groupNameSelected}</b>
               </Text>
               <Space h="xl" />
               <Chip.Group>
@@ -169,7 +173,7 @@ const PresencePage = () => {
                   leftIcon={<IconPencil size={16} stroke={1.5} />}
                   onClick={() => setEditingPresence(true)}
                 >
-                  Edit this presence
+                  Write a message
                 </Button>
               )}
 
@@ -188,30 +192,36 @@ const PresencePage = () => {
                   />
                 )}
 
-              {/* <Space h="xl" />
+              <Space h="xl" />
               <Text size={"lg"} weight={"bold"}>
                 Filtered fetched data: {}
-              </Text> */}
-              {/* <div className="jsonout">
+              </Text>
+              <div className="jsonout">
                 {JSON.stringify(dataPresenceFiltered, null, 4)}
-              </div> */}
+              </div>
 
               {/* // eswssssssssssssssssssssssssss */}
             </>
           )
         ) : (
-          <Alert
-            icon={<IconAlertCircle size={16} />}
-            title="Waiting for data..."
-            color="teal"
-            radius="md"
-            variant="outline"
-          >
-            Please select group and date to display presence data
-          </Alert>
+          <>
+            <Alert
+              icon={<IconAlertCircle size={16} />}
+              title="Waiting for data..."
+              color="teal"
+              radius="md"
+              variant="outline"
+            >
+              Please select person to display conversation
+            </Alert>
+            <Text>APIfetched data:</Text>
+            <div className="jsonout">
+              {JSON.stringify(myData, null, 4)}
+            </div>{" "}
+          </>
         )}
       </Grid.Col>
     </Grid>
   );
 };
-export default PresencePage;
+export default Page;

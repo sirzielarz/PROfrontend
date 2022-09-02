@@ -27,6 +27,7 @@ import AuthorizedPage from "../pages/authorized/Page";
 import AnnouncementsPage from "../pages/announcements/Page";
 import PresencePage from "../pages/presence/Page";
 import PhotoAlbumsPage from "../pages/photoAlbums/Page";
+import MessagesPage from "../pages/private-messages/Page";
 
 const AppShellComponent = () => {
   const { loaded } = useAuth();
@@ -117,6 +118,7 @@ const AppShellComponent = () => {
               <Route path="/" key={"home"} element={<HomePage />} />
               <Route path="/presence" element={<PresencePage />} />
               <Route path="/photo-albums" element={<PhotoAlbumsPage />} />
+              <Route path="/messages" element={<MessagesPage />} />
             </Route>
             {/*catch all other*/}
             <Route path="*" element={<MissingPathPage />} />

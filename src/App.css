@@ -1,5 +1,4 @@
 .jsonout{
-    white-space:initial;;
-    max-width: 500px;
-    display: block;
+    white-space:pre;
+
 }

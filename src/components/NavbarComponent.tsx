@@ -24,6 +24,7 @@ import {
   IconChecklist,
   IconAlertCircle,
   IconAlbum,
+  IconMessage2,
 } from "@tabler/icons";
 
 const useStyles = createStyles((theme, _params, getRef) => {
@@ -147,6 +148,15 @@ function NavbarComponent(props: Omit<NavbarProps, "children">) {
               component={Link}
               to="/presence"
               active={location.pathname === "/presence"}
+              onClick={clickHandler}
+            />
+            <NavLink
+              label="Messages"
+              key="/messages"
+              icon={<IconMessage2 />}
+              component={Link}
+              to="/messages"
+              active={location.pathname === "/messages"}
               onClick={clickHandler}
             />
             <NavLink

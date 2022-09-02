@@ -143,7 +143,7 @@ const AuthorizedPage = () => {
           onClick={() => setShowAddItem(true)}
           leftIcon={<IconCirclePlus />}
         >
-          Add parent
+          Add authorized person
         </Button>
       }
     </>
