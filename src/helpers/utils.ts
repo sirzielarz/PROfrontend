@@ -8,6 +8,8 @@ import {
   additionalActivityDTO,
   additionalActivitiesDTO,
   AuthorizationChildToPickUpDTO,
+  PhotoDTO,
+  IEntity,
 } from "../interfaces/Entities";
 export interface IItems {
   id: string;
@@ -17,6 +19,12 @@ export interface IItems {
 export interface IItemsToSelect {
   value: string;
   label: string;
+}
+
+export function sortByID(a: IEntity, b: IEntity) {
+  const x = a.id;
+  const y = b.id;
+  return ("" + x).localeCompare("" + y);
 }
 
 export function sortByValue(a: IItems, b: IItems) {

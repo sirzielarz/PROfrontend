@@ -59,7 +59,6 @@ function fetchWrapper(
   if (flag) {
     headers["Accept"] = "application/json";
     delete headers["Content-Type"];
-    console.log(headers.hasOwnProperty("Content-Type"));
   }
 
   return fetch(uri, {

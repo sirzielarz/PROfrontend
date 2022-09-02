@@ -1,12 +1,12 @@
 import useSWR from "swr";
 import { fetcher } from "../../api/fetch";
-import { Button, Loader } from "@mantine/core";
-import { IPhotoAlbum, IPhoto } from "../../interfaces/Entities";
+import { Button, Loader, Stack } from "@mantine/core";
+import { IPhotoAlbum, IPhoto, PhotoDTO } from "../../interfaces/Entities";
 import { useState } from "react";
 import AddModal from "./AddModal";
 import EditModal from "./EditModal";
 import DeleteModal from "./DeleteModal";
-import { sortChildren, sortGroups } from "../../helpers/utils";
+import { sortByID } from "../../helpers/utils";
 import {
   Title,
   Text,
@@ -23,6 +23,8 @@ import {
   IconDots,
   IconListDetails,
   IconCirclePlus,
+  IconPlus,
+  IconSearch,
 } from "@tabler/icons";
 // import EditGroupsModal from "./EditGroupsModal";
 import EditParentsModal from "./EditParentsModal";
@@ -30,18 +32,28 @@ import EditParentsModal from "./EditParentsModal";
 import DetailsModal from "./DetailsModal";
 import EditGroupsModal from "./EditGroupsModal";
 import EditActivitiesModal from "./EditActivitiesModal";
+import AddPhotoModal from "./AddPhotoModal";
+import DeletePhotoModal from "./DeletePhotoModal";
 
 const PhotoAlbumsPage = () => {
   const [showAddItem, setShowAddItem] = useState(false);
   const [editingItem, setEditingItem] = useState<IPhotoAlbum | null>(null);
   const [detailsItem, setDetailsItem] = useState<IPhotoAlbum | null>(null);
   const [deletingItem, setDeletingItem] = useState<IPhotoAlbum | null>(null);
+
   const [editingGroupsItem, setEditingGroupsItem] =
     useState<IPhotoAlbum | null>(null);
   const [editingParentsItem, setEditingParentsItem] =
     useState<IPhotoAlbum | null>(null);
   const [editingActivitiesItem, setEditingActivitiesItem] =
     useState<IPhotoAlbum | null>(null);
+
+  const [addingPhotoModal, setAddingPhotoModal] = useState<IPhotoAlbum | null>(
+    null
+  );
+  const [deletingPhotoModal, setDeletingPhotoModal] = useState<PhotoDTO | null>(
+    null
+  );
 
   const { data, error, mutate } = useSWR<IPhotoAlbum[], string>(
     `${process.env.REACT_APP_URL}/api/photo-album`,
@@ -66,10 +78,12 @@ const PhotoAlbumsPage = () => {
               setEditingParentsItem={setEditingParentsItem}
               setEditingGroupsItem={setEditingGroupsItem}
               setEditingActivitiesItem={setEditingActivitiesItem}
+              setAddingPhotoModal={setAddingPhotoModal}
+              setDeletingPhotoModal={setDeletingPhotoModal}
             />
           </>
         ) : (
-          <Text>No photoalbums exist.</Text>
+          <Text>No photo albums exist.</Text>
         )
       ) : (
         <Loader />
@@ -98,6 +112,23 @@ const PhotoAlbumsPage = () => {
           handleClose={() => setDetailsItem(null)}
         />
       )}
+
+      {addingPhotoModal && (
+        <AddPhotoModal
+          item={addingPhotoModal}
+          mutate={mutate}
+          handleClose={() => setAddingPhotoModal(null)}
+        />
+      )}
+
+      {deletingPhotoModal && (
+        <DeletePhotoModal
+          item={deletingPhotoModal}
+          mutate={mutate}
+          handleClose={() => setDeletingPhotoModal(null)}
+        />
+      )}
+
       {editingGroupsItem && (
         <EditGroupsModal
           item={editingGroupsItem}
@@ -141,6 +172,8 @@ export const ItemsTable = ({
   setEditingParentsItem,
   setEditingGroupsItem,
   setEditingActivitiesItem,
+  setAddingPhotoModal,
+  setDeletingPhotoModal,
 }: {
   data: IPhotoAlbum[];
   setEditingItem: (arg0: IPhotoAlbum) => void;
@@ -149,6 +182,8 @@ export const ItemsTable = ({
   setEditingParentsItem: (arg0: IPhotoAlbum) => void;
   setEditingGroupsItem: (arg0: IPhotoAlbum) => void;
   setEditingActivitiesItem: (arg0: IPhotoAlbum) => void;
+  setAddingPhotoModal: (arg0: IPhotoAlbum) => void;
+  setDeletingPhotoModal: (arg0: PhotoDTO) => void;
 }) => {
   const rows = data.map((item: IPhotoAlbum) => (
     <tr key={item.id}>
@@ -176,23 +211,46 @@ export const ItemsTable = ({
           </>
         )}
       </td>
-      {/* <td key={item.id}>
-        <Text size="sm">
-          {item.parents?.map((p, i) => (
-            <Text span key={p.id}>
-              <>
-                {`${p.surname} ${p.name}`}
-                {i + 1 < item.parents?.length ? ", " : ""}
-              </>
-            </Text>
+      <td key={item.id} align={"left"}>
+        <Stack align="left" spacing="xs">
+          {item.photos.sort(sortByID).map((x, i) => (
+            <Group>
+              <Text size="xs">
+                <Group spacing="xs">
+                  <ActionIcon
+                    size={"xs"}
+                    color={"blue"}
+                    component="a"
+                    href={x.url}
+                    target="_blank"
+                  >
+                    <IconSearch size={"xs"} />
+                  </ActionIcon>
+
+                  <ActionIcon size={"xs"}>
+                    <IconTrash
+                      size={"xs"}
+                      color={"red"}
+                      onClick={() => {
+                        setDeletingPhotoModal(x);
+                      }}
+                    />
+                  </ActionIcon>
+                </Group>
+              </Text>
+              <Text span inline weight={650}>
+                {`ID: ${x.id} ${x.fileName}`}
+              </Text>
+            </Group>
           ))}
-        </Text>
+        </Stack>
+        <Space h={"xs"} />
         <Text size="xs" color="dimmed">
-          {item.parents.length
-            ? `Total: ${item.parents.length}`
-            : "No parents added"}
+          {item.photos.length
+            ? `Total: ${item.photos.length}`
+            : "No photos added"}
         </Text>
-      </td> */}
+      </td>
       <td>
         <Group spacing={0} position="right">
           <Menu withinPortal transition="pop" withArrow position="left">
@@ -214,12 +272,12 @@ export const ItemsTable = ({
               >
                 Edit photo album data
               </Menu.Item>
-              {/* <Menu.Item
-                icon={<IconPencil size={16} stroke={1.5} />}
-                onClick={() => setPasswordItem(item)}
+              <Menu.Item
+                icon={<IconPlus size={16} stroke={1.5} />}
+                onClick={() => setAddingPhotoModal(item)}
               >
-                Reset password
-              </Menu.Item> */}
+                Add photo to album
+              </Menu.Item>
               {/* <Menu.Item
                 icon={<IconPencil size={16} stroke={1.5} />}
                 onClick={() => setEditingGroupsItem(item)}
@@ -258,13 +316,13 @@ export const ItemsTable = ({
           <tr>
             <th style={{ textAlign: "left" }}>Album name</th>
             <th style={{ textAlign: "left" }}>Group</th>
-            {/* <th style={{ textAlign: "left" }}>Parents</th> */}
-            {/* <th style={{ textAlign: "left" }}>Children</th> */}
+            <th style={{ textAlign: "left" }}>Photos</th>
             <th style={{ textAlign: "right" }}>Actions</th>
           </tr>
         </thead>
         <tbody>{rows}</tbody>
       </Table>
+      {/* <div className="jsonout">{JSON.stringify(data, null, 4)}</div> */}
     </ScrollArea>
   );
 };

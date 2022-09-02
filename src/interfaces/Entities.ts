@@ -303,6 +303,7 @@ export interface APIPhotoAlbumEdit {
 
 export interface PhotoDTO extends IEntity {
   fileName: string;
+  url: string;
 }
 
 // api/photo-album

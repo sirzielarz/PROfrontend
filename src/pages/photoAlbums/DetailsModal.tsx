@@ -1,20 +1,9 @@
 import { useLayoutEffect, useState } from "react";
 import { useForm } from "@mantine/form";
-import {
-  Button,
-  Checkbox,
-  Grid,
-  Modal,
-  PasswordInput,
-  Popover,
-  Space,
-  TextInput,
-} from "@mantine/core";
+import { Button, Modal, Space, TextInput } from "@mantine/core";
 import { KeyedMutator } from "swr";
-import { editChild } from "../../api/child/index";
 import { APIPhotoAlbum, IPhotoAlbum } from "../../interfaces/Entities";
 import { IconArrowBack, IconEdit } from "@tabler/icons";
-import { validatePesel } from "../../helpers/utils";
 
 function DetailsModal({
   item,
@@ -79,9 +68,9 @@ function DetailsModal({
           <TextInput
             disabled
             mb={12}
-            label="Zip code"
-            placeholder="zip code"
-            {...form.getInputProps("address.zipCode")}
+            label="Group"
+            placeholder="enter group"
+            {...form.getInputProps("groupId")}
           />
 
           <Space h="lg" />

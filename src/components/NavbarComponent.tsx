@@ -159,15 +159,7 @@ function NavbarComponent(props: Omit<NavbarProps, "children">) {
               active={location.pathname === "/photo-albums"}
               onClick={clickHandler}
             />
-            <NavLink
-              label="Photos"
-              key="/photos"
-              icon={<IconPhoto />}
-              component={Link}
-              to="/photos"
-              active={location.pathname === "/photos"}
-              onClick={clickHandler}
-            />
+
             {/* {teachers and admin links start} */}
             {user.roles?.includes("teacher") ||
             user.roles?.includes("admin") ? (

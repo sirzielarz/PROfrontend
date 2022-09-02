@@ -27,7 +27,6 @@ import AuthorizedPage from "../pages/authorized/Page";
 import AnnouncementsPage from "../pages/announcements/Page";
 import PresencePage from "../pages/presence/Page";
 import PhotoAlbumsPage from "../pages/photoAlbums/Page";
-import PhotosPage from "../pages/photos/Page";
 
 const AppShellComponent = () => {
   const { loaded } = useAuth();
@@ -108,7 +107,6 @@ const AppShellComponent = () => {
               <Route path="/activities" element={<ActivitiesPage />} />
               <Route path="/authorized" element={<AuthorizedPage />} />
               <Route path="/announcements" element={<AnnouncementsPage />} />
-              <Route path="/photos" element={<PhotosPage />} />
             </Route>
 
             <Route
