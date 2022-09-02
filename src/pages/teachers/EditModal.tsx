@@ -1,14 +1,6 @@
 import { useLayoutEffect, useState } from "react";
 import { useForm } from "@mantine/form";
-import {
-  Button,
-  Checkbox,
-  Modal,
-  PasswordInput,
-  Popover,
-  Space,
-  TextInput,
-} from "@mantine/core";
+import { Button, Checkbox, Modal, Space, TextInput } from "@mantine/core";
 import { KeyedMutator } from "swr";
 import { editTeacher } from "../../api/teacher/index";
 import { APITeacherPUT, ITeacher } from "../../interfaces/Entities";

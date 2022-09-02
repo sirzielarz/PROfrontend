@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useState } from "react";
 import { useForm } from "@mantine/form";
-import { Button, Chip, Loader, Modal, Space, TextInput } from "@mantine/core";
+import { Button, Chip, Loader, Modal } from "@mantine/core";
 import useSWR, { KeyedMutator } from "swr";
 import {
   getTeachersGroups,
@@ -55,6 +55,7 @@ function EditTeachersModal({
         console.log("---error---", error);
       });
     setReady(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   //form
   const form = useForm({
@@ -74,15 +75,15 @@ function EditTeachersModal({
     const toAdd: string[] = values.formSelectedIDs.filter(
       (el) => !initialData.includes(el)
     );
-    toAdd.map((x) => {
+    toAdd.forEach((x) => {
       const updated = addGroupTeacher(item.id, Number(x));
       mutate(updated);
     });
-    toRemove.map((x) => {
+    toRemove.forEach((x) => {
       const entryToDelete = groupEntriesIDs?.filter(
         (el) => el.teacher.id === Number(x)
       );
-      entryToDelete?.map((x) => {
+      entryToDelete?.forEach((x) => {
         const updated = deleteGroupTeacher(x.id);
         mutate(updated);
       });
@@ -101,17 +102,12 @@ function EditTeachersModal({
   if (errorItems) return <div>Failed to load teachers data...</div>;
   //iterate
 
-  interface IItems {
-    id: string;
-    value: string;
-  }
-  console.log("allItems", allItems);
   let allItemsData = allItems?.map((x) => {
     return { id: `${x.id}`, value: `${x.surname} ${x.name}` };
   });
   //sort items data
   allItemsData?.sort(sortByValue);
-  console.log("allItemsData", allItemsData);
+
   return (
     <>
       <Modal

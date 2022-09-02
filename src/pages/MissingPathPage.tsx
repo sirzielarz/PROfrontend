@@ -1,11 +1,4 @@
-import {
-  Text,
-  Paper,
-  PaperProps,
-  Container,
-  Title,
-  Space,
-} from "@mantine/core";
+import { Text, PaperProps, Container, Title, Space } from "@mantine/core";
 
 const MissingPathPage = (props: PaperProps) => {
   return (

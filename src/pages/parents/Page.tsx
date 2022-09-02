@@ -21,8 +21,6 @@ import {
   IconPencil,
   IconTrash,
   IconDots,
-  IconView360,
-  IconDetails,
   IconListDetails,
   IconCirclePlus,
 } from "@tabler/icons";
@@ -30,7 +28,6 @@ import {
 import EditChildrenModal from "./EditChildrenModal";
 import ResetPasswordModal from "./ResetPasswordModal";
 import DetailsModal from "./DetailsModal";
-import { isTemplateExpression } from "typescript";
 
 const ParentsPage = () => {
   const [showAddItem, setShowAddItem] = useState(false);
@@ -47,7 +44,6 @@ const ParentsPage = () => {
     `${process.env.REACT_APP_URL}/api/parent`,
     fetcher
   );
-  //console.log("out", data);
 
   return (
     <>

@@ -1,6 +1,6 @@
 import useSWR from "swr";
 import { fetcher } from "../../api/fetch";
-import { Button, List, Loader, Stack } from "@mantine/core";
+import { Button, Loader, Stack } from "@mantine/core";
 import {
   IAuthorizedPerson,
   AuthorizationChildToPickUpDTO,
@@ -9,7 +9,7 @@ import { useState } from "react";
 import AddModal from "./AddModal";
 import EditModal from "./EditModal";
 import DeleteModal from "./DeleteModal";
-import { sortAuthorized, sortChildren } from "../../helpers/utils";
+import { sortAuthorized } from "../../helpers/utils";
 import {
   Title,
   Text,
@@ -24,18 +24,14 @@ import {
   IconPencil,
   IconTrash,
   IconDots,
-  IconView360,
-  IconDetails,
   IconListDetails,
   IconCirclePlus,
   IconPlus,
   IconSettings,
-  IconDatabase,
 } from "@tabler/icons";
 import EditChildrenModal from "./EditChildrenModal";
 // import ResetPasswordModal from "./ResetPasswordModal";
 import DetailsModal from "./DetailsModal";
-import { isTemplateExpression } from "typescript";
 import AddChildrenModal from "./AddChildrenModal";
 import DeleteChildrenModal from "./DeleteChildrenModal";
 
@@ -52,8 +48,6 @@ const AuthorizedPage = () => {
   );
   const [addChildrenItem, setAddChildrenItem] =
     useState<IAuthorizedPerson | null>(null);
-
-  const [selectedEntry, setSelectedEntry] = useState<number | null>(null);
 
   const [editingPersonItem, setEditingPersonItem] =
     useState<IAuthorizedPerson | null>(null);
@@ -78,7 +72,6 @@ const AuthorizedPage = () => {
           <>
             <ItemsTable
               data={data}
-              setSelectedEntry={setSelectedEntry}
               setEditingItem={setEditingItem}
               setDeletingItem={setDeletingItem}
               setDetailsItem={setDetailsItem}
@@ -161,7 +154,7 @@ export default AuthorizedPage;
 export const ItemsTable = ({
   data,
   setEditingItem,
-  setSelectedEntry,
+
   setDeletingItem,
   setDetailsItem,
   setAddChildrenItem,
@@ -171,7 +164,7 @@ export const ItemsTable = ({
 }: {
   data: IAuthorizedPerson[];
   setEditingItem: (arg0: IAuthorizedPerson) => void;
-  setSelectedEntry: (arg0: number) => void;
+
   setDeletingItem: (arg0: IAuthorizedPerson) => void;
   setDetailsItem: (arg0: IAuthorizedPerson) => void;
   setAddChildrenItem: (arg0: IAuthorizedPerson) => void;

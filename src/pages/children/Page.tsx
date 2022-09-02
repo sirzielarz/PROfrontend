@@ -6,7 +6,7 @@ import { useState } from "react";
 import AddModal from "./AddModal";
 import EditModal from "./EditModal";
 import DeleteModal from "./DeleteModal";
-import { sortChildren, sortGroups } from "../../helpers/utils";
+import { sortGroups } from "../../helpers/utils";
 import {
   Title,
   Text,
@@ -24,9 +24,7 @@ import {
   IconListDetails,
   IconCirclePlus,
 } from "@tabler/icons";
-// import EditGroupsModal from "./EditGroupsModal";
 import EditParentsModal from "./EditParentsModal";
-// import ResetPasswordModal from "./ResetPasswordModal";
 import DetailsModal from "./DetailsModal";
 import EditGroupsModal from "./EditGroupsModal";
 import EditActivitiesModal from "./EditActivitiesModal";
@@ -49,7 +47,6 @@ const ChildrenPage = () => {
     `${process.env.REACT_APP_URL}/api/child`,
     fetcher
   );
-  //console.log("out", data);
 
   return (
     <>

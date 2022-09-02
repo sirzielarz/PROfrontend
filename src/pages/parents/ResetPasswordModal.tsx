@@ -1,36 +1,11 @@
 import { useForm } from "@mantine/form";
-import {
-  Button,
-  Checkbox,
-  Modal,
-  PasswordInput,
-  Space,
-  TextInput,
-} from "@mantine/core";
+import { Button, Modal, PasswordInput, Space } from "@mantine/core";
 import { KeyedMutator } from "swr";
 import { resetParentPassword } from "../../api/parent/index";
-import {
-  IParent,
-  APIParentPOST,
-  ResetPassword,
-  APIResetPassword,
-} from "../../interfaces/Entities";
+import { IParent, ResetPassword } from "../../interfaces/Entities";
 
 import { useLayoutEffect, useState } from "react";
 import { IconDeviceFloppy } from "@tabler/icons";
-
-// interface FormValues {
-//   name: string; // regular field, same as inferred type
-//   role: "user" | "admin"; // union, more specific than inferred string type
-
-//   // values that may be undefined or null
-//   // cannot be correctly inferred in strict mode
-//   age: number | undefined;
-//   registeredAt: Date | null;
-
-//   // Arrays that are empty cannot be inferred correctly
-//   jobs: string[];
-// }
 
 function ResetPasswordModal({
   item,

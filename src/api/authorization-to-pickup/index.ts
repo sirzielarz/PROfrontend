@@ -1,7 +1,4 @@
-import {
-  APIAuthorizationToPickup,
-  IAuthorizationToPickup,
-} from "../../interfaces/Entities";
+import { APIAuthorizationToPickup } from "../../interfaces/Entities";
 import { apiDelete, apiGet, apiPost, apiPut } from "./../fetch";
 //group-entry
 export async function getAuthorizationToPickupEntries(): Promise<any> {

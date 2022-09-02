@@ -1,15 +1,6 @@
 import { useLayoutEffect, useState } from "react";
 import { useForm } from "@mantine/form";
-import {
-  Button,
-  Checkbox,
-  Grid,
-  Modal,
-  PasswordInput,
-  Popover,
-  Space,
-  TextInput,
-} from "@mantine/core";
+import { Button, Grid, Modal, Space, TextInput } from "@mantine/core";
 import { KeyedMutator } from "swr";
 import { editChild } from "../../api/child/index";
 import { APIChild, IChild } from "../../interfaces/Entities";
@@ -58,7 +49,7 @@ function EditModal({
           ? "enter max 50 characters"
           : null,
       pesel: (value) =>
-        value.length != 11
+        value.length !== 11
           ? "pesel must have 11 characters"
           : !/^\d+$/.test(value)
           ? "pesel should contain only digits"

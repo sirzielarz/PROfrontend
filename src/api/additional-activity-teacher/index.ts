@@ -1,4 +1,4 @@
-import { apiDelete, apiGet, apiPost, apiPut } from "./../fetch";
+import { apiDelete, apiGet, apiPost } from "./../fetch";
 
 //additional-activity-teacher
 export async function getActivitiesTeachers(): Promise<any> {

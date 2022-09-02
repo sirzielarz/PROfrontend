@@ -2,12 +2,11 @@ import { useLayoutEffect, useState } from "react";
 import { useForm } from "@mantine/form";
 import { Button, Modal, Space, TextInput } from "@mantine/core";
 import { KeyedMutator } from "swr";
-import { editAuthorizedPerson } from "../../api/authorized-person/index";
 import {
   APIAuthorizedPerson,
   IAuthorizedPerson,
 } from "../../interfaces/Entities";
-import { IconArrowBack, IconBackspace, IconEdit } from "@tabler/icons";
+import { IconArrowBack, IconEdit } from "@tabler/icons";
 
 function DetailsModal({
   item,

@@ -1,14 +1,9 @@
 import {
   ChildrenDTO,
-  IPerson,
-  ITeacher,
   TeachersDTO,
   GroupsDTO,
-  IActivity,
-  additionalActivityDTO,
   additionalActivitiesDTO,
   AuthorizationChildToPickUpDTO,
-  PhotoDTO,
   IEntity,
 } from "../interfaces/Entities";
 export interface IItems {

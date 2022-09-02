@@ -1,7 +1,7 @@
 import useSWR from "swr";
 import { fetcher } from "../../api/fetch";
 import { Button, Loader, Stack } from "@mantine/core";
-import { IPhotoAlbum, IPhoto, PhotoDTO } from "../../interfaces/Entities";
+import { IPhotoAlbum, PhotoDTO } from "../../interfaces/Entities";
 import { useState } from "react";
 import AddModal from "./AddModal";
 import EditModal from "./EditModal";

@@ -1,8 +1,5 @@
 import { apiDelete, apiGet, apiPost, apiPut } from "./../fetch";
-import {
-  APIAuthorizedPerson,
-  IAuthorizedPerson,
-} from "../../interfaces/Entities";
+import { APIAuthorizedPerson } from "../../interfaces/Entities";
 //authorized-person
 export async function getAuthorizedPersons(): Promise<any> {
   return await apiGet(`${process.env.REACT_APP_URL}/api/authorized-person/`);

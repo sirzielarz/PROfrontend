@@ -23,7 +23,6 @@ import {
   IconTransferOut,
   IconChecklist,
   IconAlertCircle,
-  IconPhoto,
   IconAlbum,
 } from "@tabler/icons";
 

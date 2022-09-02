@@ -1,4 +1,4 @@
-import { apiDelete, apiGet, apiPost, apiPut } from "./fetch";
+import { apiPost } from "./fetch";
 
 export const API_URL = "http://localhost:8080";
 

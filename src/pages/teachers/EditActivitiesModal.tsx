@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useState } from "react";
 import { useForm } from "@mantine/form";
-import { Button, Chip, Loader, Modal, Space, TextInput } from "@mantine/core";
+import { Button, Chip, Loader, Modal } from "@mantine/core";
 import useSWR, { KeyedMutator } from "swr";
 import {
   getActivitiesTeachers,
@@ -10,7 +10,6 @@ import {
 import {
   IActivity,
   IActivityTeacher,
-  IPerson,
   ITeacher,
 } from "../../interfaces/Entities";
 import { sortByValue } from "../../helpers/utils";
@@ -58,6 +57,7 @@ function EditTeacherActivitiesModal({
         console.log("---error---", error);
       });
     setReady(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   //form
   const form = useForm({
@@ -67,24 +67,23 @@ function EditTeacherActivitiesModal({
   });
   //form submit function
   async function editActivityEntries(values: { formSelectedIDs: string[] }) {
-    // console.log("itemEntriesIDs", itemEntriesIDs);
     const toRemove: string[] = initialData.filter(
       (el) => !values.formSelectedIDs.includes(el)
     );
-    // console.log("toRemove", toRemove);
+
     const toAdd: string[] = values.formSelectedIDs.filter(
       (el) => !initialData.includes(el)
     );
-    // console.log("toAdd", toAdd);
-    toAdd.map((x) => {
+
+    toAdd.forEach((x) => {
       const updated = addActivityTeacher(Number(x), item.id);
       mutate(updated);
     });
-    toRemove.map((x) => {
+    toRemove.forEach((x) => {
       const entryToDelete = itemEntriesIDs?.filter(
         (el) => el.additionalActivity.id === Number(x)
       );
-      entryToDelete?.map((x) => {
+      entryToDelete?.forEach((x) => {
         const updated = deleteActivityTeacher(x.id);
         mutate(updated);
       });
@@ -103,17 +102,12 @@ function EditTeacherActivitiesModal({
   if (errorItems) return <div>Failed to load teacher's actvities data...</div>;
   //iterate
 
-  interface IItems {
-    id: string;
-    value: string;
-  }
-  console.log("allItems", allItems);
   let allItemsData = allItems?.map((x) => {
     return { id: `${x.id}`, value: `${x.activityName}` };
   });
   //sort items data
   allItemsData?.sort(sortByValue);
-  console.log("allItemsData", allItemsData);
+
   return (
     <>
       <Modal

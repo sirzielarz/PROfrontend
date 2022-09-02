@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useState } from "react";
 import { useForm } from "@mantine/form";
-import { Button, Chip, Loader, Modal, Space, TextInput } from "@mantine/core";
+import { Button, Chip, Loader, Modal } from "@mantine/core";
 import useSWR, { KeyedMutator } from "swr";
 import {
   getActivitiesTeachers,
@@ -41,7 +41,7 @@ function EditTeachersModal({
           (el) => el.additionalActivity.id === item.id
         );
         setItemEntriesIDs(result);
-        console.log("result", result);
+
         let selectedItems = result?.map((x) => {
           return {
             id: x.teacher.id,
@@ -59,6 +59,7 @@ function EditTeachersModal({
         console.log("---error---", error);
       });
     setReady(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   //form
   const form = useForm({
@@ -78,15 +79,15 @@ function EditTeachersModal({
     const toAdd: string[] = values.formSelectedIDs.filter(
       (el) => !initialData.includes(el)
     );
-    toAdd.map((x) => {
+    toAdd.forEach((x) => {
       const updated = addActivityTeacher(item.id, Number(x));
       mutate(updated);
     });
-    toRemove.map((x) => {
+    toRemove.forEach((x) => {
       const entryToDelete = itemEntriesIDs?.filter(
         (el) => el.teacher.id === Number(x)
       );
-      entryToDelete?.map((x) => {
+      entryToDelete?.forEach((x) => {
         const updated = deleteActivityTeacher(x.id);
         mutate(updated);
       });
@@ -105,10 +106,6 @@ function EditTeachersModal({
   if (errorItems) return <div>Failed to load teachers data...</div>;
   //iterate
 
-  interface IItems {
-    id: string;
-    value: string;
-  }
   console.log("allItems", allItems);
   let allItemsData = allItems?.map((x) => {
     return { id: `${x.id}`, value: `${x.surname} ${x.name}` };

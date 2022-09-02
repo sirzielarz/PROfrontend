@@ -1,15 +1,6 @@
 import { useLayoutEffect, useState } from "react";
 import { useForm } from "@mantine/form";
-import {
-  Button,
-  Checkbox,
-  Grid,
-  Modal,
-  PasswordInput,
-  Popover,
-  Space,
-  TextInput,
-} from "@mantine/core";
+import { Button, Modal, Space, TextInput } from "@mantine/core";
 import { KeyedMutator } from "swr";
 import { editAuthorizedPerson } from "../../api/authorized-person/index";
 import {

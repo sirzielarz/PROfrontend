@@ -1,5 +1,4 @@
 import { Configuration } from "./Configuration";
-import useSWR from "swr";
 
 export function apiGet(uri: string) {
   return fetchWrapper(uri);

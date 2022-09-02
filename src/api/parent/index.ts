@@ -1,10 +1,5 @@
 import { apiDelete, apiGet, apiPost, apiPut } from "./../fetch";
-import {
-  APIResetPassword,
-  APIParentPOST,
-  APIParentPUT,
-  IParent,
-} from "../../interfaces/Entities";
+import { APIParentPOST, APIParentPUT } from "../../interfaces/Entities";
 //parent
 export async function getParents(): Promise<any> {
   return await apiGet(`${process.env.REACT_APP_URL}/api/parent/`);

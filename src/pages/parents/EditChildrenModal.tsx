@@ -1,18 +1,13 @@
 import { useEffect, useLayoutEffect, useState } from "react";
 import { useForm } from "@mantine/form";
-import { Button, Chip, Loader, Modal, Space, TextInput } from "@mantine/core";
+import { Button, Chip, Loader, Modal } from "@mantine/core";
 import useSWR, { KeyedMutator } from "swr";
 import {
   getParentChildEntries,
   addParentChildEntry,
   deleteParentChildEntry,
 } from "../../api/parent-child/index";
-import {
-  IGroup,
-  IParentChild,
-  IParent,
-  IPerson,
-} from "../../interfaces/Entities";
+import { IParentChild, IParent, IPerson } from "../../interfaces/Entities";
 import { sortByValue } from "../../helpers/utils";
 import { fetcher } from "../../api/fetch";
 import { IconDeviceFloppy } from "@tabler/icons";
@@ -57,6 +52,7 @@ function EditChildrenModal({
         console.log("---error---", error);
       });
     setReady(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   //form
   const form = useForm({
@@ -72,15 +68,15 @@ function EditChildrenModal({
     const toAdd: string[] = values.formSelectedIDs.filter(
       (el) => !initialData.includes(el)
     );
-    toAdd.map((x) => {
+    toAdd.forEach((x) => {
       const updated = addParentChildEntry(item.id, Number(x));
       mutate(updated);
     });
-    toRemove.map((x) => {
+    toRemove.forEach((x) => {
       const entryToDelete = itemEntriesIDs?.filter(
         (el) => el.child.id === Number(x)
       );
-      entryToDelete?.map((x) => {
+      entryToDelete?.forEach((x) => {
         const updated = deleteParentChildEntry(x.id);
         mutate(updated);
       });
@@ -99,10 +95,6 @@ function EditChildrenModal({
   if (errorItems) return <div>Failed to load children data...</div>;
   //iterate
 
-  interface IItems {
-    id: string;
-    value: string;
-  }
   let allItemsData = allItems?.map((x) => {
     return { id: `${x.id}`, value: `${x.surname} ${x.name}` };
   });

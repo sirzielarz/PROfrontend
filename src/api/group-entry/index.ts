@@ -1,4 +1,4 @@
-import { apiDelete, apiGet, apiPost, apiPut } from "./../fetch";
+import { apiDelete, apiGet, apiPost } from "./../fetch";
 //group-entry
 export async function getGroupEntries(): Promise<any> {
   return await apiGet(`${process.env.REACT_APP_URL}/api/group-entry`);

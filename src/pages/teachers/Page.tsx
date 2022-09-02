@@ -6,12 +6,7 @@ import { useState } from "react";
 import AddModal from "./AddModal";
 import EditModal from "./EditModal";
 import DeleteModal from "./DeleteModal";
-import {
-  sortTeachers,
-  sortChildren,
-  sortGroups,
-  sortActivities,
-} from "../../helpers/utils";
+import { sortGroups, sortActivities } from "../../helpers/utils";
 import {
   Title,
   Text,
@@ -50,7 +45,6 @@ const TeachersPage = () => {
     `${process.env.REACT_APP_URL}/api/teacher`,
     fetcher
   );
-  //console.log("out", data);
 
   return (
     <>

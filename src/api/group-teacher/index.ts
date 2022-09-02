@@ -1,4 +1,4 @@
-import { apiDelete, apiGet, apiPost, apiPut } from "./../fetch";
+import { apiDelete, apiGet, apiPost } from "./../fetch";
 
 //group-teacher
 export async function getTeachersGroups(): Promise<any> {

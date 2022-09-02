@@ -1,19 +1,9 @@
 import { useLayoutEffect, useState } from "react";
 import { useForm } from "@mantine/form";
-import {
-  Button,
-  Checkbox,
-  Grid,
-  Modal,
-  PasswordInput,
-  Popover,
-  Space,
-  TextInput,
-} from "@mantine/core";
+import { Button, Checkbox, Grid, Modal, Space, TextInput } from "@mantine/core";
 import { KeyedMutator } from "swr";
-import { editParent } from "../../api/parent/index";
 import { APIParentPUT, IParent } from "../../interfaces/Entities";
-import { IconArrowBack, IconBackspace, IconEdit } from "@tabler/icons";
+import { IconArrowBack, IconEdit } from "@tabler/icons";
 
 function DetailsModal({
   item,

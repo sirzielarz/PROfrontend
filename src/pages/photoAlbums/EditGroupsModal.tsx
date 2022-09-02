@@ -7,14 +7,7 @@ import {
   addGroupEntry,
   deleteGroupEntry,
 } from "../../api/group-entry/index";
-import {
-  IActivity,
-  IActivityTeacher,
-  IGroup,
-  IGroupEntry,
-  IPerson,
-  IPhotoAlbum,
-} from "../../interfaces/Entities";
+import { IGroup, IGroupEntry, IPhotoAlbum } from "../../interfaces/Entities";
 import { sortByValue } from "../../helpers/utils";
 import { fetcher } from "../../api/fetch";
 import { IconDeviceFloppy } from "@tabler/icons";
@@ -59,6 +52,7 @@ function EditGroupsModal({
         console.log("---error---", error);
       });
     setReady(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   //form
   const form = useForm({

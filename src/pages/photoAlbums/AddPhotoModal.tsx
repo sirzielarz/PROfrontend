@@ -1,12 +1,10 @@
 import { useForm } from "@mantine/form";
-import { Button, FileInput, Loader, Modal, Select, Space } from "@mantine/core";
-import useSWR, { KeyedMutator } from "swr";
+import { Button, FileInput, Modal, Space } from "@mantine/core";
+import { KeyedMutator } from "swr";
 import { IPhotoAlbum } from "../../interfaces/Entities";
 import { IconCirclePlus, IconUpload } from "@tabler/icons";
 import { addPhoto } from "../../api/photo";
-import { useLayoutEffect, useRef, useState } from "react";
-import { fetcher } from "../../api/fetch";
-import { sortByValueToSelect } from "../../helpers/utils";
+import { useLayoutEffect, useState } from "react";
 
 function AddPhotoModal({
   item,

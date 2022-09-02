@@ -1,4 +1,4 @@
-import { apiDelete, apiGet, apiPost, apiPut } from "./../fetch";
+import { apiDelete, apiGet, apiPost } from "./../fetch";
 //additional-activity-entry
 export async function getActivityEntries(): Promise<any> {
   return await apiGet(

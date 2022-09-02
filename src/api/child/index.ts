@@ -1,5 +1,5 @@
 import { apiDelete, apiGet, apiPost, apiPut } from "./../fetch";
-import { IChild, APIChild } from "../../interfaces/Entities";
+import { APIChild } from "../../interfaces/Entities";
 //child
 export async function getChildren(): Promise<any> {
   return await apiGet(`${process.env.REACT_APP_URL}/api/child/`);

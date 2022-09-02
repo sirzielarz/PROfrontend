@@ -1,10 +1,5 @@
 import { apiDelete, apiGet, apiPost, apiPut } from "./../fetch";
-import {
-  APIResetPassword,
-  APITeacherPOST,
-  APITeacherPUT,
-  ITeacher,
-} from "../../interfaces/Entities";
+import { APITeacherPOST, APITeacherPUT } from "../../interfaces/Entities";
 
 //teacher
 //@todo set ITeacher type
