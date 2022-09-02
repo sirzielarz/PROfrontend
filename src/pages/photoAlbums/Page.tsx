@@ -220,24 +220,24 @@ export const ItemsTable = ({
               >
                 Reset password
               </Menu.Item> */}
-              <Menu.Item
+              {/* <Menu.Item
                 icon={<IconPencil size={16} stroke={1.5} />}
                 onClick={() => setEditingGroupsItem(item)}
               >
                 Edit groups
-              </Menu.Item>
-              <Menu.Item
+              </Menu.Item> */}
+              {/* <Menu.Item
                 icon={<IconPencil size={16} stroke={1.5} />}
                 onClick={() => setEditingParentsItem(item)}
               >
                 Edit parents
-              </Menu.Item>
-              <Menu.Item
+              </Menu.Item> */}
+              {/* <Menu.Item
                 icon={<IconPencil size={16} stroke={1.5} />}
                 onClick={() => setEditingActivitiesItem(item)}
               >
                 Edit additional activities
-              </Menu.Item>
+              </Menu.Item> */}
               <Menu.Item
                 icon={<IconTrash size={16} stroke={1.5} />}
                 color="red"

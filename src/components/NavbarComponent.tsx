@@ -24,6 +24,7 @@ import {
   IconChecklist,
   IconAlertCircle,
   IconPhoto,
+  IconAlbum,
 } from "@tabler/icons";
 
 const useStyles = createStyles((theme, _params, getRef) => {
@@ -152,38 +153,21 @@ function NavbarComponent(props: Omit<NavbarProps, "children">) {
             <NavLink
               label="Photo albums"
               key="/photo-albums"
-              icon={<IconPhoto />}
+              icon={<IconAlbum />}
               component={Link}
               to="/photo-albums"
               active={location.pathname === "/photo-albums"}
               onClick={clickHandler}
             />
-            {/* {admin links start} */}
-            {user.roles?.includes("admin") ? (
-              <>
-                <NavLink
-                  label="Teachers"
-                  key="/teachers"
-                  icon={<IconSchool />}
-                  component={Link}
-                  to="/teachers"
-                  active={location.pathname === "/teachers"}
-                  onClick={clickHandler}
-                />
-                <NavLink
-                  label="Groups"
-                  key="/groups"
-                  icon={<IconListNumbers />}
-                  component={Link}
-                  to="/groups"
-                  active={location.pathname === "/groups"}
-                  onClick={clickHandler}
-                />
-              </>
-            ) : (
-              <></>
-            )}
-            {/* {admin links end} */}
+            <NavLink
+              label="Photos"
+              key="/photos"
+              icon={<IconPhoto />}
+              component={Link}
+              to="/photos"
+              active={location.pathname === "/photos"}
+              onClick={clickHandler}
+            />
             {/* {teachers and admin links start} */}
             {user.roles?.includes("teacher") ||
             user.roles?.includes("admin") ? (
@@ -238,6 +222,32 @@ function NavbarComponent(props: Omit<NavbarProps, "children">) {
               <></>
             )}
             {/* {teachers and admins links end} */}
+            {/* {admin links start} */}
+            {user.roles?.includes("admin") ? (
+              <>
+                <NavLink
+                  label="Teachers"
+                  key="/teachers"
+                  icon={<IconSchool />}
+                  component={Link}
+                  to="/teachers"
+                  active={location.pathname === "/teachers"}
+                  onClick={clickHandler}
+                />
+                <NavLink
+                  label="Groups"
+                  key="/groups"
+                  icon={<IconListNumbers />}
+                  component={Link}
+                  to="/groups"
+                  active={location.pathname === "/groups"}
+                  onClick={clickHandler}
+                />
+              </>
+            ) : (
+              <></>
+            )}
+            {/* {admin links end} */}
           </Navbar.Section>
         </>
       ) : (

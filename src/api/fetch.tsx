@@ -9,6 +9,11 @@ export function apiPost(uri: string, body?: any) {
   return fetchWrapper(uri, "POST", body);
 }
 
+export function apiPostFile(uri: string, body?: any) {
+  const flag = true;
+  return fetchWrapper(uri, "POST", body, flag);
+}
+
 export function apiPut(uri: string, body?: any) {
   return fetchWrapper(uri, "PUT", body);
 }
@@ -30,13 +35,23 @@ export const fetcher = (url: string) => {
   }).then((r) => r.json());
 };
 
-function fetchWrapper(uri: string, method: string = "GET", body?: any) {
+function fetchWrapper(
+  uri: string,
+  method: string = "GET",
+  body?: any,
+  flag: boolean = false
+) {
   const token = Configuration.getInstance().getToken();
   const headers: HeadersInit = {};
   if (method === "GET") {
     headers["Content-Type"] = "application/x-www-form-urlencoded";
   } else {
     headers["Content-Type"] = "application/json";
+  }
+
+  if (flag) {
+    console.log("found a flag");
+    headers["Content-Type"] = "multipart/form-data";
   }
 
   if (token) {

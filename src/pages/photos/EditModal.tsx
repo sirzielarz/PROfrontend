@@ -69,11 +69,15 @@ function EditModal({
   allItemsData?.sort(sortByValueToSelect);
 
   async function editItem(values: APIAnnouncementEdit) {
+    console.log(values);
+
     const valuesToAPI: APIAnnouncement = {
       groupId: Number(values.groupId),
       subject: values.subject,
       announcementText: values.announcementText,
     };
+
+    console.log("valuesToAPI", valuesToAPI);
 
     const updated = await updateAnnouncement(item.id, valuesToAPI);
     mutate(updated);
