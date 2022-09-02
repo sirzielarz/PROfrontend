@@ -1,18 +1,13 @@
 import { useEffect, useLayoutEffect, useState } from "react";
 import { useForm } from "@mantine/form";
-import { Button, Chip, Loader, Modal, Space, TextInput } from "@mantine/core";
+import { Button, Chip, Loader, Modal } from "@mantine/core";
 import useSWR, { KeyedMutator } from "swr";
 import {
   getParentChildEntries,
   addParentChildEntry,
   deleteParentChildEntry,
 } from "../../api/parent-child/index";
-import {
-  IGroup,
-  IParentChild,
-  IChild,
-  IPerson,
-} from "../../interfaces/Entities";
+import { IParentChild, IChild, IPerson } from "../../interfaces/Entities";
 import { sortByValue } from "../../helpers/utils";
 import { fetcher } from "../../api/fetch";
 import { IconDeviceFloppy } from "@tabler/icons";
@@ -42,8 +37,8 @@ function EditParentsModal({
         setItemEntriesIDs(result);
         let selectedItems = result?.map((x) => {
           return {
-            id: x.child.id,
-            value: `${x.child.name} ${x.child.surname}`,
+            id: x.parent.id,
+            value: `${x.parent.name} ${x.parent.surname}`,
             idParentChildEntry: x.id,
           };
         });
@@ -57,6 +52,7 @@ function EditParentsModal({
         console.log("---error---", error);
       });
     setReady(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   //form
   const form = useForm({
@@ -72,15 +68,16 @@ function EditParentsModal({
     const toAdd: string[] = values.formSelectedIDs.filter(
       (el) => !initialData.includes(el)
     );
-    toAdd.map((x) => {
-      const updated = addParentChildEntry(item.id, Number(x));
+
+    toAdd.forEach((x) => {
+      const updated = addParentChildEntry(Number(x), item.id);
       mutate(updated);
     });
-    toRemove.map((x) => {
+    toRemove.forEach((x) => {
       const entryToDelete = itemEntriesIDs?.filter(
-        (el) => el.child.id === Number(x)
+        (el) => el.parent.id === Number(x)
       );
-      entryToDelete?.map((x) => {
+      entryToDelete?.forEach((x) => {
         const updated = deleteParentChildEntry(x.id);
         mutate(updated);
       });
@@ -99,10 +96,6 @@ function EditParentsModal({
   if (errorItems) return <div>Failed to load parent data...</div>;
   //iterate
 
-  interface IItems {
-    id: string;
-    value: string;
-  }
   let allItemsData = allItems?.map((x) => {
     return { id: `${x.id}`, value: `${x.surname} ${x.name}` };
   });
@@ -119,7 +112,7 @@ function EditParentsModal({
         {ready && allItems ? (
           <>
             <form onSubmit={form.onSubmit(editGroupEntries)}>
-              {/* <div className="jsonout">{JSON.stringify(selected, null, 4)}</div>*/}
+              <div className="jsonout">{JSON.stringify(selected, null, 4)}</div>
               <Chip.Group
                 sx={{ flexDirection: "column" }}
                 multiple={true}

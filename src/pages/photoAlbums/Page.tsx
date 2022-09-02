@@ -26,9 +26,7 @@ import {
   IconPlus,
   IconSearch,
 } from "@tabler/icons";
-// import EditGroupsModal from "./EditGroupsModal";
-import EditParentsModal from "./EditParentsModal";
-// import ResetPasswordModal from "./ResetPasswordModal";
+
 import DetailsModal from "./DetailsModal";
 import EditGroupsModal from "./EditGroupsModal";
 import EditActivitiesModal from "./EditActivitiesModal";
@@ -42,8 +40,6 @@ const PhotoAlbumsPage = () => {
   const [deletingItem, setDeletingItem] = useState<IPhotoAlbum | null>(null);
 
   const [editingGroupsItem, setEditingGroupsItem] =
-    useState<IPhotoAlbum | null>(null);
-  const [editingParentsItem, setEditingParentsItem] =
     useState<IPhotoAlbum | null>(null);
   const [editingActivitiesItem, setEditingActivitiesItem] =
     useState<IPhotoAlbum | null>(null);
@@ -75,7 +71,6 @@ const PhotoAlbumsPage = () => {
               setEditingItem={setEditingItem}
               setDeletingItem={setDeletingItem}
               setDetailsItem={setDetailsItem}
-              setEditingParentsItem={setEditingParentsItem}
               setEditingGroupsItem={setEditingGroupsItem}
               setEditingActivitiesItem={setEditingActivitiesItem}
               setAddingPhotoModal={setAddingPhotoModal}
@@ -136,13 +131,6 @@ const PhotoAlbumsPage = () => {
           handleClose={() => setEditingGroupsItem(null)}
         />
       )}
-      {/* {editingParentsItem && (
-        <EditParentsModal
-          item={editingParentsItem}
-          mutate={mutate}
-          handleClose={() => setEditingParentsItem(null)}
-        />
-      )} */}
       {editingActivitiesItem && (
         <EditActivitiesModal
           item={editingActivitiesItem}
@@ -169,7 +157,6 @@ export const ItemsTable = ({
   setEditingItem,
   setDeletingItem,
   setDetailsItem,
-  setEditingParentsItem,
   setEditingGroupsItem,
   setEditingActivitiesItem,
   setAddingPhotoModal,
@@ -179,7 +166,6 @@ export const ItemsTable = ({
   setEditingItem: (arg0: IPhotoAlbum) => void;
   setDeletingItem: (arg0: IPhotoAlbum) => void;
   setDetailsItem: (arg0: IPhotoAlbum) => void;
-  setEditingParentsItem: (arg0: IPhotoAlbum) => void;
   setEditingGroupsItem: (arg0: IPhotoAlbum) => void;
   setEditingActivitiesItem: (arg0: IPhotoAlbum) => void;
   setAddingPhotoModal: (arg0: IPhotoAlbum) => void;
@@ -284,12 +270,7 @@ export const ItemsTable = ({
               >
                 Edit groups
               </Menu.Item> */}
-              {/* <Menu.Item
-                icon={<IconPencil size={16} stroke={1.5} />}
-                onClick={() => setEditingParentsItem(item)}
-              >
-                Edit parents
-              </Menu.Item> */}
+
               {/* <Menu.Item
                 icon={<IconPencil size={16} stroke={1.5} />}
                 onClick={() => setEditingActivitiesItem(item)}

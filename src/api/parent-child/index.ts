@@ -1,4 +1,4 @@
-import { apiDelete, apiGet, apiPost, apiPut } from "./../fetch";
+import { apiDelete, apiGet, apiPost } from "./../fetch";
 //parent-child
 export async function getParentChildEntries(): Promise<any> {
   return await apiGet(`${process.env.REACT_APP_URL}/api/parent-child`);
