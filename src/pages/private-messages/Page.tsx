@@ -9,6 +9,7 @@ import { MessageRecipients } from "./MessageRecipients";
 function MessagesPage() {
   const { isAdmin, isParent } = useAuth();
   const [recipientSelected, setRecipientSelected] = useState("");
+  const [openMessages, setOpenMessages] = useState(false);
 
   // conditionally fetch data
   const { data: myData, error } = useSWR(
@@ -23,7 +24,7 @@ function MessagesPage() {
 
   return (
     <>
-      <Title>Parent component</Title>
+      <Title order={1}>Messages</Title>
       <Text>Choosen value is: {recipientSelected}</Text>
       <MessageRecipients
         isParent={isParent}

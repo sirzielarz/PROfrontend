@@ -112,7 +112,11 @@ function useProvideAuth() {
     return loginUser(email, password)
       .then((user) => {
         Configuration.getInstance().setToken(user.token);
-        setUser(getUserProfile);
+        const userProfile = getUserProfile();
+        setUser(userProfile);
+        setIsAdmin(userProfile?.isAdmin);
+        setIsParent(userProfile?.isParent);
+        setIsTeacher(userProfile?.isTeacher);
         navigate(from, { replace: true });
       })
       .catch(() => {
