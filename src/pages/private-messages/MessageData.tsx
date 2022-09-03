@@ -24,17 +24,17 @@ export const MessageData: React.FC<MessageDataProps> = ({
         : x.parent.id === Number(recipientSelected)
     );
   //get sender and reciver
-
-  const parentData: IPerson = filteredMessages[0].parent;
-  const teacherData: IPerson = filteredMessages[0].teacher;
-
-  let myMessage: boolean;
-
-  console.log(parentData);
-  console.log(teacherData);
-
-  // let myMessage: boolean; //store each message owner
   if (recipientSelected) {
+    const parentData: IPerson = filteredMessages[0].parent;
+    const teacherData: IPerson = filteredMessages[0].teacher;
+
+    let myMessage: boolean;
+
+    console.log(parentData);
+    console.log(teacherData);
+
+    // let myMessage: boolean; //store each message owner
+
     return (
       <>
         <Title order={3}>
@@ -74,6 +74,7 @@ export const MessageData: React.FC<MessageDataProps> = ({
       </>
     );
   } else {
+    setRecipientSelected("");
     return <></>;
   }
 };
