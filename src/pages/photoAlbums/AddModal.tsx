@@ -7,6 +7,7 @@ import { IconCirclePlus } from "@tabler/icons";
 import { sortByValueToSelect } from "../../helpers/utils";
 import { useState } from "react";
 import { fetcher } from "../../api/fetch";
+import useAuth from "../../api/useAuth";
 
 function AddItemModal({
   mutate,
@@ -17,6 +18,8 @@ function AddItemModal({
   open: boolean;
   setOpen: (arg0: boolean) => void;
 }) {
+  const { isParent } = useAuth();
+
   const form = useForm<APIPhotoAlbum>({
     initialValues: {
       albumName: "",
@@ -42,7 +45,7 @@ function AddItemModal({
   }
 
   const { data: allItems, error: errorItems } = useSWR<IGroup[], string>(
-    `${process.env.REACT_APP_URL}/api/group`,
+    isParent ? null : `${process.env.REACT_APP_URL}/api/group`,
     fetcher
   );
 

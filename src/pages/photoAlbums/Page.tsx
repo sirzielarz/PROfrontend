@@ -32,8 +32,10 @@ import EditGroupsModal from "./EditGroupsModal";
 import EditActivitiesModal from "./EditActivitiesModal";
 import AddPhotoModal from "./AddPhotoModal";
 import DeletePhotoModal from "./DeletePhotoModal";
+import useAuth from "../../api/useAuth";
 
 const PhotoAlbumsPage = () => {
+  const { isParent } = useAuth();
   const [showAddItem, setShowAddItem] = useState(false);
   const [editingItem, setEditingItem] = useState<IPhotoAlbum | null>(null);
   const [detailsItem, setDetailsItem] = useState<IPhotoAlbum | null>(null);
@@ -52,7 +54,7 @@ const PhotoAlbumsPage = () => {
   );
 
   const { data, error, mutate } = useSWR<IPhotoAlbum[], string>(
-    `${process.env.REACT_APP_URL}/api/photo-album`,
+    isParent ? null : `${process.env.REACT_APP_URL}/api/photo-album`,
     fetcher
   );
 
