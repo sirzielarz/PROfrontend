@@ -5,6 +5,8 @@ import {
   additionalActivitiesDTO,
   AuthorizationChildToPickUpDTO,
   IEntity,
+  PrivateMessageDTO,
+  IPerson,
 } from "../interfaces/Entities";
 export interface IItems {
   id: string;
@@ -39,6 +41,11 @@ export function sortTeachers(a: TeachersDTO, b: TeachersDTO) {
   return result !== 0 ? result : a.teacher.name.localeCompare(b.teacher.name);
 }
 
+export function sortPersons(a: IPerson, b: IPerson) {
+  const result = a.surname.localeCompare(b.surname);
+  return result !== 0 ? result : a.name.localeCompare(b.name);
+}
+
 export function sortChildren(a: ChildrenDTO, b: ChildrenDTO) {
   const result = a.child.surname.localeCompare(b.child.surname);
   return result !== 0 ? result : a.child.name.localeCompare(b.child.name);
@@ -67,6 +74,7 @@ export function sortActivities(
   );
   return result;
 }
+
 /**
  *  pesel validation based on https://www.modestprogrammer.pl/walidacja-pesel-w-javascript
  * @param pesel string

@@ -1,4 +1,5 @@
-import { Alert, Chip, Title, Text, Space } from "@mantine/core";
+import { Alert, Chip, Title, Text, Space, Stack } from "@mantine/core";
+import { sortPersons, sortTeachers } from "../../helpers/utils";
 import { IPerson, PrivateMessageDTO } from "../../interfaces/Entities";
 
 interface MessageRecipientsProps {
@@ -26,25 +27,15 @@ export const MessageRecipients: React.FC<MessageRecipientsProps> = ({
       });
     }
   }
+  uniqueRecipients.sort(sortPersons);
 
   if (!(uniqueRecipients.length > 0)) {
-    return <Alert>No conversations exist..</Alert>;
+    return <Alert>No conversation exist</Alert>;
   } else {
     return (
       <>
         <Title order={3}>Your conversations:</Title>
-        <Space h={"xl"} />
-        <Chip.Group
-          multiple={false}
-          value={recipientSelected}
-          onChange={setRecipientSelected}
-        >
-          {uniqueRecipients.map((x) => (
-            <Chip key={"conversation_with_" + x.id} value={String(x.id)}>
-              {x.surname + " " + x.name}
-            </Chip>
-          ))}
-        </Chip.Group>
+
         <Space h={"xl"} />
         <Text
           size={"sm"}
@@ -53,6 +44,19 @@ export const MessageRecipients: React.FC<MessageRecipientsProps> = ({
         >
           Select recipient to view{" "}
         </Text>
+        <Chip.Group
+          multiple={false}
+          value={recipientSelected}
+          onChange={setRecipientSelected}
+        >
+          <Stack>
+            {uniqueRecipients.map((x) => (
+              <Chip key={"conversation_with_" + x.id} value={String(x.id)}>
+                {x.surname + " " + x.name}
+              </Chip>
+            ))}
+          </Stack>
+        </Chip.Group>
       </>
     );
   }
