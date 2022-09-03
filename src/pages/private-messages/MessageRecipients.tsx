@@ -1,4 +1,4 @@
-import { Alert, Chip, Title, Text } from "@mantine/core";
+import { Alert, Chip, Title, Text, Space } from "@mantine/core";
 import { IPerson, PrivateMessageDTO } from "../../interfaces/Entities";
 
 interface MessageRecipientsProps {
@@ -28,24 +28,31 @@ export const MessageRecipients: React.FC<MessageRecipientsProps> = ({
   }
 
   if (!(uniqueRecipients.length > 0)) {
-    return <Alert>No conversation exist</Alert>;
+    return <Alert>No conversations exist..</Alert>;
   } else {
     return (
       <>
-        <Title>Child component</Title>
-        <Text>Your conversations:</Text>
+        <Title order={3}>Your conversations:</Title>
+        <Space h={"xl"} />
         <Chip.Group
           multiple={false}
           value={recipientSelected}
           onChange={setRecipientSelected}
         >
           {uniqueRecipients.map((x) => (
-            <Chip key={"conversation_with_" + x.id} value={x.id}>
+            <Chip key={"conversation_with_" + x.id} value={String(x.id)}>
               {x.surname + " " + x.name}
             </Chip>
           ))}
         </Chip.Group>
-        <Text>Selected: {recipientSelected} </Text>
+        <Space h={"xl"} />
+        <Text
+          size={"sm"}
+          hidden={recipientSelected ? true : false}
+          color={"gray"}
+        >
+          Select recipient to view{" "}
+        </Text>
       </>
     );
   }

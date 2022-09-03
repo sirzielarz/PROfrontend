@@ -89,132 +89,142 @@ const PresencePage = () => {
   };
 
   return (
-    <Grid>
-      <Grid.Col sm={3} md={3}>
-        <Title order={3}>Groups:</Title>
-        <Space h="xl" />
-        {errorGroups ? errorGroups : ""}
-        {dataGroups ? (
-          dataGroups.length > 0 ? (
-            <>
-              <Text>Choose group to show presence:</Text>
-              <Space h={"sm"}></Space>
-              <GroupsChips data={dataGroups} /> <Space h="xl" />
-              {/* <Text>Groups fetched data: {}</Text>
+    <>
+      <Title>Presence</Title>
+      <Space h={"xl"} />
+      <Grid>
+        <Grid.Col sm={3} md={3}>
+          <Title order={3}>Groups:</Title>
+          <Space h="xl" />
+          {errorGroups ? errorGroups : ""}
+          {dataGroups ? (
+            dataGroups.length > 0 ? (
+              <>
+                <GroupsChips data={dataGroups} /> <Space h="xl" />
+                {/* <Text>Groups fetched data: {}</Text>
               <div className="jsonout">
                 {JSON.stringify(dataGroups, null, 4)}
               </div> */}
-            </>
-          ) : (
-            <Text>No groups available.</Text>
-          )
-        ) : (
-          <Loader />
-        )}
-      </Grid.Col>
-      {groupIDSelected && (
-        <Grid.Col xs={12} sm={12} md={4}>
-          <Title order={3}>Date:</Title>
-          <Calendar value={dateSelected} onChange={setDateSelected} />
-        </Grid.Col>
-      )}
-      {groupIDSelected && (
-        <Grid.Col sm={3} md={4}>
-          <Title order={3}>Presence:</Title>
-          <Space h="xs" />
-
-          {groupIDSelected && dateSelected ? (
-            !dataPresence && !errorPresence ? (
-              <Loader />
-            ) : errorPresence ? (
-              errorPresence
-            ) : (
-              <>
-                {/* ///////// */}
-                <Text>
-                  Presence on <b>{getPrettyDate(dateSelected)}</b> for group{" "}
-                  <b>{groupNameSelected}</b>
+                <Space h={"sm"} />
+                <Text
+                  size={"sm"}
+                  hidden={groupIDSelected ? true : false}
+                  color={"gray"}
+                >
+                  Select group first..{" "}
                 </Text>
-                <Space h="xl" />
-                <Chip.Group>
-                  <Stack>
-                    {dataGroups && groupIDSelected
-                      ? dataGroups
-                          .find((x) => x.id === Number(groupIDSelected))
-                          ?.children.sort(sortChildren)
-                          .map((c) => {
-                            return (
-                              <Chip
-                                readOnly={true}
-                                key={"child_" + c.child.id}
-                                value={String(c.child.id)}
-                                disabled={
-                                  !dataPresenceFiltered?.some(
+              </>
+            ) : (
+              <Text>No groups available.</Text>
+            )
+          ) : (
+            <Loader />
+          )}
+        </Grid.Col>
+        {groupIDSelected && (
+          <Grid.Col xs={12} sm={12} md={4}>
+            <Title order={3}>Date:</Title>
+            <Calendar value={dateSelected} onChange={setDateSelected} />
+          </Grid.Col>
+        )}
+        {groupIDSelected && (
+          <Grid.Col sm={3} md={4}>
+            <Title order={3}>Presence:</Title>
+            <Space h="xs" />
+
+            {groupIDSelected && dateSelected ? (
+              !dataPresence && !errorPresence ? (
+                <Loader />
+              ) : errorPresence ? (
+                errorPresence
+              ) : (
+                <>
+                  {/* ///////// */}
+                  <Text>
+                    Presence on <b>{getPrettyDate(dateSelected)}</b> for group{" "}
+                    <b>{groupNameSelected}</b>
+                  </Text>
+                  <Space h="xl" />
+                  <Chip.Group>
+                    <Stack>
+                      {dataGroups && groupIDSelected
+                        ? dataGroups
+                            .find((x) => x.id === Number(groupIDSelected))
+                            ?.children.sort(sortChildren)
+                            .map((c) => {
+                              return (
+                                <Chip
+                                  readOnly={true}
+                                  key={"child_" + c.child.id}
+                                  value={String(c.child.id)}
+                                  disabled={
+                                    !dataPresenceFiltered?.some(
+                                      (x) => x.child.id === c.child.id
+                                    )
+                                  }
+                                  checked={dataPresenceFiltered?.some(
                                     (x) => x.child.id === c.child.id
-                                  )
-                                }
-                                checked={dataPresenceFiltered?.some(
-                                  (x) => x.child.id === c.child.id
-                                )}
-                              >
-                                {c.child.surname + " " + c.child.name}
-                              </Chip>
-                            );
-                          })
-                      : null}
-                  </Stack>
-                </Chip.Group>
-                <Space h="xl" />
+                                  )}
+                                >
+                                  {c.child.surname + " " + c.child.name}
+                                </Chip>
+                              );
+                            })
+                        : null}
+                    </Stack>
+                  </Chip.Group>
+                  <Space h="xl" />
 
-                {dataGroups && dataGroups.length > 0 && groupIDSelected && (
-                  <Button
-                    leftIcon={<IconPencil size={16} stroke={1.5} />}
-                    onClick={() => setEditingPresence(true)}
-                  >
-                    Edit this presence
-                  </Button>
-                )}
-
-                {editingPresence &&
-                  dataGroups &&
-                  groupIDSelected &&
-                  groupNameSelected &&
-                  dataPresenceFiltered && (
-                    <EditPresenceModal
-                      groupIDSelected={groupIDSelected}
-                      groupNameSelected={groupNameSelected}
-                      dateSelected={dateSelected}
-                      dataPresenceFiltered={dataPresenceFiltered}
-                      mutate={mutatePresence}
-                      handleClose={() => setEditingPresence(false)}
-                    />
+                  {dataGroups && dataGroups.length > 0 && groupIDSelected && (
+                    <Button
+                      leftIcon={<IconPencil size={16} stroke={1.5} />}
+                      onClick={() => setEditingPresence(true)}
+                    >
+                      Edit this presence
+                    </Button>
                   )}
 
-                {/* <Space h="xl" />
+                  {editingPresence &&
+                    dataGroups &&
+                    groupIDSelected &&
+                    groupNameSelected &&
+                    dataPresenceFiltered && (
+                      <EditPresenceModal
+                        groupIDSelected={groupIDSelected}
+                        groupNameSelected={groupNameSelected}
+                        dateSelected={dateSelected}
+                        dataPresenceFiltered={dataPresenceFiltered}
+                        mutate={mutatePresence}
+                        handleClose={() => setEditingPresence(false)}
+                      />
+                    )}
+
+                  {/* <Space h="xl" />
               <Text size={"lg"} weight={"bold"}>
                 Filtered fetched data: {}
               </Text> */}
-                {/* <div className="jsonout">
+                  {/* <div className="jsonout">
                 {JSON.stringify(dataPresenceFiltered, null, 4)}
               </div> */}
 
-                {/* // eswssssssssssssssssssssssssss */}
-              </>
-            )
-          ) : (
-            <Alert
-              icon={<IconAlertCircle size={16} />}
-              title="Waiting for data..."
-              color="teal"
-              radius="md"
-              variant="outline"
-            >
-              Please select group and date to display presence data
-            </Alert>
-          )}
-        </Grid.Col>
-      )}
-    </Grid>
+                  {/* // eswssssssssssssssssssssssssss */}
+                </>
+              )
+            ) : (
+              <Alert
+                icon={<IconAlertCircle size={16} />}
+                title="Waiting for data..."
+                color="teal"
+                radius="md"
+                variant="outline"
+              >
+                Please select group and date to display presence data
+              </Alert>
+            )}
+          </Grid.Col>
+        )}
+      </Grid>
+    </>
   );
 };
 export default PresencePage;

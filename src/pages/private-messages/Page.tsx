@@ -1,4 +1,13 @@
-import { Alert, Chip, List, Loader, Text, Title } from "@mantine/core";
+import {
+  Alert,
+  Chip,
+  Grid,
+  List,
+  Loader,
+  Space,
+  Text,
+  Title,
+} from "@mantine/core";
 import React, { useState } from "react";
 import useSWR from "swr";
 import { fetcher } from "../../api/fetch";
@@ -25,17 +34,27 @@ function MessagesPage() {
   return (
     <>
       <Title order={1}>Messages</Title>
-      <Text>Choosen value is: {recipientSelected}</Text>
-      <MessageRecipients
-        isParent={isParent}
-        messages={myData.privateMessages}
-        recipientSelected={recipientSelected}
-        setRecipientSelected={setRecipientSelected}
-      />
-      <div>
-        Getting data from /api/{isParent ? "parent" : "teacher"}/my-data
-      </div>
-      <div className="jsonout">{JSON.stringify(myData, null, 4)}</div>;
+      <Space h={"xl"} />
+      <Grid>
+        <Grid.Col md={3}>
+          <MessageRecipients
+            isParent={isParent}
+            messages={myData.privateMessages}
+            recipientSelected={recipientSelected}
+            setRecipientSelected={setRecipientSelected}
+          />
+        </Grid.Col>
+        {recipientSelected && (
+          <Grid.Col md={9}>
+            <Text>Choosen value is: {recipientSelected}</Text>
+            <div>
+              Getting data from /api/{isParent ? "parent" : "teacher"}/my-data
+            </div>
+            <div className="jsonout">{JSON.stringify(myData, null, 4)}</div>;
+          </Grid.Col>
+        )}
+      </Grid>
+      <Space h={"xl"} />
     </>
   );
 }
