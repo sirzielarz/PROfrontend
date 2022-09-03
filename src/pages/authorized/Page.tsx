@@ -199,7 +199,7 @@ export const ItemsTable = ({
       <td key={item.id} align={"right"}>
         <Stack align="flex-end" spacing="xs">
           {item.authorizationsToPickUp.sort(sortAuthorized).map((c, i) => (
-            <Group>
+            <Group key={i}>
               <Text span inline weight={650}>
                 {`${c.child.surname} ${c.child.name}`}
               </Text>
@@ -212,7 +212,6 @@ export const ItemsTable = ({
                 <Group spacing="xs">
                   <ActionIcon size={"xs"} color={"blue"}>
                     <IconSettings
-                      size={"xs"}
                       onClick={() => {
                         setEditingPersonItem(item);
                         setEditingChildItem(c);
@@ -222,7 +221,6 @@ export const ItemsTable = ({
 
                   <ActionIcon size={"xs"}>
                     <IconTrash
-                      size={"xs"}
                       color={"red"}
                       onClick={() => {
                         setDeleteChildItem(c);

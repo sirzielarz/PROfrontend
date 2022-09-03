@@ -140,15 +140,24 @@ const PhotoAlbumsPage = () => {
           handleClose={() => setEditingActivitiesItem(null)}
         />
       )}
-      <AddModal open={showAddItem} setOpen={setShowAddItem} mutate={mutate} />
-      {
-        <Button
-          onClick={() => setShowAddItem(true)}
-          leftIcon={<IconCirclePlus />}
-        >
-          Add photo album
-        </Button>
-      }
+      {!isParent && (
+        <>
+          <AddModal
+            open={showAddItem}
+            setOpen={setShowAddItem}
+            mutate={mutate}
+          />
+
+          {
+            <Button
+              onClick={() => setShowAddItem(true)}
+              leftIcon={<IconCirclePlus />}
+            >
+              Add photo album
+            </Button>
+          }
+        </>
+      )}
     </>
   );
 };
@@ -174,50 +183,49 @@ export const ItemsTable = ({
   setDeletingPhotoModal: (arg0: PhotoDTO) => void;
 }) => {
   const rows = data.map((item: IPhotoAlbum) => (
-    <tr key={item.id}>
+    <tr key={"1_" + item.id}>
       <td>
         <Group spacing="sm">
           <div>
             <Text size="sm" weight={500}>
               {item.albumName}
             </Text>
-            <Text color="dimmed" size="xs">
+            <Text color={"dimmed"} size={"xs"}>
               ID: {item.id}
             </Text>
           </div>
         </Group>
       </td>
-      <td>
-        <Text size="sm">{`${item.group.groupName}`}</Text>
+      <td key={"2_" + item.id}>
+        <Text size={"sm"}>{`${item.group.groupName}`}</Text>
         {item.group.groupName ? (
           ""
         ) : (
           <>
-            <Text size="xs" color="dimmed">
+            <Text size={"xs"} color={"dimmed"}>
               No group added
             </Text>
           </>
         )}
       </td>
-      <td key={item.id} align={"left"}>
-        <Stack align="left" spacing="xs">
+      <td key={"3_" + item.id} align={"left"}>
+        <Stack align={"left"} spacing={"xs"}>
           {item.photos.sort(sortByID).map((x, i) => (
-            <Group>
-              <Text size="xs">
-                <Group spacing="xs">
+            <Group key={i}>
+              <Text size={"xs"}>
+                <Group spacing={"xs"}>
                   <ActionIcon
                     size={"xs"}
                     color={"blue"}
                     component="a"
                     href={x.url}
-                    target="_blank"
+                    target={"_blank"}
                   >
-                    <IconSearch size={"xs"} />
+                    <IconSearch />
                   </ActionIcon>
 
                   <ActionIcon size={"xs"}>
                     <IconTrash
-                      size={"xs"}
                       color={"red"}
                       onClick={() => {
                         setDeletingPhotoModal(x);
@@ -233,15 +241,15 @@ export const ItemsTable = ({
           ))}
         </Stack>
         <Space h={"xs"} />
-        <Text size="xs" color="dimmed">
+        <Text size={"xs"} color={"dimmed"}>
           {item.photos.length
             ? `Total: ${item.photos.length}`
             : "No photos added"}
         </Text>
       </td>
-      <td>
-        <Group spacing={0} position="right">
-          <Menu withinPortal transition="pop" withArrow position="left">
+      <td key={"4_" + item.id}>
+        <Group spacing={0} position={"right"}>
+          <Menu withinPortal transition="pop" withArrow position={"left"}>
             <Menu.Target>
               <ActionIcon>
                 <IconDots size={16} stroke={1.5} />
@@ -266,19 +274,6 @@ export const ItemsTable = ({
               >
                 Add photo to album
               </Menu.Item>
-              {/* <Menu.Item
-                icon={<IconPencil size={16} stroke={1.5} />}
-                onClick={() => setEditingGroupsItem(item)}
-              >
-                Edit groups
-              </Menu.Item> */}
-
-              {/* <Menu.Item
-                icon={<IconPencil size={16} stroke={1.5} />}
-                onClick={() => setEditingActivitiesItem(item)}
-              >
-                Edit additional activities
-              </Menu.Item> */}
               <Menu.Item
                 icon={<IconTrash size={16} stroke={1.5} />}
                 color="red"

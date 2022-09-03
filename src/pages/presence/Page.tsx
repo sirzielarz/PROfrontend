@@ -64,27 +64,26 @@ const PresencePage = () => {
 
   //generate groups chips
   const GroupsChips = ({ data }: { data: IGroup[] }) => {
-    const chipsItems = data.map((item) => {
+    const chipsItems = data.map((item, i) => {
       return (
         <>
-          <Chip
-            key={"group_" + item.id + "_" + item.groupName}
-            value={String(item.id)}
-          >
+          <Chip key={i + "_"} value={String(item.id)}>
             {item.groupName}
           </Chip>
         </>
       );
     });
     return (
-      <Chip.Group
-        key={"Test"}
-        multiple={false}
-        value={groupIDSelected}
-        onChange={setGroupIDSelected}
-      >
-        {chipsItems}
-      </Chip.Group>
+      <>
+        <Chip.Group
+          key={""}
+          multiple={false}
+          value={groupIDSelected}
+          onChange={setGroupIDSelected}
+        >
+          <Stack>{chipsItems} </Stack>
+        </Chip.Group>
+      </>
     );
   };
 
@@ -151,11 +150,11 @@ const PresencePage = () => {
                         ? dataGroups
                             .find((x) => x.id === Number(groupIDSelected))
                             ?.children.sort(sortChildren)
-                            .map((c) => {
+                            .map((c, i) => {
                               return (
                                 <Chip
                                   readOnly={true}
-                                  key={"child_" + c.child.id}
+                                  key={i + "child_" + c.child.id}
                                   value={String(c.child.id)}
                                   disabled={
                                     !dataPresenceFiltered?.some(

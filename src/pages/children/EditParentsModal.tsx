@@ -112,7 +112,7 @@ function EditParentsModal({
         {ready && allItems ? (
           <>
             <form onSubmit={form.onSubmit(editGroupEntries)}>
-              <div className="jsonout">{JSON.stringify(selected, null, 4)}</div>
+              {/* <div className="jsonout">{JSON.stringify(selected, null, 4)}</div> */}
               <Chip.Group
                 sx={{ flexDirection: "column" }}
                 multiple={true}

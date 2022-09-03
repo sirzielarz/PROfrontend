@@ -119,8 +119,8 @@ export const ItemsTable = ({
   setEditingTeachersItem: (arg0: IGroup) => void;
 }) => {
   const rows = data.map((item) => (
-    <tr key={item.id}>
-      <td key={item.id}>
+    <tr key={"tr_" + item.id}>
+      <td key={"1_" + item.id}>
         <Group spacing="sm">
           <div>
             <Text size="sm" weight={500}>
@@ -132,7 +132,7 @@ export const ItemsTable = ({
           </div>
         </Group>
       </td>
-      <td key={item.id}>
+      <td key={"2_" + item.id}>
         <Text size="sm">
           {item.teachers?.sort(sortTeachers).map((t, i) => (
             <Text span key={t.teacher.id}>
@@ -149,10 +149,10 @@ export const ItemsTable = ({
             : "No teachers added"}
         </Text>
       </td>
-      <td key={item.id}>
+      <td key={"3_" + item.id}>
         <Text size="sm">
           {item.children?.sort(sortChildren).map((c, i) => (
-            <Text span key={c.child.id}>
+            <Text span key={"child_" + c.child.id}>
               <>
                 {`${c.child.surname} ${c.child.name}`}
                 {i + 1 < item.children?.length ? ", " : ""}
@@ -166,7 +166,7 @@ export const ItemsTable = ({
             : "No children added"}
         </Text>
       </td>
-      <td key={item.id}>
+      <td key={"4_" + item.id}>
         <Group spacing={0} position="right">
           <Menu withinPortal transition="pop" withArrow position="left">
             <Menu.Target>
