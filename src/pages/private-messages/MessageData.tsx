@@ -1,4 +1,4 @@
-import { Chip, Title, Text, Space, Alert, Group } from "@mantine/core";
+import { Chip, Title, Text, Space, Alert, Group, Stack } from "@mantine/core";
 import { IconMail } from "@tabler/icons";
 import { sortByID } from "../../helpers/utils";
 import { IPerson, PrivateMessageDTO } from "../../interfaces/Entities";
@@ -52,22 +52,27 @@ export const MessageData: React.FC<MessageDataProps> = ({
 
           return (
             <>
-              <Group position={myMessage ? "right" : "left"}>
-                <Alert
-                  mt={"lg"}
-                  radius={"xl"}
-                  key={"message_" + x.id}
-                  icon={<IconMail size={16} />}
-                  title={
-                    (isParent && myMessage) || (!isParent && !myMessage)
-                      ? `${parentData.name + " " + parentData.surname}`
-                      : `${teacherData.name + " " + teacherData.surname}`
-                  }
-                  variant={myMessage ? "filled" : "outline"}
+              <Group mt={"lg"} position={myMessage ? "right" : "left"}>
+                <Stack
+                  spacing={0}
+                  // justify="center"
+                  align={myMessage ? "flex-end" : "flex-start"}
                 >
-                  <Text weight={"bold"}>{x.subject}</Text>
-                  <Text>{x.messageText}</Text>
-                </Alert>
+                  <Text color="dimmed" size="sm">
+                    {(isParent && myMessage) || (!isParent && !myMessage)
+                      ? `${parentData.name + " " + parentData.surname}`
+                      : `${teacherData.name + " " + teacherData.surname}`}
+                  </Text>
+                  <Alert
+                    radius={"lg"}
+                    key={"message_" + x.id}
+                    icon={<IconMail size={16} />}
+                    title={x.subject}
+                    variant={myMessage ? "filled" : "outline"}
+                  >
+                    <Text>{x.messageText}</Text>
+                  </Alert>
+                </Stack>
               </Group>
             </>
           );
