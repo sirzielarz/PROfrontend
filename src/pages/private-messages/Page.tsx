@@ -20,7 +20,7 @@ function MessagesPage() {
       ) : (
         <>
           <Grid>
-            <Grid.Col md={3}>
+            <Grid.Col md={2}>
               <MessageRecipients
                 isParent={isParent}
                 messages={data}
@@ -28,7 +28,7 @@ function MessagesPage() {
                 setRecipientSelected={setRecipientSelected}
               />
             </Grid.Col>
-            <Grid.Col md={3}>
+            <Grid.Col md={4}>
               <MessageData
                 isParent={isParent}
                 messages={data}
@@ -37,7 +37,7 @@ function MessagesPage() {
               />
             </Grid.Col>
             {recipientSelected && (
-              <Grid.Col md={6}>
+              <Grid.Col md={3}>
                 <Text>Choosen value is: {recipientSelected}</Text>
                 <div>
                   Fetched data from /api/{isParent ? "parent" : "teacher"}
