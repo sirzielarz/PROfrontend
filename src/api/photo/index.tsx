@@ -1,10 +1,9 @@
-import { APIPhoto } from "../../interfaces/Entities";
 import { apiDelete, apiGet, apiPostFile } from "./../fetch";
 //photo
 export async function getPhotos(): Promise<any> {
   return await apiGet(`${process.env.REACT_APP_URL}/api/photo`);
 }
-export async function addPhoto(values: APIPhoto): Promise<any> {
+export async function addPhoto(values: any): Promise<any> {
   return await apiPostFile(`${process.env.REACT_APP_URL}/api/photo`, values);
 }
 

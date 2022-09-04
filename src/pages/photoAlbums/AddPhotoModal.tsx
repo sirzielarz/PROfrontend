@@ -1,10 +1,24 @@
 import { useForm } from "@mantine/form";
-import { Button, FileInput, Modal, Space } from "@mantine/core";
+import {
+  Button,
+  ButtonProps,
+  FileButton,
+  Group,
+  Modal,
+  Space,
+  Text,
+} from "@mantine/core";
 import { KeyedMutator } from "swr";
 import { IPhotoAlbum } from "../../interfaces/Entities";
-import { IconCirclePlus, IconUpload } from "@tabler/icons";
+import { IconCirclePlus } from "@tabler/icons";
 import { addPhoto } from "../../api/photo";
-import { useLayoutEffect, useState } from "react";
+import {
+  ButtonHTMLAttributes,
+  DetailedHTMLProps,
+  RefObject,
+  useLayoutEffect,
+  useState,
+} from "react";
 
 function AddPhotoModal({
   item,
@@ -20,17 +34,13 @@ function AddPhotoModal({
   }, []);
 
   const [open2, setOpen2] = useState(false);
-
-  const form = useForm({
-    initialValues: {
-      file: null,
-    },
-  });
+  const [file, setFile] = useState<File | null>(null);
+  const form = useForm({});
 
   async function createItem(values: any) {
     const valuesToAPI = {
       id: item.id, //album id
-      file: values.file, //image file
+      file: file, //image file
     };
 
     console.log("values-to-API", valuesToAPI);
@@ -54,17 +64,43 @@ function AddPhotoModal({
     <>
       <Modal opened={open2} onClose={() => handleClose()} title="Create photo">
         <form onSubmit={form.onSubmit(createItem)}>
-          <FileInput
-            placeholder="click here and upload image file"
-            label="Image file"
-            description="File should be image type, for example: PNG, JPG"
-            icon={<IconUpload size={14} />}
-            accept="image/png,image/jpeg"
-            {...form.getInputProps("file")}
-          />
+          <>
+            <Group position="center">
+              <FileButton onChange={setFile} accept="image/png,image/jpeg">
+                {(
+                  props: JSX.IntrinsicAttributes &
+                    ButtonProps & { component?: "button" | undefined } & Omit<
+                      Pick<
+                        DetailedHTMLProps<
+                          ButtonHTMLAttributes<HTMLButtonElement>,
+                          HTMLButtonElement
+                        >,
+                        "key" | keyof ButtonHTMLAttributes<HTMLButtonElement>
+                      >,
+                      "component" | keyof ButtonProps
+                    > & {
+                      ref?:
+                        | ((instance: HTMLButtonElement | null) => void)
+                        | RefObject<HTMLButtonElement>
+                        | null
+                        | undefined;
+                    }
+                ) => <Button {...props}>Upload image</Button>}
+              </FileButton>
+            </Group>
+            {file && (
+              <Text size="sm" align="center" mt="sm">
+                Picked file: {file.name}
+              </Text>
+            )}
+          </>
 
           <Space h={"xl"}></Space>
-          <Button type="submit" leftIcon={<IconCirclePlus />}>
+          <Button
+            disabled={file ? false : true}
+            type="submit"
+            leftIcon={<IconCirclePlus />}
+          >
             Add photo
           </Button>
         </form>
