@@ -112,6 +112,7 @@ function AddChildrenModal({
       value: `${x.id}`,
       label: `${x.surname} ${x.name}`,
       disabled: selected.includes(String(x.id)),
+      key: `${x.id}`,
     };
   });
   //sort items data
