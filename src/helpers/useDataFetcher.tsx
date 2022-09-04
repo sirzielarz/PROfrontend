@@ -6,7 +6,11 @@ import { PrivateMessageDTO } from "../interfaces/Entities";
 const useDataFetcher = () => {
   const { isParent } = useAuth();
 
-  const { data: myData, error } = useSWR(
+  const {
+    data: myData,
+    error,
+    isValidating,
+  } = useSWR(
     isParent
       ? `${process.env.REACT_APP_URL}/api/parent/my-data`
       : `${process.env.REACT_APP_URL}/api/teacher/my-data`,
@@ -20,7 +24,7 @@ const useDataFetcher = () => {
       : myData.privateMessages
     : null;
 
-  return { data: myData, error, dataMessages };
+  return { data: myData, error, dataMessages, isValidating };
 };
 
 export default useDataFetcher;

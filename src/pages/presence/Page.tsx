@@ -66,11 +66,9 @@ const PresencePage = () => {
   const GroupsChips = ({ data }: { data: IGroup[] }) => {
     const chipsItems = data.map((item, i) => {
       return (
-        <>
-          <Chip key={i + "_"} value={String(item.id)}>
-            {item.groupName}
-          </Chip>
-        </>
+        <Chip key={i + "_"} value={String(item.id)}>
+          {item.groupName}
+        </Chip>
       );
     });
     return (

@@ -1,7 +1,7 @@
 import useSWR from "swr";
 import { fetcher } from "../../api/fetch";
 import { Button, Loader } from "@mantine/core";
-import {IAnnouncement} from "../../interfaces/Entities";
+import { IAnnouncement } from "../../interfaces/Entities";
 import { useState } from "react";
 import AddModal from "./AddModal";
 import EditModal from "./EditModal";
@@ -17,23 +17,30 @@ import {
   ScrollArea,
 } from "@mantine/core";
 import { IconPencil, IconTrash, IconDots, IconCirclePlus } from "@tabler/icons";
-
+import SiteHeader from "../../components/SiteHeader";
 
 const Page = () => {
   const [showAddItem, setShowAddItem] = useState(false);
   const [editingItem, setEditingItem] = useState<IAnnouncement | null>(null);
   const [deletingItem, setDeletingItem] = useState<IAnnouncement | null>(null);
 
-
-  const { data, error, mutate } = useSWR<IAnnouncement[], string>(
+  const { data, error, mutate, isValidating } = useSWR<IAnnouncement[], string>(
     `${process.env.REACT_APP_URL}/api/announcement`,
     fetcher
   );
-  // console.log("out", data);
+  const pageTitleString = "Announcements";
+  if (error) return <SiteHeader title={pageTitleString} error={error} />;
+  if ((!data && !error) || isValidating)
+    return (
+      <>
+        <SiteHeader title={pageTitleString} error={error} />
+        <Loader />
+      </>
+    );
 
   return (
     <>
-      <Title order={1}>Announcements</Title>
+      <SiteHeader title={pageTitleString} error={error} />
       <Space h="xl" />
       {error ? error : ""}
       {data ? (

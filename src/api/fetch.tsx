@@ -24,7 +24,7 @@ export function apiDelete(uri: string, body?: any) {
   return fetchWrapper(uri, "DELETE", body);
 }
 //fetcher for use with swr
-export const fetcher = (url: string) => {
+export const fetcher = async (url: string) => {
   const token = Configuration.getInstance().getToken();
   const headers: HeadersInit = {
     "Content-Type": "application/x-www-form-urlencoded",
@@ -32,9 +32,25 @@ export const fetcher = (url: string) => {
   if (token) {
     headers["Authorization"] = `Bearer ${token}`;
   }
-  return fetch(url, {
-    headers,
-  }).then((r) => r.json());
+
+  ////////////////////////////////////////////
+  const res = await fetch(url, { headers });
+
+  // If the status code is not in the range 200-299,
+  // we still try to parse and throw it.
+  if (!res.ok) {
+    const error = new Error("An error occurred while fetching the data.");
+    // Attach extra info to the error object.
+    error.message = await res.json();
+    throw error;
+  }
+
+  return res.json();
+  /////////////////////////////////////////
+
+  //   return fetch(url, {
+  //     headers,
+  //   }).then((r) => r.json());
 };
 
 function fetchWrapper(

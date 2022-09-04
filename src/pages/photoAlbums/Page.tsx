@@ -33,6 +33,7 @@ import EditActivitiesModal from "./EditActivitiesModal";
 import AddPhotoModal from "./AddPhotoModal";
 import DeletePhotoModal from "./DeletePhotoModal";
 import useAuth from "../../api/useAuth";
+import SiteHeader from "../../components/SiteHeader";
 
 const PhotoAlbumsPage = () => {
   const { isParent } = useAuth();
@@ -53,16 +54,23 @@ const PhotoAlbumsPage = () => {
     null
   );
 
-  const { data, error, mutate } = useSWR<IPhotoAlbum[], string>(
+  const { data, error, mutate, isValidating } = useSWR<IPhotoAlbum[], string>(
     isParent ? null : `${process.env.REACT_APP_URL}/api/photo-album`,
     fetcher
   );
+  const pageTitleString = "Photo albums";
+  if (error) return <SiteHeader title={pageTitleString} error={error} />;
+  if ((!data && !error) || isValidating)
+    return (
+      <>
+        <SiteHeader title={pageTitleString} error={error} />
+        <Loader />
+      </>
+    );
 
   return (
     <>
-      <Title order={1}>Photo albums</Title>
-      <Space h="xl" />
-      {error ? error : ""}
+      <SiteHeader title={pageTitleString} error={error} />
       {data ? (
         data.length > 0 ? (
           //filter data start

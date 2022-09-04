@@ -20,6 +20,7 @@ import {
 import { IconPencil, IconTrash, IconDots, IconCirclePlus } from "@tabler/icons";
 import EditChildrenModal from "./EditChildrenModal";
 import EditTeachersModal from "./EditTeachersModal";
+import SiteHeader from "../../components/SiteHeader";
 
 const Page = () => {
   const [showAddItem, setShowAddItem] = useState(false);
@@ -32,17 +33,23 @@ const Page = () => {
     null
   );
 
-  const { data, error, mutate } = useSWR<IGroup[], string>(
+  const { data, error, mutate, isValidating } = useSWR<IGroup[], string>(
     `${process.env.REACT_APP_URL}/api/group`,
     fetcher
   );
-  // console.log("out", data);
+  const pageTitleString = "Groups";
+  if (error) return <SiteHeader title={pageTitleString} error={error} />;
+  if ((!data && !error) || isValidating)
+    return (
+      <>
+        <SiteHeader title={pageTitleString} error={error} />
+        <Loader />
+      </>
+    );
 
   return (
     <>
-      <Title order={1}>Groups</Title>
-      <Space h="xl" />
-      {error ? error : ""}
+      <SiteHeader title={pageTitleString} error={error} />
       {data ? (
         data.length > 0 ? (
           <>

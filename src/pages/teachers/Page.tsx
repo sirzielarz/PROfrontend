@@ -28,6 +28,7 @@ import EditGroupsModal from "./EditGroupsModal";
 import EditTeacherActivitiesModal from "./EditActivitiesModal";
 import ResetPasswordModal from "./ResetPasswordModal";
 import DetailsModal from "./DetailsModal";
+import SiteHeader from "../../components/SiteHeader";
 
 const TeachersPage = () => {
   const [showAddItem, setShowAddItem] = useState(false);
@@ -41,15 +42,23 @@ const TeachersPage = () => {
   const [editingActivitiesItem, setEditingActivitiesItem] =
     useState<ITeacher | null>(null);
 
-  const { data, error, mutate } = useSWR<ITeacher[], string>(
+  const { data, error, mutate, isValidating } = useSWR<ITeacher[], string>(
     `${process.env.REACT_APP_URL}/api/teacher`,
     fetcher
   );
+  const pageTitleString = "Teachers";
+  if (error) return <SiteHeader title={pageTitleString} error={error} />;
+  if ((!data && !error) || isValidating)
+    return (
+      <>
+        <SiteHeader title={pageTitleString} error={error} />
+        <Loader />
+      </>
+    );
 
   return (
     <>
-      <Title order={1}>Teachers</Title>
-      <Space h="xl" />
+      <SiteHeader title={pageTitleString} error={error} />
       {error ? error : ""}
       {data ? (
         data.length > 0 ? (

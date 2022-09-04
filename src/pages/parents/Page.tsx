@@ -28,6 +28,7 @@ import {
 import EditChildrenModal from "./EditChildrenModal";
 import ResetPasswordModal from "./ResetPasswordModal";
 import DetailsModal from "./DetailsModal";
+import SiteHeader from "../../components/SiteHeader";
 
 const ParentsPage = () => {
   const [showAddItem, setShowAddItem] = useState(false);
@@ -40,15 +41,23 @@ const ParentsPage = () => {
   const [editingChildrenItem, setEditingChildrenItem] =
     useState<IParent | null>(null);
 
-  const { data, error, mutate } = useSWR<IParent[], string>(
+  const { data, error, mutate, isValidating } = useSWR<IParent[], string>(
     `${process.env.REACT_APP_URL}/api/parent`,
     fetcher
   );
+  const pageTitleString = "Parents";
+  if (error) return <SiteHeader title={pageTitleString} error={error} />;
+  if ((!data && !error) || isValidating)
+    return (
+      <>
+        <SiteHeader title={pageTitleString} error={error} />
+        <Loader />
+      </>
+    );
 
   return (
     <>
-      <Title order={1}>Parents</Title>
-      <Space h="xl" />
+      <SiteHeader title={pageTitleString} error={error} />
       {error ? error : ""}
       {data ? (
         data.length > 0 ? (

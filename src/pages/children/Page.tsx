@@ -8,7 +8,6 @@ import EditModal from "./EditModal";
 import DeleteModal from "./DeleteModal";
 import { sortGroups } from "../../helpers/utils";
 import {
-  Title,
   Text,
   Space,
   Table,
@@ -28,6 +27,7 @@ import EditParentsModal from "./EditParentsModal";
 import DetailsModal from "./DetailsModal";
 import EditGroupsModal from "./EditGroupsModal";
 import EditActivitiesModal from "./EditActivitiesModal";
+import SiteHeader from "../../components/SiteHeader";
 
 const ChildrenPage = () => {
   const [showAddItem, setShowAddItem] = useState(false);
@@ -43,16 +43,23 @@ const ChildrenPage = () => {
   const [editingActivitiesItem, setEditingActivitiesItem] =
     useState<IChild | null>(null);
 
-  const { data, error, mutate } = useSWR<IChild[], string>(
+  const { data, error, mutate, isValidating } = useSWR<IChild[], string>(
     `${process.env.REACT_APP_URL}/api/child`,
     fetcher
   );
+  const pageTitleString = "Children";
+  if (error) return <SiteHeader title={pageTitleString} error={error} />;
+  if ((!data && !error) || isValidating)
+    return (
+      <>
+        <SiteHeader title={pageTitleString} error={error} />
+        <Loader />
+      </>
+    );
 
   return (
     <>
-      <Title order={1}>Children</Title>
-      <Space h="xl" />
-      {error ? error : ""}
+      <SiteHeader title={pageTitleString} error={error} />
       {data ? (
         data.length > 0 ? (
           <>

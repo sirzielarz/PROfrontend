@@ -41,7 +41,7 @@ export const MessageData: React.FC<MessageDataProps> = ({
           Conversation with {isParent ? " teacher: " : " parent: "}
         </Title>
 
-        {filteredMessages.map((x) => {
+        {filteredMessages.map((x, i) => {
           myMessage = isParent
             ? x.sender === "parent" || x.sender === String(parentData.id)
               ? true
@@ -51,30 +51,32 @@ export const MessageData: React.FC<MessageDataProps> = ({
             : false;
 
           return (
-            <>
-              <Group mt={"lg"} position={myMessage ? "right" : "left"}>
-                <Stack
-                  spacing={0}
-                  // justify="center"
-                  align={myMessage ? "flex-end" : "flex-start"}
+            <Group
+              key={"group_" + i}
+              mt={"lg"}
+              position={myMessage ? "right" : "left"}
+            >
+              <Stack
+                key={"stack_" + i}
+                spacing={0}
+                align={myMessage ? "flex-end" : "flex-start"}
+              >
+                <Text key={"text_" + i} color="dimmed" size="sm">
+                  {(isParent && myMessage) || (!isParent && !myMessage)
+                    ? `${parentData.name + " " + parentData.surname}`
+                    : `${teacherData.name + " " + teacherData.surname}`}
+                </Text>
+                <Alert
+                  radius={"lg"}
+                  key={"message_" + x.id}
+                  icon={<IconMail size={16} />}
+                  title={x.subject}
+                  variant={myMessage ? "filled" : "outline"}
                 >
-                  <Text color="dimmed" size="sm">
-                    {(isParent && myMessage) || (!isParent && !myMessage)
-                      ? `${parentData.name + " " + parentData.surname}`
-                      : `${teacherData.name + " " + teacherData.surname}`}
-                  </Text>
-                  <Alert
-                    radius={"lg"}
-                    key={"message_" + x.id}
-                    icon={<IconMail size={16} />}
-                    title={x.subject}
-                    variant={myMessage ? "filled" : "outline"}
-                  >
-                    <Text>{x.messageText}</Text>
-                  </Alert>
-                </Stack>
-              </Group>
-            </>
+                  <Text key={"message_text_" + i}>{x.messageText}</Text>
+                </Alert>
+              </Stack>
+            </Group>
           );
         })}
 

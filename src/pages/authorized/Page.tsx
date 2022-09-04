@@ -34,6 +34,7 @@ import EditChildrenModal from "./EditChildrenModal";
 import DetailsModal from "./DetailsModal";
 import AddChildrenModal from "./AddChildrenModal";
 import DeleteChildrenModal from "./DeleteChildrenModal";
+import SiteHeader from "../../components/SiteHeader";
 
 const AuthorizedPage = () => {
   const [showAddItem, setShowAddItem] = useState(false);
@@ -57,15 +58,23 @@ const AuthorizedPage = () => {
   const [deleteChildItem, setDeleteChildItem] =
     useState<AuthorizationChildToPickUpDTO | null>(null);
 
-  const { data, error, mutate } = useSWR<IAuthorizedPerson[], string>(
-    `${process.env.REACT_APP_URL}/api/authorized-person`,
-    fetcher
-  );
+  const { data, error, mutate, isValidating } = useSWR<
+    IAuthorizedPerson[],
+    string
+  >(`${process.env.REACT_APP_URL}/api/authorized-person`, fetcher);
+  const pageTitleString = "Authorized persons";
+  if (error) return <SiteHeader title={pageTitleString} error={error} />;
+  if ((!data && !error) || isValidating)
+    return (
+      <>
+        <SiteHeader title={pageTitleString} error={error} />
+        <Loader />
+      </>
+    );
 
   return (
     <>
-      <Title order={1}>Authorized persons</Title>
-      <Space h="xl" />
+      <SiteHeader title={pageTitleString} error={error} />
       {error ? error : ""}
       {data ? (
         data.length > 0 ? (
@@ -154,7 +163,6 @@ export default AuthorizedPage;
 export const ItemsTable = ({
   data,
   setEditingItem,
-
   setDeletingItem,
   setDetailsItem,
   setAddChildrenItem,

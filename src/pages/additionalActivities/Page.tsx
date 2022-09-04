@@ -20,6 +20,7 @@ import {
 import { IconPencil, IconTrash, IconDots, IconCirclePlus } from "@tabler/icons";
 import EditChildrenModal from "./EditChildrenModal";
 import EditTeachersModal from "./EditTeachersModal";
+import SiteHeader from "../../components/SiteHeader";
 
 const Page = () => {
   const [showAddItem, setShowAddItem] = useState(false);
@@ -30,15 +31,23 @@ const Page = () => {
   const [editingTeachersItem, setEditingTeachersItem] =
     useState<IActivity | null>(null);
 
-  const { data, error, mutate } = useSWR<IActivity[], string>(
+  const { data, error, mutate, isValidating } = useSWR<IActivity[], string>(
     `${process.env.REACT_APP_URL}/api/additional-activity`,
     fetcher
   );
-  // console.log("out", data);
+  const pageTitleString = "Additional activities";
+  if (error) return <SiteHeader title={pageTitleString} error={error} />;
+  if ((!data && !error) || isValidating)
+    return (
+      <>
+        <SiteHeader title={pageTitleString} error={error} />
+        <Loader />
+      </>
+    );
 
   return (
     <>
-      <Title order={1}>Additional activities</Title>
+      <SiteHeader title={pageTitleString} error={error} />
       <Space h="xl" />
       {error ? error : ""}
       {data ? (
