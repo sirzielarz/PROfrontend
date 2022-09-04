@@ -24,7 +24,15 @@ const PresencePage = () => {
   //get groups
   const { data: dataGroups, error: errorGroups } = useSWR<IGroup[], string>(
     isParent ? null : `${process.env.REACT_APP_URL}/api/group`,
-    fetcher
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateOnMount: false,
+      revalidateOnReconnect: false,
+      refreshWhenOffline: false,
+      refreshWhenHidden: false,
+      refreshInterval: 0,
+    }
   );
 
   //get presence

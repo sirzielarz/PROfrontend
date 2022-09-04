@@ -60,7 +60,19 @@ const AuthorizedPage = () => {
   const { data, error, mutate, isValidating } = useSWR<
     IAuthorizedPerson[],
     string
-  >(`${process.env.REACT_APP_URL}/api/authorized-person`, fetcher);
+  >(
+    `${process.env.REACT_APP_URL}/api/authorized-person`,
+    fetcher,
+
+    {
+      revalidateOnFocus: false,
+      revalidateOnMount: false,
+      revalidateOnReconnect: false,
+      refreshWhenOffline: false,
+      refreshWhenHidden: false,
+      refreshInterval: 0,
+    }
+  );
   const pageTitleString = "Authorized persons";
   if (error) return <SiteHeader title={pageTitleString} error={error} />;
   if ((!data && !error) || isValidating)

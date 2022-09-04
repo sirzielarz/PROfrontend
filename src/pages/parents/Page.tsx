@@ -42,7 +42,15 @@ const ParentsPage = () => {
 
   const { data, error, mutate, isValidating } = useSWR<IParent[], string>(
     `${process.env.REACT_APP_URL}/api/parent`,
-    fetcher
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateOnMount: false,
+      revalidateOnReconnect: false,
+      refreshWhenOffline: false,
+      refreshWhenHidden: false,
+      refreshInterval: 0,
+    }
   );
   const pageTitleString = "Parents";
   if (error) return <SiteHeader title={pageTitleString} error={error} />;

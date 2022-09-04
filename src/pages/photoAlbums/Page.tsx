@@ -41,10 +41,10 @@ const PhotoAlbumsPage = () => {
   const [detailsItem, setDetailsItem] = useState<IPhotoAlbum | null>(null);
   const [deletingItem, setDeletingItem] = useState<IPhotoAlbum | null>(null);
 
-  const [editingGroupsItem, setEditingGroupsItem] =
-    useState<IPhotoAlbum | null>(null);
-  const [editingActivitiesItem, setEditingActivitiesItem] =
-    useState<IPhotoAlbum | null>(null);
+  // const [editingGroupsItem, setEditingGroupsItem] =
+  //   useState<IPhotoAlbum | null>(null);
+  // const [editingActivitiesItem, setEditingActivitiesItem] =
+  //   useState<IPhotoAlbum | null>(null);
 
   const [addingPhotoModal, setAddingPhotoModal] = useState<IPhotoAlbum | null>(
     null
@@ -55,7 +55,15 @@ const PhotoAlbumsPage = () => {
 
   const { data, error, mutate, isValidating } = useSWR<IPhotoAlbum[], string>(
     isParent ? null : `${process.env.REACT_APP_URL}/api/photo-album`,
-    fetcher
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateOnMount: false,
+      revalidateOnReconnect: false,
+      refreshWhenOffline: false,
+      refreshWhenHidden: false,
+      refreshInterval: 0,
+    }
   );
   const pageTitleString = "Photo albums";
   if (error) return <SiteHeader title={pageTitleString} error={error} />;
@@ -80,8 +88,8 @@ const PhotoAlbumsPage = () => {
               setEditingItem={setEditingItem}
               setDeletingItem={setDeletingItem}
               setDetailsItem={setDetailsItem}
-              setEditingGroupsItem={setEditingGroupsItem}
-              setEditingActivitiesItem={setEditingActivitiesItem}
+              // setEditingGroupsItem={setEditingGroupsItem}
+              // setEditingActivitiesItem={setEditingActivitiesItem}
               setAddingPhotoModal={setAddingPhotoModal}
               setDeletingPhotoModal={setDeletingPhotoModal}
             />
@@ -94,13 +102,13 @@ const PhotoAlbumsPage = () => {
       )}
       <Space h="lg" />
 
-      {editingItem && (
+      {/* {editingItem && (
         <EditModal
           item={editingItem}
           mutate={mutate}
           handleClose={() => setEditingItem(null)}
         />
-      )}
+      )} */}
       {deletingItem && (
         <DeleteModal
           item={deletingItem}
@@ -108,14 +116,14 @@ const PhotoAlbumsPage = () => {
           handleClose={() => setDeletingItem(null)}
         />
       )}
-      {detailsItem && (
+      {/* {detailsItem && (
         <DetailsModal
           item={detailsItem}
           mutate={mutate}
           handleEdit={() => setEditingItem(detailsItem)}
           handleClose={() => setDetailsItem(null)}
         />
-      )}
+      )} */}
 
       {addingPhotoModal && (
         <AddPhotoModal
@@ -133,20 +141,20 @@ const PhotoAlbumsPage = () => {
         />
       )}
 
-      {editingGroupsItem && (
+      {/* {editingGroupsItem && (
         <EditGroupsModal
           item={editingGroupsItem}
           mutate={mutate}
           handleClose={() => setEditingGroupsItem(null)}
         />
-      )}
-      {editingActivitiesItem && (
+      )} */}
+      {/* {editingActivitiesItem && (
         <EditActivitiesModal
           item={editingActivitiesItem}
           mutate={mutate}
           handleClose={() => setEditingActivitiesItem(null)}
         />
-      )}
+      )} */}
       {!isParent && (
         <>
           <AddModal
@@ -175,8 +183,8 @@ export const ItemsTable = ({
   setEditingItem,
   setDeletingItem,
   setDetailsItem,
-  setEditingGroupsItem,
-  setEditingActivitiesItem,
+  // setEditingGroupsItem,
+  // setEditingActivitiesItem,
   setAddingPhotoModal,
   setDeletingPhotoModal,
 }: {
@@ -184,8 +192,8 @@ export const ItemsTable = ({
   setEditingItem: (arg0: IPhotoAlbum) => void;
   setDeletingItem: (arg0: IPhotoAlbum) => void;
   setDetailsItem: (arg0: IPhotoAlbum) => void;
-  setEditingGroupsItem: (arg0: IPhotoAlbum) => void;
-  setEditingActivitiesItem: (arg0: IPhotoAlbum) => void;
+  // setEditingGroupsItem: (arg0: IPhotoAlbum) => void;
+  // setEditingActivitiesItem: (arg0: IPhotoAlbum) => void;
   setAddingPhotoModal: (arg0: IPhotoAlbum) => void;
   setDeletingPhotoModal: (arg0: PhotoDTO) => void;
 }) => {
