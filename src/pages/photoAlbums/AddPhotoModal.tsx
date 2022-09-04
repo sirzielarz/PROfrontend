@@ -35,10 +35,19 @@ function AddPhotoModal({
 
     console.log("values-to-API", valuesToAPI);
 
-    const updated = await addPhoto(valuesToAPI);
-    mutate(updated);
-    form.reset();
-    handleClose();
+    await addPhoto(valuesToAPI)
+      .then((response) => {
+        console.log("success", response);
+        mutate(response);
+      })
+      .catch((error) => {
+        console.log("error", error);
+      })
+      .finally(() => {
+        console.log(`reseting form closing modal`);
+        form.reset();
+        handleClose();
+      });
   }
 
   return (

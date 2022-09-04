@@ -52,7 +52,7 @@ const Page = () => {
             />
           </>
         ) : (
-          <Text>No additional activities exist.</Text>
+          <Text>No announcements exist.</Text>
         )
       ) : (
         <Loader />
