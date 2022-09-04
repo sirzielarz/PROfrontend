@@ -35,7 +35,7 @@ const Page = () => {
     fetcher,
     {
       revalidateOnFocus: false,
-      revalidateOnMount: false,
+      // revalidateOnMount: false,
       revalidateOnReconnect: false,
       refreshWhenOffline: false,
       refreshWhenHidden: false,
