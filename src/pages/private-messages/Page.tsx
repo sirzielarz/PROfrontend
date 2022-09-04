@@ -1,14 +1,19 @@
-import { Grid, Loader, Text } from "@mantine/core";
+import { Button, Grid, Loader, Space, Text } from "@mantine/core";
 import React, { useState } from "react";
 import useAuth from "../../api/useAuth";
 import { MessageRecipients } from "./MessageRecipients";
 import useDataFetcher from "../../helpers/useDataFetcher";
 import { MessageData } from "./MessageData";
 import SiteHeader from "../../components/SiteHeader";
+import { SendMessageModal } from "./SendMessageModal";
+import { IPerson } from "../../interfaces/Entities";
+import { IconCirclePlus, IconMail } from "@tabler/icons";
 
 function MessagesPage() {
   const { isParent } = useAuth();
   const [recipientSelected, setRecipientSelected] = useState("");
+  const [open, setOpen] = useState(false);
+  const [showAddItem, setShowAddItem] = useState(false);
   //fetch data
   const {
     data: myData,
@@ -27,6 +32,12 @@ function MessagesPage() {
       </>
     );
 
+  const potentialRecipments: IPerson[] = [
+    { id: 1, name: "test", surname: "test" },
+    { id: 2, name: "test", surname: "test" },
+    { id: 3, name: "test", surname: "test" },
+  ];
+
   return (
     <>
       <SiteHeader title={pageTitleString} error={error} />
@@ -39,9 +50,21 @@ function MessagesPage() {
               recipientSelected={recipientSelected}
               setRecipientSelected={setRecipientSelected}
             />
+            <SendMessageModal
+              recipientList={potentialRecipments}
+              open={showAddItem}
+              setOpen={setShowAddItem}
+            />
+            <Space h={"xl"}></Space>
+            <Button
+              onClick={() => setShowAddItem(true)}
+              leftIcon={<IconMail />}
+            >
+              Send message
+            </Button>
           </Grid.Col>
           {recipientSelected && (
-            <Grid.Col md={4}>
+            <Grid.Col md={6}>
               <MessageData
                 isParent={isParent}
                 messages={data}
