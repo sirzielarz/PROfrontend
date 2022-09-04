@@ -8,7 +8,6 @@ import EditModal from "./EditModal";
 import DeleteModal from "./DeleteModal";
 import { sortChildren } from "../../helpers/utils";
 import {
-  Title,
   Text,
   Space,
   Table,

@@ -1,5 +1,3 @@
-import useSWR from "swr";
-import { fetcher } from "../api/fetch";
 import {
   ChildrenDTO,
   TeachersDTO,
@@ -7,7 +5,6 @@ import {
   additionalActivitiesDTO,
   AuthorizationChildToPickUpDTO,
   IEntity,
-  PrivateMessageDTO,
   IPerson,
 } from "../interfaces/Entities";
 export interface IItems {
