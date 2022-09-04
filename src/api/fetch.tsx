@@ -34,23 +34,23 @@ export const fetcher = async (url: string) => {
   }
 
   ////////////////////////////////////////////
-  const res = await fetch(url, { headers });
+  // const res = await fetch(url, { headers });
 
-  // If the status code is not in the range 200-299,
-  // we still try to parse and throw it.
-  if (!res.ok) {
-    const error = new Error("An error occurred while fetching the data.");
-    // Attach extra info to the error object.
-    error.message = await res.json();
-    throw error;
-  }
+  // // If the status code is not in the range 200-299,
+  // // we still try to parse and throw it.
+  // if (!res.ok) {
+  //   const error = new Error("An error occurred while fetching the data.");
+  //   // Attach extra info to the error object.
+  //   error.message = await res.json();
+  //   throw error;
+  // }
 
-  return res.json();
+  // return res.json();
   /////////////////////////////////////////
 
-  //   return fetch(url, {
-  //     headers,
-  //   }).then((r) => r.json());
+  return fetch(url, {
+    headers,
+  }).then((r) => r.json());
 };
 
 function fetchWrapper(

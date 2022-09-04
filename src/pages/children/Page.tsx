@@ -45,7 +45,15 @@ const ChildrenPage = () => {
 
   const { data, error, mutate, isValidating } = useSWR<IChild[], string>(
     `${process.env.REACT_APP_URL}/api/child`,
-    fetcher
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateOnMount: false,
+      revalidateOnReconnect: false,
+      refreshWhenOffline: false,
+      refreshWhenHidden: false,
+      refreshInterval: 0,
+    }
   );
   const pageTitleString = "Children";
   if (error) return <SiteHeader title={pageTitleString} error={error} />;

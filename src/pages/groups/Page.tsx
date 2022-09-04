@@ -34,7 +34,15 @@ const Page = () => {
 
   const { data, error, mutate, isValidating } = useSWR<IGroup[], string>(
     `${process.env.REACT_APP_URL}/api/group`,
-    fetcher
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateOnMount: false,
+      revalidateOnReconnect: false,
+      refreshWhenOffline: false,
+      refreshWhenHidden: false,
+      refreshInterval: 0,
+    }
   );
   const pageTitleString = "Groups";
   if (error) return <SiteHeader title={pageTitleString} error={error} />;

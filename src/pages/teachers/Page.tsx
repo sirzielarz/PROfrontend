@@ -43,7 +43,15 @@ const TeachersPage = () => {
 
   const { data, error, mutate, isValidating } = useSWR<ITeacher[], string>(
     `${process.env.REACT_APP_URL}/api/teacher`,
-    fetcher
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateOnMount: false,
+      revalidateOnReconnect: false,
+      refreshWhenOffline: false,
+      refreshWhenHidden: false,
+      refreshInterval: 0,
+    }
   );
   const pageTitleString = "Teachers";
   if (error) return <SiteHeader title={pageTitleString} error={error} />;

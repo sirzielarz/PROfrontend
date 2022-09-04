@@ -32,7 +32,15 @@ const Page = () => {
 
   const { data, error, mutate, isValidating } = useSWR<IActivity[], string>(
     `${process.env.REACT_APP_URL}/api/additional-activity`,
-    fetcher
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateOnMount: false,
+      revalidateOnReconnect: false,
+      refreshWhenOffline: false,
+      refreshWhenHidden: false,
+      refreshInterval: 0,
+    }
   );
   const pageTitleString = "Additional activities";
   if (error) return <SiteHeader title={pageTitleString} error={error} />;

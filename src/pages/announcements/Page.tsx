@@ -25,7 +25,15 @@ const Page = () => {
 
   const { data, error, mutate, isValidating } = useSWR<IAnnouncement[], string>(
     `${process.env.REACT_APP_URL}/api/announcement`,
-    fetcher
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateOnMount: false,
+      revalidateOnReconnect: false,
+      refreshWhenOffline: false,
+      refreshWhenHidden: false,
+      refreshInterval: 0,
+    }
   );
   const pageTitleString = "Announcements";
   if (error) return <SiteHeader title={pageTitleString} error={error} />;

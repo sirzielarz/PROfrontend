@@ -55,7 +55,7 @@ function AddPhotoModal({
       })
       .finally(() => {
         console.log(`reseting form closing modal`);
-        form.reset();
+        //form.reset();
         handleClose();
       });
   }
