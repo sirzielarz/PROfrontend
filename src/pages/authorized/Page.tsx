@@ -11,7 +11,6 @@ import EditModal from "./EditModal";
 import DeleteModal from "./DeleteModal";
 import { sortAuthorized } from "../../helpers/utils";
 import {
-  Title,
   Text,
   Space,
   Table,

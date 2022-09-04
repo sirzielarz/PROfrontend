@@ -1,4 +1,4 @@
-import { Chip, Title, Text, Space, Alert, Group, Stack } from "@mantine/core";
+import { Title, Text, Space, Alert, Group, Stack } from "@mantine/core";
 import { IconMail } from "@tabler/icons";
 import { sortByID } from "../../helpers/utils";
 import { IPerson, PrivateMessageDTO } from "../../interfaces/Entities";

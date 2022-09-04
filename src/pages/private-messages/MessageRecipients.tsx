@@ -1,5 +1,5 @@
 import { Alert, Chip, Title, Text, Space, Stack } from "@mantine/core";
-import { sortPersons, sortTeachers } from "../../helpers/utils";
+import { sortPersons } from "../../helpers/utils";
 import { IPerson, PrivateMessageDTO } from "../../interfaces/Entities";
 
 interface MessageRecipientsProps {
