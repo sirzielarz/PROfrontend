@@ -10,6 +10,7 @@ const useDataFetcher = () => {
     data: myData,
     error,
     isValidating,
+    mutate,
   } = useSWR(
     isParent
       ? `${process.env.REACT_APP_URL}/api/parent/my-data`
@@ -17,7 +18,6 @@ const useDataFetcher = () => {
     fetcher,
     {
       revalidateOnFocus: false,
-      // revalidateOnMount: false,
       revalidateOnReconnect: false,
       refreshWhenOffline: false,
       refreshWhenHidden: false,
@@ -32,7 +32,7 @@ const useDataFetcher = () => {
       : myData.privateMessages
     : null;
 
-  return { data: myData, error, dataMessages, isValidating };
+  return { data: myData, error, dataMessages, isValidating, mutate };
 };
 
 export default useDataFetcher;

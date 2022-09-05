@@ -9,6 +9,8 @@ import {
 import { useForm } from "@mantine/form";
 import { IconMail } from "@tabler/icons";
 import { useState } from "react";
+import { KeyedMutator } from "swr";
+import { addPrivateMessage } from "../../api/private-message";
 import useAuth from "../../api/useAuth";
 import { sortByValueToSelect } from "../../helpers/utils";
 import { IPerson, PrivateMessageAPI } from "../../interfaces/Entities";
@@ -17,10 +19,12 @@ interface Props {
   recipientList: IPerson[];
   open: boolean;
   setOpen: (arg0: boolean) => void;
+  mutate: KeyedMutator<PrivateMessageAPI>;
 }
 
 export const SendMessageModal: React.FC<Props> = ({
   recipientList,
+  mutate,
   open,
   setOpen,
 }) => {
@@ -30,20 +34,18 @@ export const SendMessageModal: React.FC<Props> = ({
 
   const form = useForm<PrivateMessageAPI>({
     initialValues: {
-      subject: "test",
-      messageText: "test",
+      subject: "",
+      messageText: "",
       sender: String(user?.id),
       teacherId: Number(isParent ? value : user?.id),
       parentId: Number(isParent ? user?.id : value),
     },
-    // validate: {
-    //   subject: (value, values) =>
-    //     values.subject.length === 0 || values.messageText.length === 0
-    //       ? "enter at least 2 characters"
-    //       : value.length > 50
-    //       ? "enter max 50 characters"
-    //       : null,
-    // },
+    validate: {
+      subject: (value, values) =>
+        value.length > 99 ? "enter less than 100 characters" : null,
+      messageText: (value, values) =>
+        value.length > 499 ? "enter less than 500 characters" : null,
+    },
   });
 
   let allItemsData = recipientList?.map((x) => {
@@ -57,11 +59,8 @@ export const SendMessageModal: React.FC<Props> = ({
   allItemsData?.sort(sortByValueToSelect);
 
   async function sendMessage(values: PrivateMessageAPI) {
-    console.log("testxxxxx");
-    console.log(values);
-
-    //const updated = await sendMessage(values);
-    // mutate(updated);
+    const updated = await addPrivateMessage(values);
+    mutate(updated);
     form.reset();
     setOpen(false);
   }

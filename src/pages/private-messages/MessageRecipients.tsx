@@ -36,14 +36,14 @@ export const MessageRecipients: React.FC<MessageRecipientsProps> = ({
       <>
         <Title order={3}>Your conversations:</Title>
 
-        <Space h={"xl"} />
         <Text
           size={"sm"}
-          hidden={recipientSelected ? true : false}
+          // hidden={recipientSelected ? true : false}
           color={"gray"}
         >
-          Select recipient to view{" "}
+          Select recipient to view conversation{" "}
         </Text>
+        <Space h={"xl"} />
         <Chip.Group
           multiple={false}
           value={recipientSelected}

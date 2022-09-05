@@ -6,7 +6,7 @@ import useDataFetcher from "../../helpers/useDataFetcher";
 import { MessageData } from "./MessageData";
 import SiteHeader from "../../components/SiteHeader";
 import { SendMessageModal } from "./SendMessageModal";
-import { IPerson } from "../../interfaces/Entities";
+import { IPerson, PrivateMessageAPI } from "../../interfaces/Entities";
 import { IconCirclePlus, IconMail } from "@tabler/icons";
 
 function MessagesPage() {
@@ -20,6 +20,7 @@ function MessagesPage() {
     error,
     dataMessages: data,
     isValidating,
+    mutate,
   } = useDataFetcher();
 
   const pageTitleString = "Messages";
@@ -32,11 +33,12 @@ function MessagesPage() {
       </>
     );
 
-  const potentialRecipments: IPerson[] = [
-    { id: 1, name: "testa", surname: "testg" },
-    { id: 2, name: "testb", surname: "teste" },
-    { id: 3, name: "testc", surname: "testd" },
-  ];
+  const potentialRecipments: IPerson[] = isParent
+    ? [
+        { id: 1, name: "Admin", surname: "Administerski" },
+        { id: 2, name: "Ryszard", surname: "Bukowski" },
+      ]
+    : [{ id: 7, name: "Ilona", surname: "Głowacka" }];
 
   return (
     <>
@@ -53,6 +55,7 @@ function MessagesPage() {
             <SendMessageModal
               recipientList={potentialRecipments}
               open={showAddItem}
+              mutate={mutate}
               setOpen={setShowAddItem}
             />
             <Space h={"xl"}></Space>
@@ -70,6 +73,7 @@ function MessagesPage() {
                 messages={data}
                 recipientSelected={recipientSelected}
                 setRecipientSelected={setRecipientSelected}
+                mutate={mutate}
               />
             </Grid.Col>
           )}
