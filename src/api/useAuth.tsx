@@ -72,17 +72,21 @@ function useProvideAuth() {
     const token = Configuration.getInstance().getToken();
     if (token) {
       const decoded = jwtDecode<MyToken>(token);
-      const userData: User = {
-        id: decoded.id,
-        token: token,
-        email: decoded.sub,
-        roles: decoded.roles,
-        isTeacher: decoded.roles.includes("teacher"),
-        isParent: decoded.roles.includes("parent"),
-        isAdmin: decoded.roles.includes("admin"),
-      };
 
-      return userData;
+      const exp = decoded.exp;
+      if (Math.floor(Date.now() / 1000) < exp) {
+        const userData: User = {
+          id: decoded.id,
+          token: token,
+          email: decoded.sub,
+          roles: decoded.roles,
+          isTeacher: decoded.roles.includes("teacher"),
+          isParent: decoded.roles.includes("parent"),
+          isAdmin: decoded.roles.includes("admin"),
+        };
+
+        return userData;
+      }
     }
     return null;
   }
@@ -130,12 +134,11 @@ function useProvideAuth() {
   };
 
   const signout = () => {
-    // console.log("before", user);
+    console.log("before", user);
     Configuration.getInstance().removeToken();
     setUser(null);
     navigate("/login");
-
-    // console.log("after", user);
+    console.log("after", user);
   };
 
   return {
