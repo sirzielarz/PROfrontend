@@ -14,7 +14,15 @@ const useDataFetcher = () => {
     isParent
       ? `${process.env.REACT_APP_URL}/api/parent/my-data`
       : `${process.env.REACT_APP_URL}/api/teacher/my-data`,
-    fetcher
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      // revalidateOnMount: false,
+      revalidateOnReconnect: false,
+      refreshWhenOffline: false,
+      refreshWhenHidden: false,
+      refreshInterval: 0,
+    }
   );
 
   //get messages

@@ -30,8 +30,8 @@ export const MessageData: React.FC<MessageDataProps> = ({
 
     let myMessage: boolean;
 
-    console.log(parentData);
-    console.log(teacherData);
+    // console.log(parentData);
+    // console.log(teacherData);
 
     // let myMessage: boolean; //store each message owner
 
@@ -80,9 +80,9 @@ export const MessageData: React.FC<MessageDataProps> = ({
           );
         })}
 
-        <div className="jsonout">
+        {/* <div className="jsonout">
           {JSON.stringify(filteredMessages, null, 4)}
-        </div>
+        </div> */}
 
         <Space h={"xl"} />
       </>

@@ -33,9 +33,9 @@ function MessagesPage() {
     );
 
   const potentialRecipments: IPerson[] = [
-    { id: 1, name: "test", surname: "test" },
-    { id: 2, name: "test", surname: "test" },
-    { id: 3, name: "test", surname: "test" },
+    { id: 1, name: "testa", surname: "testg" },
+    { id: 2, name: "testb", surname: "teste" },
+    { id: 3, name: "testc", surname: "testd" },
   ];
 
   return (
@@ -76,11 +76,11 @@ function MessagesPage() {
           {recipientSelected && (
             <Grid.Col md={3}>
               <Text>Choosen value is: {recipientSelected}</Text>
-              <div>
+              {/* <div>
                 Fetched data from /api/{isParent ? "parent" : "teacher"}
                 /my-data
               </div>
-              <div className="jsonout">{JSON.stringify(myData, null, 4)}</div>
+              <div className="jsonout">{JSON.stringify(myData, null, 4)}</div> */}
             </Grid.Col>
           )}
         </Grid>

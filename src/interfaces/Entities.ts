@@ -32,7 +32,7 @@ export interface PrivateMessageAPI {
   parentId: Number;
   subject: string;
   messageText: string;
-  sender: MessageSender;
+  sender: string;
 }
 
 export interface additionalActivityDTO extends IEntity {
