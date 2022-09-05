@@ -37,6 +37,7 @@ function MessagesPage() {
     ? [
         { id: 1, name: "Admin", surname: "Administerski" },
         { id: 2, name: "Ryszard", surname: "Bukowski" },
+        { id: 3, name: "Anna", surname: "Lewandowska" },
       ]
     : [{ id: 7, name: "Ilona", surname: "Głowacka" }];
 

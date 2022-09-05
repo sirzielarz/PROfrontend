@@ -18,10 +18,9 @@ const useDataFetcher = () => {
     fetcher,
     {
       revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-      refreshWhenOffline: false,
-      refreshWhenHidden: false,
-      refreshInterval: 0,
+      // revalidateOnReconnect: false,
+      // refreshWhenOffline: false,
+      // refreshWhenHidden: false,
     }
   );
 

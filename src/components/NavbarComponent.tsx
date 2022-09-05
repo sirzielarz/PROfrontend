@@ -7,6 +7,7 @@ import {
   Navbar,
   NavbarProps,
   NavLink,
+  ScrollArea,
 } from "@mantine/core";
 import GlobalContext from "../helpers/GlobalContext";
 import useAuth from "../api/useAuth";
@@ -122,7 +123,7 @@ function NavbarComponent(props: Omit<NavbarProps, "children">) {
   }
 
   return (
-    <Navbar {...props} height={700} width={{ sm: 300 }} p="md">
+    <Navbar {...props} width={{ sm: 300 }} p="md">
       <Navbar.Section>
         <Code sx={{ fontWeight: 700 }}>
           {user ? user.email : "welcome guest"}
@@ -130,7 +131,7 @@ function NavbarComponent(props: Omit<NavbarProps, "children">) {
       </Navbar.Section>
       {user ? (
         <>
-          <Navbar.Section>
+          <Navbar.Section grow component={ScrollArea} mx="-xs" px="xs">
             <Group className={classes.header} position="apart"></Group>
             <NavLink
               label="Home"

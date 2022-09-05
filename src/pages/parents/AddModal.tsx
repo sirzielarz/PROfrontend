@@ -13,19 +13,6 @@ import { createParent } from "../../api/parent/index";
 import { IParent, APIParentPOST } from "../../interfaces/Entities";
 import { IconCirclePlus } from "@tabler/icons";
 
-// interface FormValues {
-//   name: string; // regular field, same as inferred type
-//   role: "user" | "admin"; // union, more specific than inferred string type
-
-//   // values that may be undefined or null
-//   // cannot be correctly inferred in strict mode
-//   age: number | undefined;
-//   registeredAt: Date | null;
-
-//   // Arrays that are empty cannot be inferred correctly
-//   jobs: string[];
-// }
-
 function AddItemModal({
   mutate,
   open,

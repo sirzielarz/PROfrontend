@@ -7,10 +7,10 @@ import {
   Stack,
   Container,
   TextInput,
-  Select,
   Button,
   Textarea,
   Input,
+  ScrollArea,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconMail } from "@tabler/icons";
@@ -87,48 +87,49 @@ export const MessageData: React.FC<MessageDataProps> = ({
           <Title order={3}>
             Conversation with {isParent ? " teacher: " : " parent: "}
           </Title>
-
-          {filteredMessages
-            .sort((a: IEntity, b: IEntity) => a.id - b.id)
-            .map((x, i) => {
-              myMessage = isParent
-                ? x.sender === "parent" || x.sender === String(parentData.id)
+          <ScrollArea style={{ height: 250 }} offsetScrollbars>
+            {filteredMessages
+              .sort((a: IEntity, b: IEntity) => a.id - b.id)
+              .map((x, i) => {
+                myMessage = isParent
+                  ? x.sender === "parent" || x.sender === String(parentData.id)
+                    ? true
+                    : false
+                  : x.sender === "teacher" ||
+                    x.sender === String(teacherData.id)
                   ? true
-                  : false
-                : x.sender === "teacher" || x.sender === String(teacherData.id)
-                ? true
-                : false;
+                  : false;
 
-              return (
-                <Group
-                  key={"group_" + i}
-                  mt={"lg"}
-                  position={myMessage ? "right" : "left"}
-                >
-                  <Stack
-                    key={"stack_" + i}
-                    spacing={0}
-                    align={myMessage ? "flex-end" : "flex-start"}
+                return (
+                  <Group
+                    key={"group_" + i}
+                    mt={"lg"}
+                    position={myMessage ? "right" : "left"}
                   >
-                    <Text key={"text_" + i} color="dimmed" size="sm">
-                      {(isParent && myMessage) || (!isParent && !myMessage)
-                        ? `${parentData.name + " " + parentData.surname}`
-                        : `${teacherData.name + " " + teacherData.surname}`}
-                    </Text>
-                    <Alert
-                      radius={"lg"}
-                      key={"message_" + x.id}
-                      icon={<IconMail size={16} />}
-                      title={x.subject}
-                      variant={myMessage ? "filled" : "outline"}
+                    <Stack
+                      key={"stack_" + i}
+                      spacing={0}
+                      align={myMessage ? "flex-end" : "flex-start"}
                     >
-                      <Text key={"message_text_" + i}>{x.messageText}</Text>
-                    </Alert>
-                  </Stack>
-                </Group>
-              );
-            })}
-
+                      <Text key={"text_" + i} color="dimmed" size="sm">
+                        {(isParent && myMessage) || (!isParent && !myMessage)
+                          ? `${parentData.name + " " + parentData.surname}`
+                          : `${teacherData.name + " " + teacherData.surname}`}
+                      </Text>
+                      <Alert
+                        radius={"lg"}
+                        key={"message_" + x.id}
+                        icon={<IconMail size={16} />}
+                        title={x.subject}
+                        variant={myMessage ? "filled" : "outline"}
+                      >
+                        <Text key={"message_text_" + i}>{x.messageText}</Text>
+                      </Alert>
+                    </Stack>
+                  </Group>
+                );
+              })}
+          </ScrollArea>
           {/* <div className="jsonout">
           {JSON.stringify(filteredMessages, null, 4)}
         </div> */}
