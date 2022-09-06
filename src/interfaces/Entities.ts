@@ -22,11 +22,6 @@ export interface PrivateMessageDTO extends IEntity {
   sender: string;
 }
 
-enum MessageSender {
-  teacher = "teacher",
-  parent = "parent",
-}
-
 export interface PrivateMessageAPI {
   teacherId: Number;
   parentId: Number;
@@ -329,4 +324,63 @@ export interface IPhoto extends IEntity {
 
 export interface APIPhoto {
   file: string;
+}
+
+export interface ParentMyData extends IPerson {
+  email: string;
+  password: string;
+  identityDocumentNumber: string;
+  phoneNumber: string;
+  bankAccountNumber?: string;
+  address: IAddress;
+  children: ChildrenMyDataDTO[];
+  privateMessages: PrivateMessageDTO[];
+}
+
+export interface ChildrenMyDataDTO {
+  child: ChildMyDataDTO;
+}
+
+export interface ChildMyDataDTO extends IPerson {
+  pesel: string;
+  birthDate: string;
+  address: IAddressChild; //ok
+  authorizationsToPickUp: AuthorizationToPickUpDTO; //ok
+  groups: GroupsMyDataDTO[];
+  additionalActivities: additionalActivitiesMyDataDTO[]; //ok
+
+  privateMessages: PrivateMessageDTO[];
+}
+
+export interface additionalActivitiesMyDataDTO extends IEntity {
+  additionalActivity: additionalActivityMyDataDTO;
+}
+
+export interface additionalActivityMyDataDTO extends IEntity {
+  activityName: string;
+  teachers: TeachersDTO[];
+}
+
+export interface PresenceMyDataDTO extends IEntity {
+  kindergartenGroup: IKindergartenGroupDTO;
+  date: Date;
+}
+
+export interface GroupsMyDataDTO extends IEntity {
+  kindergartenGroup: GroupMyDataDTO;
+}
+export interface GroupMyDataDTO extends IEntity {
+  groupName: string;
+  teachers: TeachersDTO[];
+  albums: PhotoAlbumMyDataDTO;
+  announcements: APIAnnouncementMyDataDTO[];
+}
+
+export interface PhotoAlbumMyDataDTO {
+  albumName: string;
+  photos: PhotoDTO[];
+}
+export interface APIAnnouncementMyDataDTO extends IEntity {
+  subject: string;
+  announcementText: string;
 }

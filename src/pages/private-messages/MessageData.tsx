@@ -90,7 +90,7 @@ export const MessageData: React.FC<MessageDataProps> = ({
           <Title order={3}>
             Conversation with {isParent ? " teacher: " : " parent: "}
           </Title>
-          <ScrollArea style={{ height: 250 }} offsetScrollbars>
+          <ScrollArea style={{ height: 550 }} offsetScrollbars>
             {filteredMessages
               .sort((a: IEntity, b: IEntity) => a.id - b.id)
               .map((x, i) => {

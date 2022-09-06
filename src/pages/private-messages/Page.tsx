@@ -6,7 +6,7 @@ import useDataFetcher from "../../helpers/useDataFetcher";
 import { MessageData } from "./MessageData";
 import SiteHeader from "../../components/SiteHeader";
 import { SendMessageModal } from "./SendMessageModal";
-import { IParent, IPerson } from "../../interfaces/Entities";
+import { IParent, IPerson, ParentMyData } from "../../interfaces/Entities";
 import { IconMail } from "@tabler/icons";
 import useSWR, { SWRConfig } from "swr";
 import { fetcher } from "../../api/fetch";
@@ -45,7 +45,7 @@ function MessagesPage() {
 
   let persons: IPerson[] = [];
 
-  const { data: parentsBeta, error: errorP } = useSWR<IParent[], string>(
+  const { data: parentsItems, error: errorP } = useSWR<IParent[], string>(
     !isParent ? `${process.env.REACT_APP_URL}/api/parent` : null,
     fetcher,
     {
@@ -55,7 +55,7 @@ function MessagesPage() {
       // refreshWhenHidden: false,
     }
   );
-  const { data: teachersBeta, error: errorT } = useSWR(
+  const { data: parentMyData, error: errorT } = useSWR<ParentMyData, string>(
     isParent ? `${process.env.REACT_APP_URL}/api/parent/my-data` : null,
     fetcher,
     {
@@ -72,8 +72,8 @@ function MessagesPage() {
   if (
     (!dataMessages && !error) ||
     isValidating ||
-    (!isParent && !parentsBeta) ||
-    (isParent && !teachersBeta)
+    (!isParent && !parentsItems) ||
+    (isParent && !parentMyData)
   )
     return (
       <>
@@ -83,11 +83,39 @@ function MessagesPage() {
     );
 
   if (isParent) {
-    console.log("retrieving teachers data:", teachersBeta);
+    console.log("retrieving teachers data:", parentMyData);
+
+    const teachersFromParentMyData: IPerson[] = [];
+
+    parentMyData?.children.map((c) =>
+      c.child.groups.map((g) =>
+        g.kindergartenGroup.teachers.forEach((t) => {
+          teachersFromParentMyData.push(t.teacher);
+        })
+      )
+    );
+
+    parentMyData?.children.map((c) =>
+      c.child.additionalActivities.map((a) =>
+        a.additionalActivity.teachers.forEach((t) => {
+          teachersFromParentMyData.push(t.teacher);
+        })
+      )
+    );
+    //remove duplicates and sort teachers
+    const ids: Set<number> = new Set();
+    const arr: IPerson[] = [];
+    teachersFromParentMyData.forEach((x) => {
+      if (!ids.has(x.id)) {
+        ids.add(x.id);
+        arr.push(x);
+      }
+    });
+    persons = arr.slice();
   } else {
-    console.log("retrieving parents data:", parentsBeta);
-    persons = !!parentsBeta
-      ? parentsBeta.map((x) => {
+    console.log("retrieving parents data:", parentsItems);
+    persons = !!parentsItems
+      ? parentsItems.map((x) => {
           return {
             id: x.id,
             name: x.name,
@@ -162,16 +190,6 @@ function MessagesPage() {
               />
             </Grid.Col>
           )}
-          {/* {recipientSelected && ( */}
-          <Grid.Col md={3}>
-            <Text>Choosen value is: {recipientSelected}</Text>
-            <div>
-              Fetched data from /api/{isParent ? "parent" : "teacher"}
-              /my-data
-            </div>
-            <div className="jsonout">{JSON.stringify(myData, null, 4)}</div>
-          </Grid.Col>
-          {/* )} */}
         </Grid>
       </>
     </>
