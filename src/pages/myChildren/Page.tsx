@@ -12,9 +12,9 @@ import useSWR from "swr";
 import { fetcher } from "../../api/fetch";
 import { sortPersons } from "../../helpers/utils";
 
-function MessagesPage() {
+function MyChildrenPage() {
   const { isParent } = useAuth();
-  const [recipientSelected, setRecipientSelected] = useState("");
+  const [childrenSelected, setChildren] = useState("");
 
   const [showAddItem, setShowAddItem] = useState(false);
   //fetch data
@@ -29,9 +29,9 @@ function MessagesPage() {
 
   useEffect(() => {
     return () => {
-      if (recipientSelected) {
+      if (childrenSelected) {
         console.log("yessss");
-        setRecipientSelected(recipientSelected);
+        setChildren(childrenSelected);
       }
     };
   }, []);
@@ -58,7 +58,7 @@ function MessagesPage() {
       // refreshWhenHidden: false,
     }
   );
-  const pageTitleString = "Messages";
+  const pageTitleString = "My Children";
 
   if (error || errorP || errorT)
     return <SiteHeader title={pageTitleString} error={error} />;
@@ -152,14 +152,14 @@ function MessagesPage() {
             <MessageRecipients
               isParent={isParent}
               messages={dataMessages}
-              recipientSelected={recipientSelected}
-              setRecipientSelected={setRecipientSelected}
+              recipientSelected={childrenSelected}
+              setRecipientSelected={setChildren}
               actualConversationPersons={uniqueIDsBasedOnMessages}
             />
             <SendMessageModal
               recipientList={mergedAllRecipients}
-              recipientSelected={recipientSelected}
-              setRecipientSelected={setRecipientSelected}
+              recipientSelected={childrenSelected}
+              setRecipientSelected={setChildren}
               open={showAddItem}
               mutate={mutate}
               setOpen={setShowAddItem}
@@ -172,13 +172,13 @@ function MessagesPage() {
               Send message
             </Button>
           </Grid.Col>
-          {recipientSelected && (
+          {childrenSelected && (
             <Grid.Col md={6}>
               <MessageData
                 isParent={isParent}
                 messages={dataMessages}
-                recipientSelected={recipientSelected}
-                setRecipientSelected={setRecipientSelected}
+                recipientSelected={childrenSelected}
+                setRecipientSelected={setChildren}
                 mutate={mutate}
               />
             </Grid.Col>
@@ -189,4 +189,4 @@ function MessagesPage() {
   );
 }
 
-export default MessagesPage;
+export default MyChildrenPage;

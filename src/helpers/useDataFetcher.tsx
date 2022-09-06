@@ -17,7 +17,6 @@ const useDataFetcher = () => {
       : `${process.env.REACT_APP_URL}/api/teacher/my-data`,
     fetcher,
     {
-      // revalidateOnFocus: false,
       revalidateOnReconnect: false,
       refreshWhenOffline: false,
       refreshWhenHidden: false,

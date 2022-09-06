@@ -26,6 +26,7 @@ import {
   IconAlertCircle,
   IconAlbum,
   IconMessage2,
+  IconUserCheck,
 } from "@tabler/icons";
 
 const useStyles = createStyles((theme, _params, getRef) => {
@@ -143,14 +144,15 @@ function NavbarComponent(props: Omit<NavbarProps, "children">) {
               onClick={clickHandler}
             />
             <NavLink
-              label="Presence"
-              key="/presence"
-              icon={<IconChecklist />}
+              label="My profile"
+              key="/my-profile"
+              icon={<IconUserCheck />}
               component={Link}
-              to="/presence"
-              active={location.pathname === "/presence"}
+              to="/my-profile"
+              active={location.pathname === "/my-profile"}
               onClick={clickHandler}
             />
+
             <NavLink
               label="Messages"
               key="/messages"
@@ -160,20 +162,38 @@ function NavbarComponent(props: Omit<NavbarProps, "children">) {
               active={location.pathname === "/messages"}
               onClick={clickHandler}
             />
-            <NavLink
-              label="Photo albums"
-              key="/photo-albums"
-              icon={<IconAlbum />}
-              component={Link}
-              to="/photo-albums"
-              active={location.pathname === "/photo-albums"}
-              onClick={clickHandler}
-            />
+
+            {/* {admin links start} */}
+            {user.roles?.includes("parent") ? (
+              <>
+                <NavLink
+                  label="My children"
+                  key="/my-children"
+                  icon={<IconMoodKid />}
+                  component={Link}
+                  to="/my-children"
+                  active={location.pathname === "/my-children"}
+                  onClick={clickHandler}
+                />
+              </>
+            ) : (
+              <></>
+            )}
+            {/* {admin links end} */}
 
             {/* {teachers and admin links start} */}
             {user.roles?.includes("teacher") ||
             user.roles?.includes("admin") ? (
               <>
+                <NavLink
+                  label="Presence"
+                  key="/presence"
+                  icon={<IconChecklist />}
+                  component={Link}
+                  to="/presence"
+                  active={location.pathname === "/presence"}
+                  onClick={clickHandler}
+                />
                 <NavLink
                   label="Parents"
                   key="/parents"
@@ -217,6 +237,15 @@ function NavbarComponent(props: Omit<NavbarProps, "children">) {
                   component={Link}
                   to="/announcements"
                   active={location.pathname === "/announcements"}
+                  onClick={clickHandler}
+                />
+                <NavLink
+                  label="Photo albums"
+                  key="/photo-albums"
+                  icon={<IconAlbum />}
+                  component={Link}
+                  to="/photo-albums"
+                  active={location.pathname === "/photo-albums"}
                   onClick={clickHandler}
                 />
               </>

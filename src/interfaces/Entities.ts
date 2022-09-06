@@ -348,8 +348,6 @@ export interface ChildMyDataDTO extends IPerson {
   authorizationsToPickUp: AuthorizationToPickUpDTO; //ok
   groups: GroupsMyDataDTO[];
   additionalActivities: additionalActivitiesMyDataDTO[]; //ok
-
-  privateMessages: PrivateMessageDTO[];
 }
 
 export interface additionalActivitiesMyDataDTO extends IEntity {
