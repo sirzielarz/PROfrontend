@@ -8,7 +8,7 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconMail } from "@tabler/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useSWR, { KeyedMutator } from "swr";
 import { addPrivateMessage } from "../../api/private-message";
 import useAuth from "../../api/useAuth";
@@ -18,6 +18,7 @@ import { IParent, IPerson, PrivateMessageAPI } from "../../interfaces/Entities";
 interface Props {
   recipientList: IPerson[];
   open: boolean;
+  recipientSelected: string;
   setOpen: (arg0: boolean) => void;
   mutate: KeyedMutator<PrivateMessageAPI>;
 }
@@ -25,11 +26,20 @@ interface Props {
 export const SendMessageModal: React.FC<Props> = ({
   recipientList,
   mutate,
+  recipientSelected,
   open,
   setOpen,
 }) => {
   const { user, isParent } = useAuth();
   const [value, setValue] = useState<string | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (recipientSelected) {
+        setValue(recipientSelected);
+      }
+    };
+  }, []);
 
   const form = useForm<PrivateMessageAPI>({
     initialValues: {

@@ -7,29 +7,21 @@ interface MessageRecipientsProps {
   isParent: boolean | undefined;
   recipientSelected: string;
   setRecipientSelected: (arg: string) => void;
+  actualConversationPersons: IPerson[];
 }
 export const MessageRecipients: React.FC<MessageRecipientsProps> = ({
   messages,
   isParent,
   recipientSelected,
   setRecipientSelected,
+  actualConversationPersons,
 }) => {
   //get unique conversation persons
-  const uniqueRecipients: IPerson[] = [];
-  const map = new Map();
-  for (const item of messages) {
-    if (!map.has(isParent ? item.teacher.id : item.parent.id)) {
-      map.set(isParent ? item.teacher.id : item.parent.id, true); // set any value to Map
-      uniqueRecipients.push({
-        id: isParent ? item.teacher.id : item.parent.id,
-        name: isParent ? item.teacher.name : item.parent.name,
-        surname: isParent ? item.teacher.surname : item.parent.surname,
-      });
-    }
-  }
-  uniqueRecipients.sort(sortPersons);
+  ////
 
-  if (!(uniqueRecipients.length > 0)) {
+  ////
+
+  if (!actualConversationPersons) {
     return <Alert>No conversation exist</Alert>;
   } else {
     return (
@@ -50,7 +42,7 @@ export const MessageRecipients: React.FC<MessageRecipientsProps> = ({
           onChange={setRecipientSelected}
         >
           <Stack>
-            {uniqueRecipients.map((x) => (
+            {actualConversationPersons.map((x) => (
               <Chip key={"conversation_with_" + x.id} value={String(x.id)}>
                 {x.surname + " " + x.name}
               </Chip>
