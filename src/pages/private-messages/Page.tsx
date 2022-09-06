@@ -81,11 +81,11 @@ function MessagesPage() {
           {recipientSelected && (
             <Grid.Col md={3}>
               <Text>Choosen value is: {recipientSelected}</Text>
-              {/* <div>
+              <div>
                 Fetched data from /api/{isParent ? "parent" : "teacher"}
                 /my-data
               </div>
-              <div className="jsonout">{JSON.stringify(myData, null, 4)}</div> */}
+              <div className="jsonout">{JSON.stringify(myData, null, 4)}</div>
             </Grid.Col>
           )}
         </Grid>

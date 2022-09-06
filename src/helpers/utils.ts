@@ -124,18 +124,3 @@ export function prepareDate(date: Date | null): Date {
     Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
   );
 }
-
-// export function APIgetGroups() {
-//   const { data, error, mutate, isValidating } = useSWR(
-//     `${process.env.REACT_APP_URL}/api/group`,
-//     fetcher
-//   );
-
-//   return {
-//     data,
-//     isLoading: !error && !data,
-//     isError: error,
-//     mutate,
-//     isValidating,
-//   };
-// }

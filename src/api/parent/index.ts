@@ -1,5 +1,6 @@
-import { apiDelete, apiGet, apiPost, apiPut } from "./../fetch";
+import { apiDelete, apiGet, apiPost, apiPut, fetcher } from "./../fetch";
 import { APIParentPOST, APIParentPUT } from "../../interfaces/Entities";
+import useSWR from "swr";
 //parent
 export async function getParents(): Promise<any> {
   return await apiGet(`${process.env.REACT_APP_URL}/api/parent/`);
@@ -26,9 +27,24 @@ export async function editParent(
   id: number,
   values: APIParentPUT
 ): Promise<any> {
-  console.log("updateding Parent: ", values); //toremove
+  console.log("updating Parent: ", values); //toremove
   return await apiPut(`${process.env.REACT_APP_URL}/api/parent/${id}`, values);
 }
 export async function getParent(id: number): Promise<any> {
   return await apiGet(`${process.env.REACT_APP_URL}/api/parent/${id}`);
+}
+
+export function SWR_getParents() {
+  const { data, error, mutate, isValidating } = useSWR(
+    `${process.env.REACT_APP_URL}/api/parent`,
+    fetcher
+  );
+
+  return {
+    data,
+    isLoading: !error && !data,
+    isError: error,
+    mutate,
+    isValidating,
+  };
 }

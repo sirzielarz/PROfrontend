@@ -1,10 +1,25 @@
 import useAuth from "../api/useAuth";
 import useSWR from "swr";
 import { fetcher } from "../api/fetch";
-import { PrivateMessageDTO } from "../interfaces/Entities";
+import { IPerson, PrivateMessageDTO } from "../interfaces/Entities";
+import { SWR_getParents } from "../api/parent";
+import { IPVersion } from "net";
 
 const useDataFetcher = () => {
   const { isParent } = useAuth();
+
+  function getPotencialRecipients(): IPerson[] {
+    const prData: IPerson[] = [];
+    if (isParent) {
+      //get all parents
+      const allParentData = SWR_getParents();
+      console.log(allParentData);
+    } else {
+      //get teachers from myData
+    }
+
+    return prData;
+  }
 
   const {
     data: myData,
