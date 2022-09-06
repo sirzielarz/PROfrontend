@@ -6,40 +6,64 @@ import useDataFetcher from "../../helpers/useDataFetcher";
 import { MessageData } from "./MessageData";
 import SiteHeader from "../../components/SiteHeader";
 import { SendMessageModal } from "./SendMessageModal";
-import { IPerson, PrivateMessageAPI } from "../../interfaces/Entities";
-import { IconCirclePlus, IconMail } from "@tabler/icons";
+import { IParent, IPerson } from "../../interfaces/Entities";
+import { IconMail } from "@tabler/icons";
+import useSWR, { SWRConfig } from "swr";
+import { fetcher } from "../../api/fetch";
+import { sortPersons } from "../../helpers/utils";
 
 function MessagesPage() {
   const { isParent } = useAuth();
   const [recipientSelected, setRecipientSelected] = useState("");
-  const [open, setOpen] = useState(false);
   const [showAddItem, setShowAddItem] = useState(false);
   //fetch data
   const {
     data: myData,
     error,
-    dataMessages: data,
+    dataMessages,
     isValidating,
     mutate,
   } = useDataFetcher();
+  //////////////////////////////
 
+  let persons: IPerson[] = [];
+
+  const { data: parentsBeta } = useSWR<IParent[], string>(
+    !isParent ? `${process.env.REACT_APP_URL}/api/parent` : null,
+    fetcher
+  );
+  const { data: teachersBeta } = useSWR(
+    isParent ? `${process.env.REACT_APP_URL}/api/parent/my-data` : null,
+    fetcher
+  );
+
+  if (isParent) {
+    console.log("retrieving teachers data:", teachersBeta);
+  } else {
+    console.log("retrieving parents data:", parentsBeta);
+    persons = !!parentsBeta
+      ? parentsBeta.map((x) => {
+          return {
+            id: x.id,
+            name: x.name,
+            surname: x.surname,
+          };
+        })
+      : [];
+  }
+
+  persons.sort(sortPersons);
+
+  //////////////////////////////
   const pageTitleString = "Messages";
   if (error) return <SiteHeader title={pageTitleString} error={error} />;
-  if ((!data && !error) || isValidating)
+  if ((!dataMessages && !error) || isValidating)
     return (
       <>
         <SiteHeader title={pageTitleString} error={error} />
         <Loader />
       </>
     );
-
-  const potentialRecipments: IPerson[] = isParent
-    ? [
-        { id: 1, name: "Admin", surname: "Administerski" },
-        { id: 2, name: "Ryszard", surname: "Bukowski" },
-        { id: 3, name: "Anna", surname: "Lewandowska" },
-      ]
-    : [{ id: 7, name: "Ilona", surname: "Głowacka" }];
 
   return (
     <>
@@ -49,12 +73,12 @@ function MessagesPage() {
           <Grid.Col md={3}>
             <MessageRecipients
               isParent={isParent}
-              messages={data}
+              messages={dataMessages}
               recipientSelected={recipientSelected}
               setRecipientSelected={setRecipientSelected}
             />
             <SendMessageModal
-              recipientList={potentialRecipments}
+              recipientList={persons}
               open={showAddItem}
               mutate={mutate}
               setOpen={setShowAddItem}
@@ -71,7 +95,7 @@ function MessagesPage() {
             <Grid.Col md={6}>
               <MessageData
                 isParent={isParent}
-                messages={data}
+                messages={dataMessages}
                 recipientSelected={recipientSelected}
                 setRecipientSelected={setRecipientSelected}
                 mutate={mutate}

@@ -35,16 +35,13 @@ export async function getParent(id: number): Promise<any> {
 }
 
 export function SWR_getParents() {
-  const { data, error, mutate, isValidating } = useSWR(
+  const { data, error } = useSWR(
     `${process.env.REACT_APP_URL}/api/parent`,
     fetcher
   );
 
   return {
-    data,
-    isLoading: !error && !data,
-    isError: error,
-    mutate,
-    isValidating,
+    items: data,
+    error,
   };
 }

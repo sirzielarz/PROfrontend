@@ -9,11 +9,11 @@ import {
 import { useForm } from "@mantine/form";
 import { IconMail } from "@tabler/icons";
 import { useState } from "react";
-import { KeyedMutator } from "swr";
+import useSWR, { KeyedMutator } from "swr";
 import { addPrivateMessage } from "../../api/private-message";
 import useAuth from "../../api/useAuth";
-import { sortByValueToSelect } from "../../helpers/utils";
-import { IPerson, PrivateMessageAPI } from "../../interfaces/Entities";
+import { sortByValueToSelect, sortPersons } from "../../helpers/utils";
+import { IParent, IPerson, PrivateMessageAPI } from "../../interfaces/Entities";
 
 interface Props {
   recipientList: IPerson[];
@@ -29,7 +29,6 @@ export const SendMessageModal: React.FC<Props> = ({
   setOpen,
 }) => {
   const { user, isParent } = useAuth();
-  // const [showAddItem, setShowAddItem] = useState(false);
   const [value, setValue] = useState<string | null>(null);
 
   const form = useForm<PrivateMessageAPI>({
@@ -65,14 +64,6 @@ export const SendMessageModal: React.FC<Props> = ({
     setOpen(false);
   }
 
-  function sendMessagex(values: PrivateMessageAPI) {
-    console.log(values);
-
-    //const updated = await sendMessage(values);
-    // mutate(updated);
-    // form.reset();
-    setOpen(false);
-  }
   return (
     <>
       <Modal opened={open} onClose={() => setOpen(false)} title="Write message">
