@@ -1,5 +1,4 @@
 import { Alert, Chip, Title, Text, Space, Stack } from "@mantine/core";
-import { sortPersons } from "../../helpers/utils";
 import { IPerson, PrivateMessageDTO } from "../../interfaces/Entities";
 
 interface MessageRecipientsProps {
@@ -19,9 +18,9 @@ export const MessageRecipients: React.FC<MessageRecipientsProps> = ({
   //get unique conversation persons
   ////
 
-  ////
+  ////Select recipient to view conversation
 
-  if (!actualConversationPersons) {
+  if (actualConversationPersons.length < 1) {
     return <Alert>No conversation exist</Alert>;
   } else {
     return (
@@ -39,6 +38,7 @@ export const MessageRecipients: React.FC<MessageRecipientsProps> = ({
         <Chip.Group
           multiple={false}
           value={recipientSelected}
+          defaultValue={recipientSelected}
           onChange={setRecipientSelected}
         >
           <Stack>

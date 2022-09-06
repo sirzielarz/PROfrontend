@@ -1,5 +1,5 @@
 import { Button, Grid, Loader, Space, Text } from "@mantine/core";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import useAuth from "../../api/useAuth";
 import { MessageRecipients } from "./MessageRecipients";
 import useDataFetcher from "../../helpers/useDataFetcher";
@@ -11,6 +11,7 @@ import { IconMail } from "@tabler/icons";
 import useSWR, { SWRConfig } from "swr";
 import { fetcher } from "../../api/fetch";
 import { sortPersons } from "../../helpers/utils";
+import GlobalContext from "../../helpers/GlobalContext";
 
 function MessagesPage() {
   const { isParent } = useAuth();
@@ -31,6 +32,16 @@ function MessagesPage() {
     mutate,
   } = useDataFetcher();
   //get potential recipients list
+  const context = useContext(GlobalContext);
+
+  useEffect(() => {
+    return () => {
+      if (recipientSelected) {
+        console.log("yessss");
+        setRecipientSelected(recipientSelected);
+      }
+    };
+  }, []);
 
   let persons: IPerson[] = [];
 
@@ -39,9 +50,9 @@ function MessagesPage() {
     fetcher,
     {
       revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-      refreshWhenOffline: false,
-      refreshWhenHidden: false,
+      // revalidateOnReconnect: false,
+      // refreshWhenOffline: false,
+      // refreshWhenHidden: false,
     }
   );
   const { data: teachersBeta, error: errorT } = useSWR(
@@ -49,9 +60,9 @@ function MessagesPage() {
     fetcher,
     {
       revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-      refreshWhenOffline: false,
-      refreshWhenHidden: false,
+      // revalidateOnReconnect: false,
+      // refreshWhenOffline: false,
+      // refreshWhenHidden: false,
     }
   );
   const pageTitleString = "Messages";
@@ -102,19 +113,13 @@ function MessagesPage() {
       }
     }
   //save unique unique recipiements list from messages array
-  //setActualConversationPersons(uniqueRecipients);
-  let uniqueIDsBasedOnMessages = uniqueRecipients;
+  let uniqueIDsBasedOnMessages = uniqueRecipients.slice(); //copy values - not reference
   uniqueIDsBasedOnMessages.sort(sortPersons);
-
+  //merge persons from messages and potential recipiements
   var ids = new Set(uniqueRecipients.map((d) => d.id));
   var merged = [...uniqueRecipients, ...persons.filter((d) => !ids.has(d.id))];
-
-  //merge persons from messages and potential recipiements
-  // persons.map((x) => {
-  //   uniqueRecipients.push(x);
-  // });
   merged.sort(sortPersons);
-  let mergedAllRecipients: IPerson[] = merged;
+  let mergedAllRecipients: IPerson[] = merged.slice(); //copy values - not reference
   // // //setUniqueRecipientsList(uniqueRecipients);
 
   return (
@@ -133,6 +138,7 @@ function MessagesPage() {
             <SendMessageModal
               recipientList={mergedAllRecipients}
               recipientSelected={recipientSelected}
+              setRecipientSelected={setRecipientSelected}
               open={showAddItem}
               mutate={mutate}
               setOpen={setShowAddItem}
@@ -156,16 +162,16 @@ function MessagesPage() {
               />
             </Grid.Col>
           )}
-          {recipientSelected && (
-            <Grid.Col md={3}>
-              <Text>Choosen value is: {recipientSelected}</Text>
-              <div>
-                Fetched data from /api/{isParent ? "parent" : "teacher"}
-                /my-data
-              </div>
-              <div className="jsonout">{JSON.stringify(myData, null, 4)}</div>
-            </Grid.Col>
-          )}
+          {/* {recipientSelected && ( */}
+          <Grid.Col md={3}>
+            <Text>Choosen value is: {recipientSelected}</Text>
+            <div>
+              Fetched data from /api/{isParent ? "parent" : "teacher"}
+              /my-data
+            </div>
+            <div className="jsonout">{JSON.stringify(myData, null, 4)}</div>
+          </Grid.Col>
+          {/* )} */}
         </Grid>
       </>
     </>

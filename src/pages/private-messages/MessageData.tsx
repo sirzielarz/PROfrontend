@@ -61,6 +61,9 @@ export const MessageData: React.FC<MessageDataProps> = ({
     console.log(values);
     const updated = await addPrivateMessage(values);
     mutate(updated);
+    setRecipientSelected(
+      isParent ? String(values.teacherId) : String(values.parentId)
+    );
     form.reset();
   }
 
