@@ -48,7 +48,7 @@ export const fetcher = async (url: string) => {
   // return res.json();
   /////////////////////////////////////////
 
-  return fetch(url, {
+  return await fetch(url, {
     headers,
   }).then((r) => r.json());
 };

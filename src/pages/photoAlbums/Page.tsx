@@ -27,8 +27,6 @@ import {
 } from "@tabler/icons";
 
 import DetailsModal from "./DetailsModal";
-import EditGroupsModal from "./EditGroupsModal";
-import EditActivitiesModal from "./EditActivitiesModal";
 import AddPhotoModal from "./AddPhotoModal";
 import DeletePhotoModal from "./DeletePhotoModal";
 import useAuth from "../../api/useAuth";
@@ -40,11 +38,6 @@ const PhotoAlbumsPage = () => {
   const [editingItem, setEditingItem] = useState<IPhotoAlbum | null>(null);
   const [detailsItem, setDetailsItem] = useState<IPhotoAlbum | null>(null);
   const [deletingItem, setDeletingItem] = useState<IPhotoAlbum | null>(null);
-
-  // const [editingGroupsItem, setEditingGroupsItem] =
-  //   useState<IPhotoAlbum | null>(null);
-  // const [editingActivitiesItem, setEditingActivitiesItem] =
-  //   useState<IPhotoAlbum | null>(null);
 
   const [addingPhotoModal, setAddingPhotoModal] = useState<IPhotoAlbum | null>(
     null
@@ -88,8 +81,6 @@ const PhotoAlbumsPage = () => {
               setEditingItem={setEditingItem}
               setDeletingItem={setDeletingItem}
               setDetailsItem={setDetailsItem}
-              // setEditingGroupsItem={setEditingGroupsItem}
-              // setEditingActivitiesItem={setEditingActivitiesItem}
               setAddingPhotoModal={setAddingPhotoModal}
               setDeletingPhotoModal={setDeletingPhotoModal}
             />
@@ -102,13 +93,13 @@ const PhotoAlbumsPage = () => {
       )}
       <Space h="lg" />
 
-      {/* {editingItem && (
+      {editingItem && (
         <EditModal
           item={editingItem}
           mutate={mutate}
           handleClose={() => setEditingItem(null)}
         />
-      )} */}
+      )}
       {deletingItem && (
         <DeleteModal
           item={deletingItem}
@@ -140,21 +131,6 @@ const PhotoAlbumsPage = () => {
           handleClose={() => setDeletingPhotoModal(null)}
         />
       )}
-
-      {/* {editingGroupsItem && (
-        <EditGroupsModal
-          item={editingGroupsItem}
-          mutate={mutate}
-          handleClose={() => setEditingGroupsItem(null)}
-        />
-      )} */}
-      {/* {editingActivitiesItem && (
-        <EditActivitiesModal
-          item={editingActivitiesItem}
-          mutate={mutate}
-          handleClose={() => setEditingActivitiesItem(null)}
-        />
-      )} */}
       {!isParent && (
         <>
           <AddModal
@@ -183,8 +159,6 @@ export const ItemsTable = ({
   setEditingItem,
   setDeletingItem,
   setDetailsItem,
-  // setEditingGroupsItem,
-  // setEditingActivitiesItem,
   setAddingPhotoModal,
   setDeletingPhotoModal,
 }: {
@@ -192,8 +166,6 @@ export const ItemsTable = ({
   setEditingItem: (arg0: IPhotoAlbum) => void;
   setDeletingItem: (arg0: IPhotoAlbum) => void;
   setDetailsItem: (arg0: IPhotoAlbum) => void;
-  // setEditingGroupsItem: (arg0: IPhotoAlbum) => void;
-  // setEditingActivitiesItem: (arg0: IPhotoAlbum) => void;
   setAddingPhotoModal: (arg0: IPhotoAlbum) => void;
   setDeletingPhotoModal: (arg0: PhotoDTO) => void;
 }) => {

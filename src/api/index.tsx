@@ -1,7 +1,5 @@
 import { apiPost } from "./fetch";
 
-export const API_URL = "http://localhost:8080";
-
 // you can set Promise<YourType>
 export async function loginUser(email: string, password: string): Promise<any> {
   try {

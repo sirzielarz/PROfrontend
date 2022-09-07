@@ -28,6 +28,8 @@ import AnnouncementsPage from "../pages/announcements/Page";
 import PresencePage from "../pages/presence/Page";
 import PhotoAlbumsPage from "../pages/photoAlbums/Page";
 import MessagesPage from "../pages/private-messages/Page";
+import MyProfilePage from "../pages/myProfile/Page";
+import MyChildrenPage from "../pages/myChildren/Page";
 
 const AppShellComponent = () => {
   const { loaded } = useAuth();
@@ -108,6 +110,8 @@ const AppShellComponent = () => {
               <Route path="/activities" element={<ActivitiesPage />} />
               <Route path="/authorized" element={<AuthorizedPage />} />
               <Route path="/announcements" element={<AnnouncementsPage />} />
+              <Route path="/photo-albums" element={<PhotoAlbumsPage />} />
+              <Route path="/presence" element={<PresencePage />} />
             </Route>
 
             <Route
@@ -116,8 +120,9 @@ const AppShellComponent = () => {
               }
             >
               <Route path="/" key={"home"} element={<HomePage />} />
-              <Route path="/presence" element={<PresencePage />} />
-              <Route path="/photo-albums" element={<PhotoAlbumsPage />} />
+              <Route path="/my-profile" element={<MyProfilePage />} />
+              <Route path="/my-children" element={<MyChildrenPage />} />
+
               <Route path="/messages" element={<MessagesPage />} />
             </Route>
             {/*catch all other*/}
