@@ -10,7 +10,7 @@ import { fetcher } from "../../api/fetch";
 import EditModal from "./EditModal";
 import ResetPasswordModal from "./ResetPasswordModal";
 
-const MyProfilePage = () => {
+const MyTeacherProfilePage = () => {
   const [editingItem, setEditingItem] = useState<IParent | null>(null);
   const [detailsItem, setDetailsItem] = useState<IParent | null>(null);
   const [passwordItem, setPasswordItem] = useState<IParent | null>(null);
@@ -69,4 +69,4 @@ const MyProfilePage = () => {
     </>
   );
 };
-export default MyProfilePage;
+export default MyTeacherProfilePage;

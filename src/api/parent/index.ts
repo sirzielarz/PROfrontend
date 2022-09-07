@@ -23,6 +23,25 @@ export async function resetParentPassword(
   );
 }
 
+export async function updateMyDataParentPassword(
+  oldPassword: string,
+  newPassword: string
+): Promise<any> {
+  console.log("updating password: ", oldPassword, newPassword); //toremove
+  return await apiPut(
+    `${process.env.REACT_APP_URL}/api/parent/my-data/change-password`,
+    { oldPassword: oldPassword, newPassword: newPassword }
+  );
+}
+
+export async function updateMyDataParent(values: APIParentPUT): Promise<any> {
+  // console.log("updating Parent: ", values); //toremove
+  return await apiPut(
+    `${process.env.REACT_APP_URL}/api/parent/my-data`,
+    values
+  );
+}
+
 export async function editParent(
   id: number,
   values: APIParentPUT
@@ -30,6 +49,7 @@ export async function editParent(
   console.log("updating Parent: ", values); //toremove
   return await apiPut(`${process.env.REACT_APP_URL}/api/parent/${id}`, values);
 }
+
 export async function getParent(id: number): Promise<any> {
   return await apiGet(`${process.env.REACT_APP_URL}/api/parent/${id}`);
 }

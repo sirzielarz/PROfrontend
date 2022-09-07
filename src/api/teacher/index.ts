@@ -32,3 +32,19 @@ export async function editTeacher(
 export async function getTeacher(id: number): Promise<any> {
   return await apiGet(`${process.env.REACT_APP_URL}/api/teacher/${id}`);
 }
+export async function updateMyDataTeacherPassword(
+  oldPassword: string,
+  newPassword: string
+): Promise<any> {
+  return await apiPut(
+    `${process.env.REACT_APP_URL}/api/teacher/my-data/change-password`,
+    { oldPassword: oldPassword, newPassword: newPassword }
+  );
+}
+
+export async function updateMyDataTeacher(values: APITeacherPUT): Promise<any> {
+  return await apiPut(
+    `${process.env.REACT_APP_URL}/api/teacher/my-data`,
+    values
+  );
+}

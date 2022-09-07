@@ -130,6 +130,12 @@ export interface ResetPassword {
   confirmPassword: string;
 }
 
+export interface ChangePassword {
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
 export interface APIResetPassword {
   newPassword: string;
 }
