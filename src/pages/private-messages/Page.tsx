@@ -30,7 +30,6 @@ function MessagesPage() {
   useEffect(() => {
     return () => {
       if (recipientSelected) {
-        console.log("yessss");
         setRecipientSelected(recipientSelected);
       }
     };

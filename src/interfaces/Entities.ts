@@ -345,7 +345,7 @@ export interface ChildMyDataDTO extends IPerson {
   pesel: string;
   birthDate: string;
   address: IAddressChild; //ok
-  authorizationsToPickUp: AuthorizationToPickUpDTO; //ok
+  authorizationsToPickUp: AuthorizationToPickUpDTO[]; //ok
   groups: GroupsMyDataDTO[];
   additionalActivities: additionalActivitiesMyDataDTO[]; //ok
 }
