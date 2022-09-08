@@ -1,5 +1,10 @@
 import { apiDelete, apiGet, apiPost, apiPut } from "./../fetch";
-import { APITeacherPOST, APITeacherPUT } from "../../interfaces/Entities";
+import {
+  APITeacherPOST,
+  APITeacherPUT,
+  APITeacherPUTMyData,
+  ChangePasswordAPI,
+} from "../../interfaces/Entities";
 
 //teacher
 //@todo set ITeacher type
@@ -33,16 +38,18 @@ export async function getTeacher(id: number): Promise<any> {
   return await apiGet(`${process.env.REACT_APP_URL}/api/teacher/${id}`);
 }
 export async function updateMyDataTeacherPassword(
-  oldPassword: string,
-  newPassword: string
+  values: ChangePasswordAPI
 ): Promise<any> {
+  console.log("updating password: ", values); //toremove
   return await apiPut(
-    `${process.env.REACT_APP_URL}/api/teacher/my-data/change-password`,
-    { oldPassword: oldPassword, newPassword: newPassword }
+    `${process.env.REACT_APP_URL}/api/parent/my-data/change-password`,
+    values
   );
 }
 
-export async function updateMyDataTeacher(values: APITeacherPUT): Promise<any> {
+export async function updateMyDataTeacher(
+  values: APITeacherPUTMyData
+): Promise<any> {
   return await apiPut(
     `${process.env.REACT_APP_URL}/api/teacher/my-data`,
     values

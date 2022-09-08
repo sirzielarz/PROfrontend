@@ -135,6 +135,10 @@ export interface ChangePassword {
   newPassword: string;
   confirmPassword: string;
 }
+export interface ChangePasswordAPI {
+  oldPassword: string;
+  newPassword: string;
+}
 
 export interface APIResetPassword {
   newPassword: string;
@@ -268,6 +272,12 @@ export interface APITeacherPUT {
   email: string;
   isAdmin: boolean;
 }
+export interface APITeacherPUTMyData {
+  name: string;
+  surname: string;
+  email: string;
+  // isAdmin: boolean;
+}
 
 export interface AnnouncementDTO {
   subject: string;
@@ -357,10 +367,10 @@ export interface ChildMyDataDTO extends IPerson {
 }
 
 export interface additionalActivitiesMyDataDTO extends IEntity {
-  additionalActivity: additionalActivityMyDataDTO;
+  additionalActivity: AdditionalActivityMyDataDTO;
 }
 
-export interface additionalActivityMyDataDTO extends IEntity {
+export interface AdditionalActivityMyDataDTO extends IEntity {
   activityName: string;
   teachers: TeachersDTO[];
 }
@@ -376,7 +386,7 @@ export interface GroupsMyDataDTO extends IEntity {
 export interface GroupMyDataDTO extends IEntity {
   groupName: string;
   teachers: TeachersDTO[];
-  albums: PhotoAlbumMyDataDTO;
+  albums: PhotoAlbumMyDataDTO[];
   announcements: APIAnnouncementMyDataDTO[];
 }
 

@@ -2,8 +2,12 @@ import { useLayoutEffect, useState } from "react";
 import { useForm } from "@mantine/form";
 import { Button, Checkbox, Grid, Modal, Space, TextInput } from "@mantine/core";
 import { KeyedMutator } from "swr";
-import { editParent, updateMyDataParent } from "../../api/parent/index";
-import { APIParentPUT, IParent } from "../../interfaces/Entities";
+import { editTeacher, updateMyDataTeacher } from "../../api/teacher/index";
+import {
+  APITeacherPUT,
+  APITeacherPUTMyData,
+  ITeacher,
+} from "../../interfaces/Entities";
 import { IconDeviceFloppy } from "@tabler/icons";
 
 function EditModal({
@@ -11,8 +15,8 @@ function EditModal({
   mutate,
   handleClose,
 }: {
-  item: IParent;
-  mutate: KeyedMutator<IParent>;
+  item: ITeacher;
+  mutate: KeyedMutator<ITeacher>;
   handleClose: () => void;
 }) {
   // visual bug fix in mantine modal
@@ -21,22 +25,11 @@ function EditModal({
     setOpen2(true);
   }, []);
 
-  const form = useForm<APIParentPUT>({
+  const form = useForm<APITeacherPUTMyData>({
     initialValues: {
       name: item.name,
       surname: item.surname,
       email: item.email,
-      identityDocumentNumber: item.identityDocumentNumber,
-      phoneNumber: item.phoneNumber,
-      bankAccountNumber: item.bankAccountNumber,
-      address: {
-        city: item.address.city,
-        street: item.address.street,
-        buildingNumber: item.address.buildingNumber,
-        flatNumber: item.address.flatNumber,
-        zipCode: item.address.zipCode,
-        isWorkAddress: item.address.isWorkAddress,
-      },
     },
     validate: {
       email: (value: string) =>
@@ -59,17 +52,11 @@ function EditModal({
           : value.length > 50
           ? "enter max 50 characters"
           : null,
-      phoneNumber: (value) =>
-        value.length < 9
-          ? "enter at least 9 characters"
-          : value.length > 15
-          ? "enter max 15 characters"
-          : null,
     },
   });
 
-  async function editItem(values: APIParentPUT) {
-    const updated = await updateMyDataParent(values);
+  async function editItem(values: APITeacherPUTMyData) {
+    const updated = await updateMyDataTeacher(values);
     mutate(updated);
     form.reset();
     handleClose();
@@ -84,94 +71,29 @@ function EditModal({
         title="Edit data"
       >
         <form onSubmit={form.onSubmit(editItem)}>
-          <Grid>
-            <Grid.Col span={6}>
-              <TextInput
-                required
-                mb={12}
-                label="Name"
-                placeholder="enter name"
-                {...form.getInputProps("name")}
-              />
+          <TextInput
+            required
+            mb={12}
+            label="Name"
+            placeholder="enter name"
+            {...form.getInputProps("name")}
+          />
 
-              <TextInput
-                required
-                mb={12}
-                label="Surname"
-                placeholder="enter surname"
-                {...form.getInputProps("surname")}
-              />
+          <TextInput
+            required
+            mb={12}
+            label="Surname"
+            placeholder="enter surname"
+            {...form.getInputProps("surname")}
+          />
 
-              <TextInput
-                required
-                mb={12}
-                label="Email"
-                placeholder="your@email.com"
-                {...form.getInputProps("email")}
-              />
-              <TextInput
-                required
-                mb={12}
-                label="Identity document number"
-                placeholder="identity document number"
-                {...form.getInputProps("identityDocumentNumber")}
-              />
-              <TextInput
-                required
-                mb={12}
-                label="Phone number"
-                placeholder="phone number"
-                {...form.getInputProps("phoneNumber")}
-              />
-              <TextInput
-                mb={12}
-                label="Bank account number"
-                placeholder="bank account number"
-                {...form.getInputProps("bankAccountNumber")}
-              />
-            </Grid.Col>
-            <Grid.Col span={6}>
-              <TextInput
-                required
-                mb={12}
-                label="City"
-                placeholder="city"
-                {...form.getInputProps("address.city")}
-              />
-              <TextInput
-                mb={12}
-                label="Street"
-                placeholder="street"
-                {...form.getInputProps("address.street")}
-              />
-              <TextInput
-                required
-                mb={12}
-                label="Building number"
-                placeholder="building number"
-                {...form.getInputProps("address.buildingNumber")}
-              />
-              <TextInput
-                mb={12}
-                label="Flat number"
-                placeholder="flat number"
-                {...form.getInputProps("address.flatNumber")}
-              />
-              <TextInput
-                mb={12}
-                label="Zip code"
-                placeholder="zip code"
-                {...form.getInputProps("address.zipCode")}
-              />
-              <Checkbox
-                mt="md"
-                label="Is work Address ?"
-                {...form.getInputProps("address.isWorkAddress", {
-                  type: "checkbox",
-                })}
-              />
-            </Grid.Col>
-          </Grid>
+          <TextInput
+            required
+            mb={12}
+            label="Email"
+            placeholder="your@email.com"
+            {...form.getInputProps("email")}
+          />
 
           <Space h="lg" />
           <Button type="submit" leftIcon={<IconDeviceFloppy />}>

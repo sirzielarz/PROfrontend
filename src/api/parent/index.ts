@@ -1,5 +1,10 @@
 import { apiDelete, apiGet, apiPost, apiPut, fetcher } from "./../fetch";
-import { APIParentPOST, APIParentPUT } from "../../interfaces/Entities";
+import {
+  APIParentPOST,
+  APIParentPUT,
+  ChangePassword,
+  ChangePasswordAPI,
+} from "../../interfaces/Entities";
 import useSWR from "swr";
 //parent
 export async function getParents(): Promise<any> {
@@ -24,13 +29,12 @@ export async function resetParentPassword(
 }
 
 export async function updateMyDataParentPassword(
-  oldPassword: string,
-  newPassword: string
+  values: ChangePasswordAPI
 ): Promise<any> {
-  console.log("updating password: ", oldPassword, newPassword); //toremove
+  console.log("updating password: ", values); //toremove
   return await apiPut(
     `${process.env.REACT_APP_URL}/api/parent/my-data/change-password`,
-    { oldPassword: oldPassword, newPassword: newPassword }
+    values
   );
 }
 

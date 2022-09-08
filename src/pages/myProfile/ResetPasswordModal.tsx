@@ -1,12 +1,10 @@
 import { useForm } from "@mantine/form";
 import { Button, Modal, PasswordInput, Space } from "@mantine/core";
 import { KeyedMutator } from "swr";
-import {
-  resetParentPassword,
-  updateMyDataParentPassword,
-} from "../../api/parent/index";
+import { updateMyDataParentPassword } from "../../api/parent/index";
 import {
   ChangePassword,
+  ChangePasswordAPI,
   IParent,
   ResetPassword,
 } from "../../interfaces/Entities";
@@ -60,13 +58,27 @@ function ResetPasswordModal({
   });
 
   async function resetPassword(values: ChangePassword) {
-    const updated = await updateMyDataParentPassword(
-      values.oldPassword,
-      values.newPassword
-    );
-    mutate(updated);
-    form.reset();
+    const valuesToAPI: ChangePasswordAPI = {
+      oldPassword: values.oldPassword,
+      newPassword: values.newPassword,
+    };
+
+    await updateMyDataParentPassword(valuesToAPI)
+      .then((response) => {
+        console.log("success", response);
+        mutate(response);
+      })
+      .catch((error) => {
+        console.log("error", error);
+      })
+      .finally(() => {
+        form.reset();
+        handleClose();
+      });
     handleClose();
+    // mutate(updated);
+    // form.reset();
+    // handleClose();
   }
 
   return (

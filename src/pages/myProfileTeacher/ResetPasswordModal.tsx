@@ -1,14 +1,11 @@
 import { useForm } from "@mantine/form";
 import { Button, Modal, PasswordInput, Space } from "@mantine/core";
 import { KeyedMutator } from "swr";
-import {
-  resetParentPassword,
-  updateMyDataParentPassword,
-} from "../../api/parent/index";
+import { updateMyDataTeacherPassword } from "../../api/teacher/index";
 import {
   ChangePassword,
-  IParent,
-  ResetPassword,
+  ChangePasswordAPI,
+  ITeacher,
 } from "../../interfaces/Entities";
 
 import { useLayoutEffect, useState } from "react";
@@ -19,8 +16,8 @@ function ResetPasswordModal({
   mutate,
   handleClose,
 }: {
-  item: IParent;
-  mutate: KeyedMutator<IParent>;
+  item: ITeacher;
+  mutate: KeyedMutator<ITeacher>;
   handleClose: () => void;
 }) {
   // visual bug fix in mantine modal
@@ -60,13 +57,27 @@ function ResetPasswordModal({
   });
 
   async function resetPassword(values: ChangePassword) {
-    const updated = await updateMyDataParentPassword(
-      values.oldPassword,
-      values.newPassword
-    );
-    mutate(updated);
-    form.reset();
+    const valuesToAPI: ChangePasswordAPI = {
+      oldPassword: values.oldPassword,
+      newPassword: values.newPassword,
+    };
+
+    await updateMyDataTeacherPassword(valuesToAPI)
+      .then((response) => {
+        console.log("success", response);
+        mutate(response);
+      })
+      .catch((error) => {
+        console.log("error", error);
+      })
+      .finally(() => {
+        form.reset();
+        handleClose();
+      });
     handleClose();
+    // mutate(updated);
+    // form.reset();
+    // handleClose();
   }
 
   return (
@@ -80,7 +91,7 @@ function ResetPasswordModal({
           <PasswordInput
             required
             placeholder="enter current password"
-            label="Password"
+            label="Old password"
             mb="sm"
             {...form.getInputProps("oldPassword")}
           />
@@ -88,7 +99,7 @@ function ResetPasswordModal({
           <PasswordInput
             required
             placeholder="enter new password"
-            label="Password"
+            label="New password"
             mb="sm"
             {...form.getInputProps("newPassword")}
           />

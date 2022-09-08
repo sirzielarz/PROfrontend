@@ -206,7 +206,7 @@ function DetailsModal({
             onClick={editDetailsItem}
             mr={"sm"}
           >
-            Edit parent
+            Edit data
           </Button>
           <Button
             type="button"
