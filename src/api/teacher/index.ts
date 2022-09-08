@@ -7,13 +7,14 @@ import {
 } from "../../interfaces/Entities";
 
 //teacher
-//@todo set ITeacher type
 export async function getTeachers(): Promise<any> {
   return await apiGet(`${process.env.REACT_APP_URL}/api/teacher/`);
 }
+
 export async function deleteTeacher(id: number): Promise<any> {
   return await apiDelete(`${process.env.REACT_APP_URL}/api/teacher/${id}`);
 }
+
 export async function createTeacher(values: APITeacherPOST): Promise<any> {
   return await apiPost(`${process.env.REACT_APP_URL}/api/teacher/`, values);
 }
@@ -34,13 +35,15 @@ export async function editTeacher(
 ): Promise<any> {
   return await apiPut(`${process.env.REACT_APP_URL}/api/teacher/${id}`, values);
 }
+
 export async function getTeacher(id: number): Promise<any> {
   return await apiGet(`${process.env.REACT_APP_URL}/api/teacher/${id}`);
 }
+
 export async function updateMyDataTeacherPassword(
   values: ChangePasswordAPI
 ): Promise<any> {
-  console.log("updating password: ", values); //toremove
+  console.log("updating: ", values); //to remove
   return await apiPut(
     `${process.env.REACT_APP_URL}/api/parent/my-data/change-password`,
     values

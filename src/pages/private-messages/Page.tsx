@@ -105,7 +105,6 @@ function MessagesPage() {
     });
     persons = arr.slice();
   } else {
-    // console.log("retrieving parents data:", parentsItems);
     persons = !!parentsItems
       ? parentsItems.map((x) => {
           return {

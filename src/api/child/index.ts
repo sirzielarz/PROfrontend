@@ -10,12 +10,10 @@ export async function getChild(id: number): Promise<any> {
 }
 
 export async function createChild(values: APIChild): Promise<any> {
-  console.log("setting child: ", values); //toremove
   return await apiPost(`${process.env.REACT_APP_URL}/api/child/`, values);
 }
 
 export async function editChild(id: number, values: APIChild): Promise<any> {
-  console.log("updateding child: ", values); //toremove
   return await apiPut(`${process.env.REACT_APP_URL}/api/child/${id}`, values);
 }
 

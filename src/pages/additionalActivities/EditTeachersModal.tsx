@@ -106,13 +106,11 @@ function EditTeachersModal({
   if (errorItems) return <div>Failed to load teachers data...</div>;
   //iterate
 
-  console.log("allItems", allItems);
   let allItemsData = allItems?.map((x) => {
     return { id: `${x.id}`, value: `${x.surname} ${x.name}` };
   });
   //sort items data
   allItemsData?.sort(sortByValue);
-  console.log("allItemsData", allItemsData);
   return (
     <>
       <Modal

@@ -37,7 +37,7 @@ function EditTeachersModal({
           (el) => el.kindergartenGroup.id === item.id
         );
         setGroupEntriesIDs(result);
-        console.log("result", result);
+
         let selectedItems = result?.map((x) => {
           return {
             id: x.teacher.id,

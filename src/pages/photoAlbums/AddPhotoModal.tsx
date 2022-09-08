@@ -43,8 +43,6 @@ function AddPhotoModal({
       file: file, //image file
     };
 
-    console.log("values-to-API", valuesToAPI);
-
     await addPhoto(valuesToAPI)
       .then((response) => {
         console.log("success", response);
@@ -54,7 +52,6 @@ function AddPhotoModal({
         console.log("error", error);
       })
       .finally(() => {
-        console.log(`reseting form closing modal`);
         //form.reset();
         handleClose();
       });

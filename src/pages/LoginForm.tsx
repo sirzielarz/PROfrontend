@@ -19,7 +19,7 @@ const LoginForm = (props: PaperProps) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const showUnsuccessfullLogin = () => {
+  const showUnsuccessfulLogin = () => {
     showNotification({
       id: "errorNotification",
       disallowClose: false,
@@ -31,7 +31,7 @@ const LoginForm = (props: PaperProps) => {
       loading: false,
     });
   };
-  const showSuccessfullLogin = () => {
+  const showSuccessfulLogin = () => {
     showNotification({
       id: "loginNotification",
       disallowClose: false,
@@ -47,12 +47,10 @@ const LoginForm = (props: PaperProps) => {
   const handleSubmit = () => {
     signin(email, password)
       .then((response) => {
-        console.log("successLoginForm", response);
-        showSuccessfullLogin();
+        showSuccessfulLogin();
       })
       .catch((error) => {
-        console.log("errorLoginForm", error);
-        showUnsuccessfullLogin();
+        showUnsuccessfulLogin();
       });
   };
 

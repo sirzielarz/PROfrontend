@@ -97,7 +97,6 @@ function useProvideAuth() {
     setIsAdmin(userProfile?.isAdmin);
     setIsParent(userProfile?.isParent);
     setIsTeacher(userProfile?.isTeacher);
-    console.log(getUserProfile());
     setLoaded(true);
   }, []);
 
@@ -129,16 +128,12 @@ function useProvideAuth() {
       });
   };
 
-  const signup = (email: string, password: string) => {
-    // console.log("singing up" + email + password);
-  };
+  const signup = (email: string, password: string) => {};
 
   const signout = () => {
-    console.log("before", user);
     Configuration.getInstance().removeToken();
     setUser(null);
     navigate("/login");
-    console.log("after", user);
   };
 
   return {

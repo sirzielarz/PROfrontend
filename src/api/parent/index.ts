@@ -14,7 +14,6 @@ export async function deleteParent(id: number): Promise<any> {
   return await apiDelete(`${process.env.REACT_APP_URL}/api/parent/${id}`);
 }
 export async function createParent(values: APIParentPOST): Promise<any> {
-  console.log("setting Parent: ", values); //toremove
   return await apiPost(`${process.env.REACT_APP_URL}/api/parent/`, values);
 }
 
@@ -31,7 +30,6 @@ export async function resetParentPassword(
 export async function updateMyDataParentPassword(
   values: ChangePasswordAPI
 ): Promise<any> {
-  console.log("updating password: ", values); //toremove
   return await apiPut(
     `${process.env.REACT_APP_URL}/api/parent/my-data/change-password`,
     values
@@ -39,7 +37,6 @@ export async function updateMyDataParentPassword(
 }
 
 export async function updateMyDataParent(values: APIParentPUT): Promise<any> {
-  // console.log("updating Parent: ", values); //toremove
   return await apiPut(
     `${process.env.REACT_APP_URL}/api/parent/my-data`,
     values
@@ -50,7 +47,6 @@ export async function editParent(
   id: number,
   values: APIParentPUT
 ): Promise<any> {
-  console.log("updating Parent: ", values); //toremove
   return await apiPut(`${process.env.REACT_APP_URL}/api/parent/${id}`, values);
 }
 

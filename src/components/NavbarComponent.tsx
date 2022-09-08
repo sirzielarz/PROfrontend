@@ -110,9 +110,7 @@ const useStyles = createStyles((theme, _params, getRef) => {
 function NavbarComponent(props: Omit<NavbarProps, "children">) {
   const location = useLocation();
   const { user, signout, isParent } = useAuth();
-  useEffect(() => {
-    // console.log("useEffect from navbar");
-  }, [user]);
+  useEffect(() => {}, [user]);
   const context = useContext(GlobalContext);
 
   const { classes } = useStyles();

@@ -39,7 +39,7 @@ function EditTeacherActivitiesModal({
       .then((entries: IActivityTeacher[]) => {
         let result = entries.filter((el) => el.teacher.id === item.id);
         setItemEntriesIDs(result);
-        console.log("result", result);
+
         let selectedItems = result?.map((x) => {
           return {
             id: x.additionalActivity.id,

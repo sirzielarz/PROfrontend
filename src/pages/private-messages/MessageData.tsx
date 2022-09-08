@@ -58,7 +58,6 @@ export const MessageData: React.FC<MessageDataProps> = ({
   });
 
   async function sendAnswer(values: PrivateMessageAPI) {
-    console.log(values);
     const updated = await addPrivateMessage(values);
     mutate(updated);
     setRecipientSelected(
@@ -75,7 +74,7 @@ export const MessageData: React.FC<MessageDataProps> = ({
         ? x.teacher.id === Number(recipientSelected)
         : x.parent.id === Number(recipientSelected)
     );
-  //get sender and reciver
+  //get sender and receiver
   if (recipientSelected) {
     const parentData: IPerson = filteredMessages[0].parent;
     const teacherData: IPerson = filteredMessages[0].teacher;
@@ -133,9 +132,6 @@ export const MessageData: React.FC<MessageDataProps> = ({
                 );
               })}
           </ScrollArea>
-          {/* <div className="jsonout">
-          {JSON.stringify(filteredMessages, null, 4)}
-        </div> */}
 
           <Space h={"xl"} />
 

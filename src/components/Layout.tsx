@@ -49,21 +49,10 @@ const AppShellComponent = () => {
     );
   }
 
-  // console.log(user);
-
   return (
     <GlobalContext.Provider value={providerOpened}>
       <AppShell
-        styles={
-          {
-            // main: {
-            //   background:
-            //     theme.colorScheme === "dark"
-            //       ? theme.colors.dark[8]
-            //       : theme.colors.gray[0],
-            // },
-          }
-        }
+        styles={{}}
         navbarOffsetBreakpoint="sm"
         asideOffsetBreakpoint="sm"
         navbar={
