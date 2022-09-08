@@ -1,4 +1,12 @@
-import { Grid, Text, Space, Table, Image } from "@mantine/core";
+import {
+  Grid,
+  Text,
+  Space,
+  Table,
+  Image,
+  ScrollArea,
+  Container,
+} from "@mantine/core";
 
 import { KeyedMutator } from "swr";
 import {
@@ -20,8 +28,9 @@ import {
   IconUserCheck,
 } from "@tabler/icons";
 import { Accordion } from "@mantine/core";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import { getPhotos } from "../../api/photo";
+import { Calendar } from "@mantine/dates";
 interface ChildDataProps {
   mutate: KeyedMutator<ParentMyData>;
   childSelected: string;
@@ -34,6 +43,8 @@ export const ChildData: React.FC<ChildDataProps> = ({
   setChildSelected,
   childrenData,
 }) => {
+  //const [value, setValue] = useState<Date[]>([]);
+
   if (childSelected) {
     let child = childrenData.find((x) => x.id === Number(childSelected));
 
@@ -81,6 +92,14 @@ export const ChildData: React.FC<ChildDataProps> = ({
                       Additional activities
                     </Accordion.Control>
                     <Accordion.Panel>{getAA()}</Accordion.Panel>
+                  </Accordion.Item>
+                  <Accordion.Item value="Presence">
+                    <Accordion.Control
+                      icon={<IconPictureInPicture size={20} />}
+                    >
+                      Presence
+                    </Accordion.Control>
+                    <Accordion.Panel>{getPresence()}</Accordion.Panel>
                   </Accordion.Item>
                   <Accordion.Item value="Photo albums">
                     <Accordion.Control
@@ -228,6 +247,69 @@ export const ChildData: React.FC<ChildDataProps> = ({
               </Grid.Col>
               <Grid.Col span={12}></Grid.Col>
             </Grid>
+          </>
+        );
+      }
+    }
+  }
+
+  function getPresence(): ReactNode {
+    let dates: Date[] = [];
+
+    if (childSelected) {
+      let child = childrenData.find((x) => x.id === Number(childSelected));
+      if (child) {
+        return (
+          <>
+            {!(child.presences.length > 0) ? (
+              <Text>No presence data yet</Text>
+            ) : (
+              <>
+                <Container>
+                  <>
+                    {/* <Calendar multiple value={dates} /> */}
+                    {child.presences.map((a, i) => {
+                      const dateToAdd = new Date(a.date);
+                      dates.push(dateToAdd);
+                    })}
+                    <Calendar
+                      value={dates}
+                      multiple={true}
+                      fullWidth
+                      size="xl"
+                      styles={(theme) => ({
+                        cell: {
+                          border: `1px solid ${
+                            theme.colorScheme === "dark"
+                              ? theme.colors.dark[4]
+                              : theme.colors.gray[2]
+                          }`,
+                        },
+                        day: {
+                          borderRadius: 0,
+                          height: 70,
+                          fontSize: theme.fontSizes.lg,
+                        },
+                        weekday: { fontSize: theme.fontSizes.lg },
+                        weekdayCell: {
+                          fontSize: theme.fontSizes.xl,
+                          backgroundColor:
+                            theme.colorScheme === "dark"
+                              ? theme.colors.dark[5]
+                              : theme.colors.gray[0],
+                          border: `1px solid ${
+                            theme.colorScheme === "dark"
+                              ? theme.colors.dark[4]
+                              : theme.colors.gray[2]
+                          }`,
+                          height: 70,
+                        },
+                      })}
+                    />
+                  </>
+                </Container>
+              </>
+            )}
           </>
         );
       }
@@ -474,6 +556,5 @@ export const ChildData: React.FC<ChildDataProps> = ({
       </>
     );
   }
-
   ////
 };

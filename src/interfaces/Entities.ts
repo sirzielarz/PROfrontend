@@ -364,6 +364,7 @@ export interface ChildMyDataDTO extends IPerson {
   authorizationsToPickUp: AuthorizationToPickUpDTO[]; //ok
   groups: GroupsMyDataDTO[];
   additionalActivities: additionalActivitiesMyDataDTO[]; //ok
+  presences: PresenceMyDataDTO[];
 }
 
 export interface additionalActivitiesMyDataDTO extends IEntity {
