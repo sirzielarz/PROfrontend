@@ -13,12 +13,13 @@ import {
 import useAuth from "../api/useAuth";
 import React, { useState } from "react";
 import { showNotification } from "@mantine/notifications";
+import { IconLogin } from "@tabler/icons";
 
 const LoginForm = (props: PaperProps) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const showUnsuccessfullLogin = () => {
+  const showUnsuccessfulLogin = () => {
     showNotification({
       id: "errorNotification",
       disallowClose: false,
@@ -30,7 +31,7 @@ const LoginForm = (props: PaperProps) => {
       loading: false,
     });
   };
-  const showSuccessfullLogin = () => {
+  const showSuccessfulLogin = () => {
     showNotification({
       id: "loginNotification",
       disallowClose: false,
@@ -46,12 +47,10 @@ const LoginForm = (props: PaperProps) => {
   const handleSubmit = () => {
     signin(email, password)
       .then((response) => {
-        console.log("successLoginForm", response);
-        showSuccessfullLogin();
+        showSuccessfulLogin();
       })
       .catch((error) => {
-        console.log("errorLoginForm", error);
-        showUnsuccessfullLogin();
+        showUnsuccessfulLogin();
       });
   };
 
@@ -66,21 +65,20 @@ const LoginForm = (props: PaperProps) => {
     validate: {
       email: (val) => (/^\S+@\S+$/.test(val) ? null : "Invalid email"),
       password: (val) =>
-        val.length <= 3
-          ? "Password should include at least 3 characters"
-          : null,
+        val.length < 4 ? "Password should include at least 4 characters" : null,
     },
   });
 
   return (
     <Container>
-      <Paper radius="md" p="xl" {...props}>
+      <Paper radius="md" p="xl">
         <Title order={1}>Login to app:</Title>
         <Space h="lg" />
         <form onSubmit={form.onSubmit((values) => handleSubmit())}>
           <Stack>
             <TextInput
-              required
+              {...form.getInputProps("email")}
+              required={true}
               label="Email"
               placeholder="your@email.com"
               value={form.values.email}
@@ -92,6 +90,7 @@ const LoginForm = (props: PaperProps) => {
             />
 
             <PasswordInput
+              {...form.getInputProps("password")}
               required
               label="Password"
               placeholder="Your password"
@@ -102,10 +101,12 @@ const LoginForm = (props: PaperProps) => {
               }}
               error={
                 form.errors.password &&
-                "Password should include at least 3 characters"
+                "Password should include at least 4 characters"
               }
             />
-            <Button type="submit">Login</Button>
+            <Button type="submit" leftIcon={<IconLogin />}>
+              Login
+            </Button>
           </Stack>
         </form>
       </Paper>

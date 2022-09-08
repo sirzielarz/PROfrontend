@@ -14,6 +14,9 @@ export interface User {
   token: string;
   email: string;
   roles: string[];
+  isParent: boolean;
+  isTeacher: boolean;
+  isAdmin: boolean;
 }
 
 export interface MyToken {
@@ -26,6 +29,9 @@ export interface MyToken {
 
 export interface ContextValue {
   user: User | null;
+  isAdmin: boolean | undefined;
+  isParent: boolean | undefined;
+  isTeacher: boolean | undefined;
   loaded: boolean;
   signup: (email: string, password: string) => void;
   signin: (email: string, password: string) => Promise<any>;
@@ -33,6 +39,9 @@ export interface ContextValue {
 }
 
 const DEFAULT_VALUE = {
+  isAdmin: undefined,
+  isParent: undefined,
+  isTeacher: undefined,
   user: null,
   loaded: false,
   signup: (email: string, password: string) => {},
@@ -55,25 +64,39 @@ export default useAuth;
 function useProvideAuth() {
   const [user, setUser] = useState<null | User>(null);
   const [loaded, setLoaded] = useState(false);
+  const [isAdmin, setIsAdmin] = useState<boolean | undefined>(false);
+  const [isParent, setIsParent] = useState<boolean | undefined>(false);
+  const [isTeacher, setIsTeacher] = useState<boolean | undefined>(false);
 
   function getUserProfile(): User | null {
     const token = Configuration.getInstance().getToken();
     if (token) {
       const decoded = jwtDecode<MyToken>(token);
-      const userData: User = {
-        id: decoded.id,
-        token: token,
-        email: decoded.sub,
-        roles: decoded.roles,
-      };
-      return userData;
+
+      const exp = decoded.exp;
+      if (Math.floor(Date.now() / 1000) < exp) {
+        const userData: User = {
+          id: decoded.id,
+          token: token,
+          email: decoded.sub,
+          roles: decoded.roles,
+          isTeacher: decoded.roles.includes("teacher"),
+          isParent: decoded.roles.includes("parent"),
+          isAdmin: decoded.roles.includes("admin"),
+        };
+
+        return userData;
+      }
     }
     return null;
   }
 
   useEffect(() => {
-    setUser(getUserProfile);
-    console.log(getUserProfile());
+    const userProfile = getUserProfile();
+    setUser(userProfile);
+    setIsAdmin(userProfile?.isAdmin);
+    setIsParent(userProfile?.isParent);
+    setIsTeacher(userProfile?.isTeacher);
     setLoaded(true);
   }, []);
 
@@ -92,7 +115,11 @@ function useProvideAuth() {
     return loginUser(email, password)
       .then((user) => {
         Configuration.getInstance().setToken(user.token);
-        setUser(getUserProfile);
+        const userProfile = getUserProfile();
+        setUser(userProfile);
+        setIsAdmin(userProfile?.isAdmin);
+        setIsParent(userProfile?.isParent);
+        setIsTeacher(userProfile?.isTeacher);
         navigate(from, { replace: true });
       })
       .catch(() => {
@@ -101,17 +128,12 @@ function useProvideAuth() {
       });
   };
 
-  const signup = (email: string, password: string) => {
-    // console.log("singing up" + email + password);
-  };
+  const signup = (email: string, password: string) => {};
 
   const signout = () => {
-    // console.log("before", user);
     Configuration.getInstance().removeToken();
     setUser(null);
     navigate("/login");
-
-    // console.log("after", user);
   };
 
   return {
@@ -120,5 +142,8 @@ function useProvideAuth() {
     signin,
     signup,
     signout,
+    isAdmin,
+    isParent,
+    isTeacher,
   };
 }

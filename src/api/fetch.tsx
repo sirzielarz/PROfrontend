@@ -1,5 +1,4 @@
 import { Configuration } from "./Configuration";
-import useSWR from "swr";
 
 export function apiGet(uri: string) {
   return fetchWrapper(uri);
@@ -7,6 +6,14 @@ export function apiGet(uri: string) {
 
 export function apiPost(uri: string, body?: any) {
   return fetchWrapper(uri, "POST", body);
+}
+
+export function apiPostFile(uri: string, body?: any) {
+  const flag = true;
+  const formData = new FormData();
+  formData.append("file", body.file, body.file.fileName);
+  formData.append("id", body.id);
+  return fetchWrapper(uri, "POST", formData, flag);
 }
 
 export function apiPut(uri: string, body?: any) {
@@ -17,7 +24,7 @@ export function apiDelete(uri: string, body?: any) {
   return fetchWrapper(uri, "DELETE", body);
 }
 //fetcher for use with swr
-export const fetcher = (url: string) => {
+export const fetcher = async (url: string) => {
   const token = Configuration.getInstance().getToken();
   const headers: HeadersInit = {
     "Content-Type": "application/x-www-form-urlencoded",
@@ -25,12 +32,33 @@ export const fetcher = (url: string) => {
   if (token) {
     headers["Authorization"] = `Bearer ${token}`;
   }
-  return fetch(url, {
+
+  ////////////////////////////////////////////
+  // const res = await fetch(url, { headers });
+
+  // // If the status code is not in the range 200-299,
+  // // we still try to parse and throw it.
+  // if (!res.ok) {
+  //   const error = new Error("An error occurred while fetching the data.");
+  //   // Attach extra info to the error object.
+  //   error.message = await res.json();
+  //   throw error;
+  // }
+
+  // return res.json();
+  /////////////////////////////////////////
+
+  return await fetch(url, {
     headers,
   }).then((r) => r.json());
 };
 
-function fetchWrapper(uri: string, method: string = "GET", body?: any) {
+function fetchWrapper(
+  uri: string,
+  method: string = "GET",
+  body?: any,
+  flag: boolean = false
+) {
   const token = Configuration.getInstance().getToken();
   const headers: HeadersInit = {};
   if (method === "GET") {
@@ -43,9 +71,14 @@ function fetchWrapper(uri: string, method: string = "GET", body?: any) {
     headers["Authorization"] = `Bearer ${token}`;
   }
 
+  if (flag) {
+    headers["Accept"] = "application/json";
+    delete headers["Content-Type"];
+  }
+
   return fetch(uri, {
     method,
-    body: JSON.stringify(body),
+    body: flag ? body : JSON.stringify(body),
     headers,
   }).then(handleResponse);
 }

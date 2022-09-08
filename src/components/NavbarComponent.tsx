@@ -7,11 +7,27 @@ import {
   Navbar,
   NavbarProps,
   NavLink,
+  ScrollArea,
 } from "@mantine/core";
 import GlobalContext from "../helpers/GlobalContext";
 import useAuth from "../api/useAuth";
 
-import { IconLogout, IconLogin, IconHome, IconUsers } from "@tabler/icons";
+import {
+  IconLogout,
+  IconLogin,
+  IconHome,
+  IconUsers,
+  IconListCheck,
+  IconListNumbers,
+  IconSchool,
+  IconMoodKid,
+  IconTransferOut,
+  IconChecklist,
+  IconAlertCircle,
+  IconAlbum,
+  IconMessage2,
+  IconUserCheck,
+} from "@tabler/icons";
 
 const useStyles = createStyles((theme, _params, getRef) => {
   const icon = getRef("icon");
@@ -91,41 +107,13 @@ const useStyles = createStyles((theme, _params, getRef) => {
   };
 });
 
-// const data = [
-//   { link: "", label: "Notifications", icon: IconBellRinging },
-//   { link: "", label: "Billing", icon: IconReceipt2 },
-// ];
-
 function NavbarComponent(props: Omit<NavbarProps, "children">) {
   const location = useLocation();
-  const { user, signout } = useAuth();
-  useEffect(() => {
-    console.log("useEffect from navbar");
-  }, [user]);
+  const { user, signout, isParent } = useAuth();
+  useEffect(() => {}, [user]);
   const context = useContext(GlobalContext);
 
-  const { classes /*cx*/ } = useStyles();
-  //  const [active, setActive] = useState("Billing");
-
-  // const links = data.map((item) => (
-  //   <a
-  //     className={cx(classes.link, {
-  //       [classes.linkActive]: item.label === active,
-  //     })}
-  //     href={item.link}
-  //     key={item.label}
-  //     onClick={(event) => {
-  //       event.preventDefault();
-  //       setActive(item.label);
-  //       if (context) {
-  //         context.setOpened(false); //close burger menu
-  //       }
-  //     }}
-  //   >
-  //     <item.icon className={classes.linkIcon} stroke={1.5} />
-  //     <span>{item.label}</span>
-  //   </a>
-  // ));
+  const { classes } = useStyles();
 
   function clickHandler(event: any) {
     if (context) {
@@ -134,7 +122,7 @@ function NavbarComponent(props: Omit<NavbarProps, "children">) {
   }
 
   return (
-    <Navbar {...props} height={700} width={{ sm: 300 }} p="md">
+    <Navbar {...props} width={{ sm: 300 }} p="md">
       <Navbar.Section>
         <Code sx={{ fontWeight: 700 }}>
           {user ? user.email : "welcome guest"}
@@ -142,7 +130,7 @@ function NavbarComponent(props: Omit<NavbarProps, "children">) {
       </Navbar.Section>
       {user ? (
         <>
-          <Navbar.Section>
+          <Navbar.Section grow component={ScrollArea} mx="-xs" px="xs">
             <Group className={classes.header} position="apart"></Group>
             <NavLink
               label="Home"
@@ -153,25 +141,38 @@ function NavbarComponent(props: Omit<NavbarProps, "children">) {
               active={location.pathname === "/"}
               onClick={clickHandler}
             />
-            {/* {admin links start} */}
-            {user.roles?.includes("admin") ? (
+
+            <NavLink
+              label="Messages"
+              key="/messages"
+              icon={<IconMessage2 />}
+              component={Link}
+              to="/messages"
+              active={location.pathname === "/messages"}
+              onClick={clickHandler}
+            />
+            <NavLink
+              label="My profile"
+              key={isParent ? "/my-profile" : "/profile"}
+              icon={<IconUserCheck />}
+              component={Link}
+              to={isParent ? "/my-profile" : "/profile"}
+              active={
+                location.pathname === (isParent ? "/my-profile" : "/profile")
+              }
+              onClick={clickHandler}
+            />
+
+            {/* {parent links start} */}
+            {user.roles?.includes("parent") ? (
               <>
                 <NavLink
-                  label="Teachers"
-                  key="/teachers"
-                  icon={<IconUsers />}
+                  label="My children"
+                  key="/my-children"
+                  icon={<IconMoodKid />}
                   component={Link}
-                  to="/teachers"
-                  active={location.pathname === "/teachers"}
-                  onClick={clickHandler}
-                />
-                <NavLink
-                  label="Groups"
-                  key="/groups"
-                  icon={<IconUsers />}
-                  component={Link}
-                  to="/groups"
-                  active={location.pathname === "/groups"}
+                  to="/my-children"
+                  active={location.pathname === "/my-children"}
                   onClick={clickHandler}
                 />
               </>
@@ -179,10 +180,20 @@ function NavbarComponent(props: Omit<NavbarProps, "children">) {
               <></>
             )}
             {/* {admin links end} */}
+
             {/* {teachers and admin links start} */}
             {user.roles?.includes("teacher") ||
             user.roles?.includes("admin") ? (
               <>
+                <NavLink
+                  label="Presence"
+                  key="/presence"
+                  icon={<IconChecklist />}
+                  component={Link}
+                  to="/presence"
+                  active={location.pathname === "/presence"}
+                  onClick={clickHandler}
+                />
                 <NavLink
                   label="Parents"
                   key="/parents"
@@ -195,10 +206,46 @@ function NavbarComponent(props: Omit<NavbarProps, "children">) {
                 <NavLink
                   label="Children"
                   key="/children"
-                  icon={<IconUsers />}
+                  icon={<IconMoodKid />}
                   component={Link}
                   to="/children"
                   active={location.pathname === "/children"}
+                  onClick={clickHandler}
+                />
+                <NavLink
+                  label="Authorized persons"
+                  key="/authorized"
+                  icon={<IconTransferOut />}
+                  component={Link}
+                  to="/authorized"
+                  active={location.pathname === "/authorized"}
+                  onClick={clickHandler}
+                />
+                <NavLink
+                  label="Additional activities"
+                  key="/activities"
+                  icon={<IconListCheck />}
+                  component={Link}
+                  to="/activities"
+                  active={location.pathname === "/activities"}
+                  onClick={clickHandler}
+                />
+                <NavLink
+                  label="Announcements"
+                  key="/announcements"
+                  icon={<IconAlertCircle />}
+                  component={Link}
+                  to="/announcements"
+                  active={location.pathname === "/announcements"}
+                  onClick={clickHandler}
+                />
+                <NavLink
+                  label="Photo albums"
+                  key="/photo-albums"
+                  icon={<IconAlbum />}
+                  component={Link}
+                  to="/photo-albums"
+                  active={location.pathname === "/photo-albums"}
                   onClick={clickHandler}
                 />
               </>
@@ -206,6 +253,32 @@ function NavbarComponent(props: Omit<NavbarProps, "children">) {
               <></>
             )}
             {/* {teachers and admins links end} */}
+            {/* {admin links start} */}
+            {user.roles?.includes("admin") ? (
+              <>
+                <NavLink
+                  label="Teachers"
+                  key="/teachers"
+                  icon={<IconSchool />}
+                  component={Link}
+                  to="/teachers"
+                  active={location.pathname === "/teachers"}
+                  onClick={clickHandler}
+                />
+                <NavLink
+                  label="Groups"
+                  key="/groups"
+                  icon={<IconListNumbers />}
+                  component={Link}
+                  to="/groups"
+                  active={location.pathname === "/groups"}
+                  onClick={clickHandler}
+                />
+              </>
+            ) : (
+              <></>
+            )}
+            {/* {admin links end} */}
           </Navbar.Section>
         </>
       ) : (
