@@ -3,23 +3,23 @@ import { useState } from "react";
 import useAuth from "../../api/useAuth";
 
 import useSWR from "swr";
-import { IParent } from "../../interfaces/Entities";
+import { ITeacher } from "../../interfaces/Entities";
 import DetailsModal from "./DetailsModal";
 import SiteHeader from "../../components/SiteHeader";
 import { fetcher } from "../../api/fetch";
 import EditModal from "./EditModal";
 import ResetPasswordModal from "./ResetPasswordModal";
 
-const MyProfilePage = () => {
-  const [editingItem, setEditingItem] = useState<IParent | null>(null);
-  const [detailsItem, setDetailsItem] = useState<IParent | null>(null);
-  const [passwordItem, setPasswordItem] = useState<IParent | null>(null);
+const ProfilePage = () => {
+  const [editingItem, setEditingItem] = useState<ITeacher | null>(null);
+  const [detailsItem, setDetailsItem] = useState<ITeacher | null>(null);
+  const [passwordItem, setPasswordItem] = useState<ITeacher | null>(null);
 
   const { isParent } = useAuth();
 
   //fetch data
-  const { data, error, isValidating, mutate } = useSWR<IParent, string>(
-    isParent ? `${process.env.REACT_APP_URL}/api/parent/my-data` : null,
+  const { data, error, isValidating, mutate } = useSWR(
+    !isParent ? `${process.env.REACT_APP_URL}/api/teacher/my-data` : null,
     fetcher,
     {
       revalidateOnFocus: false,
@@ -69,4 +69,4 @@ const MyProfilePage = () => {
     </>
   );
 };
-export default MyProfilePage;
+export default ProfilePage;

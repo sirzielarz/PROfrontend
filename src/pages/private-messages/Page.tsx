@@ -75,7 +75,7 @@ function MessagesPage() {
     );
 
   if (isParent) {
-    console.log("retrieving teachers data:", parentMyData);
+    // console.log("retrieving teachers data:", parentMyData);
 
     const teachersFromParentMyData: IPerson[] = [];
 
@@ -105,7 +105,6 @@ function MessagesPage() {
     });
     persons = arr.slice();
   } else {
-    console.log("retrieving parents data:", parentsItems);
     persons = !!parentsItems
       ? parentsItems.map((x) => {
           return {

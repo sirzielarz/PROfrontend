@@ -109,10 +109,8 @@ const useStyles = createStyles((theme, _params, getRef) => {
 
 function NavbarComponent(props: Omit<NavbarProps, "children">) {
   const location = useLocation();
-  const { user, signout } = useAuth();
-  useEffect(() => {
-    // console.log("useEffect from navbar");
-  }, [user]);
+  const { user, signout, isParent } = useAuth();
+  useEffect(() => {}, [user]);
   const context = useContext(GlobalContext);
 
   const { classes } = useStyles();
@@ -143,15 +141,6 @@ function NavbarComponent(props: Omit<NavbarProps, "children">) {
               active={location.pathname === "/"}
               onClick={clickHandler}
             />
-            <NavLink
-              label="My profile"
-              key="/my-profile"
-              icon={<IconUserCheck />}
-              component={Link}
-              to="/my-profile"
-              active={location.pathname === "/my-profile"}
-              onClick={clickHandler}
-            />
 
             <NavLink
               label="Messages"
@@ -162,8 +151,19 @@ function NavbarComponent(props: Omit<NavbarProps, "children">) {
               active={location.pathname === "/messages"}
               onClick={clickHandler}
             />
+            <NavLink
+              label="My profile"
+              key={isParent ? "/my-profile" : "/profile"}
+              icon={<IconUserCheck />}
+              component={Link}
+              to={isParent ? "/my-profile" : "/profile"}
+              active={
+                location.pathname === (isParent ? "/my-profile" : "/profile")
+              }
+              onClick={clickHandler}
+            />
 
-            {/* {admin links start} */}
+            {/* {parent links start} */}
             {user.roles?.includes("parent") ? (
               <>
                 <NavLink
