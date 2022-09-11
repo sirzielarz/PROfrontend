@@ -1,16 +1,7 @@
-import {
-  Grid,
-  Text,
-  Space,
-  Table,
-  Image,
-  ScrollArea,
-  Container,
-} from "@mantine/core";
+import { Grid, Text, Space, Table, Image, Container } from "@mantine/core";
 
 import { KeyedMutator } from "swr";
 import {
-  additionalActivitiesMyDataDTO,
   APIAnnouncementMyDataDTO,
   ChildMyDataDTO,
   ParentMyData,
@@ -20,7 +11,6 @@ import {
 } from "../../interfaces/Entities";
 import { formatDateToPattern } from "./../../helpers/utils";
 import {
-  IconCameraSelfie,
   IconListCheck,
   IconMessage,
   IconPictureInPicture,
@@ -28,8 +18,7 @@ import {
   IconUserCheck,
 } from "@tabler/icons";
 import { Accordion } from "@mantine/core";
-import { ReactNode, useState } from "react";
-import { getPhotos } from "../../api/photo";
+import { ReactNode } from "react";
 import { Calendar } from "@mantine/dates";
 interface ChildDataProps {
   mutate: KeyedMutator<ParentMyData>;
@@ -268,7 +257,7 @@ export const ChildData: React.FC<ChildDataProps> = ({
                 <Container>
                   <>
                     {/* <Calendar multiple value={dates} /> */}
-                    {child.presences.map((a, i) => {
+                    {child.presences.forEach((a, i) => {
                       const dateToAdd = new Date(a.date);
                       dates.push(dateToAdd);
                     })}
