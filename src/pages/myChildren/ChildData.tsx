@@ -145,7 +145,6 @@ export const ChildData: React.FC<ChildDataProps> = ({
                     <Table>
                       <thead>
                         <tr>
-                          <th style={{ textAlign: "left" }}>id</th>
                           <th style={{ textAlign: "left" }}>name</th>
                           <th style={{ textAlign: "left" }}>teachers</th>
                         </tr>
@@ -154,7 +153,6 @@ export const ChildData: React.FC<ChildDataProps> = ({
                         {child.groups.map((a) => {
                           return (
                             <tr>
-                              <td>{a.kindergartenGroup.id}</td>
                               <td>{a.kindergartenGroup.groupName}</td>
                               <td>
                                 <>
@@ -190,19 +188,27 @@ export const ChildData: React.FC<ChildDataProps> = ({
                 <Table>
                   <tbody>
                     <tr>
-                      <td>name</td>
+                      <td style={{ textAlign: "left", fontWeight: "bold" }}>
+                        name
+                      </td>
                       <td>{child.name}</td>
                     </tr>
                     <tr>
-                      <td>surname</td>
+                      <td style={{ textAlign: "left", fontWeight: "bold" }}>
+                        surname
+                      </td>
                       <td>{child.surname}</td>
                     </tr>
                     <tr>
-                      <td>pesel</td>
+                      <td style={{ textAlign: "left", fontWeight: "bold" }}>
+                        pesel
+                      </td>
                       <td>{child.pesel}</td>
                     </tr>
                     <tr>
-                      <td>birth date</td>
+                      <td style={{ textAlign: "left", fontWeight: "bold" }}>
+                        birth date
+                      </td>
                       <td>{child.birthDate}</td>
                     </tr>
                   </tbody>
@@ -212,23 +218,33 @@ export const ChildData: React.FC<ChildDataProps> = ({
                 <Table>
                   <tbody>
                     <tr>
-                      <td>city</td>
+                      <td style={{ textAlign: "left", fontWeight: "bold" }}>
+                        city
+                      </td>
                       <td>{child.address.city}</td>
                     </tr>
                     <tr>
-                      <td>street</td>
+                      <td style={{ textAlign: "left", fontWeight: "bold" }}>
+                        street
+                      </td>
                       <td>{child.address.street}</td>
                     </tr>
                     <tr>
-                      <td>building number</td>
+                      <td style={{ textAlign: "left", fontWeight: "bold" }}>
+                        building number
+                      </td>
                       <td>{child.address.buildingNumber}</td>
                     </tr>
                     <tr>
-                      <td>flat number</td>
+                      <td style={{ textAlign: "left", fontWeight: "bold" }}>
+                        flat number
+                      </td>
                       <td>{child.address.flatNumber}</td>
                     </tr>
                     <tr>
-                      <td>zip code</td>
+                      <td style={{ textAlign: "left", fontWeight: "bold" }}>
+                        zip code
+                      </td>
                       <td>{child.address.zipCode}</td>
                     </tr>
                   </tbody>
@@ -320,7 +336,6 @@ export const ChildData: React.FC<ChildDataProps> = ({
                     <Table>
                       <thead>
                         <tr>
-                          <th style={{ textAlign: "left" }}>id</th>
                           <th style={{ textAlign: "left" }}>name</th>
                           <th style={{ textAlign: "left" }}>teachers</th>
                         </tr>
@@ -329,7 +344,6 @@ export const ChildData: React.FC<ChildDataProps> = ({
                         {child.additionalActivities.map((a) => {
                           return (
                             <tr>
-                              <td>{a.additionalActivity.id}</td>
                               <td>{a.additionalActivity.activityName}</td>
                               <td>
                                 <>
@@ -366,17 +380,21 @@ export const ChildData: React.FC<ChildDataProps> = ({
               <Grid.Col span={12}>
                 <Table>
                   <thead>
-                    <th style={{ textAlign: "left" }}>name</th>
-                    <th style={{ textAlign: "left" }}>surname</th>
-                    <th style={{ textAlign: "left" }}>reliationship</th>
-                    <th style={{ textAlign: "left" }}>date from</th>
-                    <th style={{ textAlign: "left" }}>date to</th>
+                    <tr>
+                      <th style={{ textAlign: "left" }}>name</th>
+                      <th style={{ textAlign: "left" }}>surname</th>
+                      <th style={{ textAlign: "left" }}>reliationship</th>
+                      <th style={{ textAlign: "left" }}>date from</th>
+                      <th style={{ textAlign: "left" }}>date to</th>
+                    </tr>
                   </thead>
                   <tbody>
                     {child.authorizationsToPickUp.map((a) => {
                       return (
                         <tr>
-                          <td>{a.authorizedPerson.name}</td>
+                          <td style={{ textAlign: "left" }}>
+                            {a.authorizedPerson.name}
+                          </td>
                           <td>{a.authorizedPerson.surname}</td>
                           <td>{a.authorizedPerson.relationship}</td>
                           <td>
@@ -435,7 +453,6 @@ export const ChildData: React.FC<ChildDataProps> = ({
                     <Table>
                       <thead>
                         <tr>
-                          <th style={{ textAlign: "left" }}>id</th>
                           <th style={{ textAlign: "left" }}>subject</th>
                           <th style={{ textAlign: "left" }}>announcement</th>
                         </tr>
@@ -444,7 +461,6 @@ export const ChildData: React.FC<ChildDataProps> = ({
                         {anouncements.map((a) => {
                           return (
                             <tr>
-                              <td>{a.id}</td>
                               <td>{a.subject}</td>
                               <td>{a.announcementText}</td>
                             </tr>
