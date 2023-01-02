@@ -12,7 +12,7 @@ import ResetPasswordModal from "./ResetPasswordModal";
 
 const MyProfilePage = () => {
   const [editingItem, setEditingItem] = useState<IParent | null>(null);
-  const [detailsItem, setDetailsItem] = useState<IParent | null>(null);
+  const [, setDetailsItem] = useState<IParent | null>(null);
   const [passwordItem, setPasswordItem] = useState<IParent | null>(null);
 
   const { isParent } = useAuth();

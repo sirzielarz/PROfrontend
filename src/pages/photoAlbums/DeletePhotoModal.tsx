@@ -36,11 +36,7 @@ function DeletePhotoModal({
 
   return (
     <>
-      <Modal
-        opened={open2}
-        onClose={() => handleClose()}
-        title="Delete child from authorization pickup"
-      >
+      <Modal opened={open2} onClose={() => handleClose()} title="Delete photo">
         You are going to delete photo file:<Space h={"lg"}></Space>
         <b>{"ID: " + item.id + " " + item.fileName}</b>.<Space h={"lg"}></Space>{" "}
         Are you sure about that?

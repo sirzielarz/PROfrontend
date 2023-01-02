@@ -13,13 +13,14 @@ import EditPresenceModal from "./EditPresenceModal";
 import useAuth from "../../api/useAuth";
 
 const PresencePage = () => {
-  const { isParent } = useAuth();
+  const { isParent, isAdmin, user } = useAuth();
   const [groupIDSelected, setGroupIDSelected] = useState<string>();
   const [groupNameSelected, setGroupNameSelected] = useState<string>();
   const [dateSelected, setDateSelected] = useState<Date | null>(new Date());
   const [dataPresenceFiltered, setDataPresenceFiltered] =
     useState<IPresence[]>();
   const [editingPresence, setEditingPresence] = useState(false);
+  const [filteredGroups, setFilteredGroups] = useState<IGroup[] | null>(null);
 
   //get groups
   const { data: dataGroups, error: errorGroups } = useSWR<IGroup[], string>(
@@ -47,6 +48,23 @@ const PresencePage = () => {
 
   //save data
   useEffect(() => {
+    if (isAdmin) {
+      setFilteredGroups(dataGroups ? dataGroups : null);
+    } else {
+      if (dataGroups) {
+        if (dataGroups?.length > 0) {
+          const dataFiltered = dataGroups.filter((x) => {
+            return x.teachers.find((t) => t.teacher.id === Number(user?.id));
+          });
+          setFilteredGroups(dataFiltered);
+        } else {
+          setFilteredGroups([]);
+        }
+      } else {
+        setFilteredGroups([]);
+      }
+    }
+
     const groupName =
       dataGroups && groupIDSelected
         ? dataGroups.find((x) => x.id === Number(groupIDSelected))?.groupName
@@ -68,11 +86,18 @@ const PresencePage = () => {
     } else {
       setDataPresenceFiltered([]);
     }
-  }, [groupIDSelected, dateSelected, dataGroups, dataPresence]);
+  }, [
+    groupIDSelected,
+    dateSelected,
+    dataGroups,
+    dataPresence,
+    isAdmin,
+    user?.id,
+  ]);
 
   //generate groups chips
   const GroupsChips = ({ data }: { data: IGroup[] }) => {
-    const chipsItems = data.map((item, i) => {
+    const chipsItems = filteredGroups?.map((item, i) => {
       return (
         <Chip key={i + "_"} value={String(item.id)}>
           {item.groupName}
@@ -102,14 +127,14 @@ const PresencePage = () => {
           <Title order={3}>Groups:</Title>
           <Space h="xl" />
           {errorGroups ? errorGroups : ""}
-          {dataGroups ? (
-            dataGroups.length > 0 ? (
+          {filteredGroups ? (
+            filteredGroups.length > 0 ? (
               <>
-                <GroupsChips data={dataGroups} /> <Space h="xl" />
+                <GroupsChips data={filteredGroups} /> <Space h="xl" />
                 {/* <Text>Groups fetched data: {}</Text>
-              <div className="jsonout">
-                {JSON.stringify(dataGroups, null, 4)}
-              </div> */}
+                <div className="jsonout">
+                  {JSON.stringify(dataGroups, null, 4)}
+                </div> */}
                 <Space h={"sm"} />
                 <Text
                   size={"sm"}
