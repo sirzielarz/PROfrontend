@@ -1,7 +1,7 @@
 import { useLayoutEffect, useState } from "react";
+import { KeyedMutator } from "swr";
 import { useForm } from "@mantine/form";
 import { Button, Checkbox, Grid, Modal, Space, TextInput } from "@mantine/core";
-import { KeyedMutator } from "swr";
 import { editParent } from "../../api/parent/index";
 import { APIParentPUT, IParent } from "../../interfaces/Entities";
 import { IconDeviceFloppy } from "@tabler/icons";
