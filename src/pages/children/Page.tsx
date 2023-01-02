@@ -28,8 +28,10 @@ import DetailsModal from "./DetailsModal";
 import EditGroupsModal from "./EditGroupsModal";
 import EditActivitiesModal from "./EditActivitiesModal";
 import SiteHeader from "../../components/SiteHeader";
+import useAuth from "../../api/useAuth";
 
 const ChildrenPage = () => {
+  const { isAdmin } = useAuth();
   const [showAddItem, setShowAddItem] = useState(false);
   const [editingItem, setEditingItem] = useState<IChild | null>(null);
   const [detailsItem, setDetailsItem] = useState<IChild | null>(null);
@@ -79,6 +81,7 @@ const ChildrenPage = () => {
               setEditingParentsItem={setEditingParentsItem}
               setEditingGroupsItem={setEditingGroupsItem}
               setEditingActivitiesItem={setEditingActivitiesItem}
+              isAdmin={isAdmin}
             />
           </>
         ) : (
@@ -133,14 +136,14 @@ const ChildrenPage = () => {
         />
       )}
       <AddModal open={showAddItem} setOpen={setShowAddItem} mutate={mutate} />
-      {
+      {isAdmin && (
         <Button
           onClick={() => setShowAddItem(true)}
           leftIcon={<IconCirclePlus />}
         >
           Add child
         </Button>
-      }
+      )}
     </>
   );
 };
@@ -154,6 +157,7 @@ export const ItemsTable = ({
   setEditingParentsItem,
   setEditingGroupsItem,
   setEditingActivitiesItem,
+  isAdmin,
 }: {
   data: IChild[];
   setEditingItem: (arg0: IChild) => void;
@@ -162,6 +166,7 @@ export const ItemsTable = ({
   setEditingParentsItem: (arg0: IChild) => void;
   setEditingGroupsItem: (arg0: IChild) => void;
   setEditingActivitiesItem: (arg0: IChild) => void;
+  isAdmin?: boolean;
 }) => {
   const rows = data.map((item: IChild) => (
     <tr key={item.id}>
@@ -211,62 +216,66 @@ export const ItemsTable = ({
             : "No parents added"}
         </Text>
       </td>
-      <td>
-        <Group spacing={0} position="right">
-          <Menu withinPortal transition="pop" withArrow position="left">
-            <Menu.Target>
-              <ActionIcon>
-                <IconDots size={16} stroke={1.5} />
-              </ActionIcon>
-            </Menu.Target>
-            <Menu.Dropdown>
-              <Menu.Item
-                icon={<IconListDetails size={16} stroke={1.5} />}
-                onClick={() => setDetailsItem(item)}
-              >
-                Child details
-              </Menu.Item>
-              <Menu.Item
-                icon={<IconPencil size={16} stroke={1.5} />}
-                onClick={() => setEditingItem(item)}
-              >
-                Edit child data
-              </Menu.Item>
-              {/* <Menu.Item
+      {isAdmin ? (
+        <td>
+          <Group spacing={0} position="right">
+            <Menu withinPortal transition="pop" withArrow position="left">
+              <Menu.Target>
+                <ActionIcon>
+                  <IconDots size={16} stroke={1.5} />
+                </ActionIcon>
+              </Menu.Target>
+              <Menu.Dropdown>
+                <Menu.Item
+                  icon={<IconListDetails size={16} stroke={1.5} />}
+                  onClick={() => setDetailsItem(item)}
+                >
+                  Child details
+                </Menu.Item>
+                <Menu.Item
+                  icon={<IconPencil size={16} stroke={1.5} />}
+                  onClick={() => setEditingItem(item)}
+                >
+                  Edit child data
+                </Menu.Item>
+                {/* <Menu.Item
                 icon={<IconPencil size={16} stroke={1.5} />}
                 onClick={() => setPasswordItem(item)}
               >
                 Reset password
               </Menu.Item> */}
-              <Menu.Item
-                icon={<IconPencil size={16} stroke={1.5} />}
-                onClick={() => setEditingGroupsItem(item)}
-              >
-                Edit groups
-              </Menu.Item>
-              <Menu.Item
-                icon={<IconPencil size={16} stroke={1.5} />}
-                onClick={() => setEditingParentsItem(item)}
-              >
-                Edit parents
-              </Menu.Item>
-              <Menu.Item
-                icon={<IconPencil size={16} stroke={1.5} />}
-                onClick={() => setEditingActivitiesItem(item)}
-              >
-                Edit additional activities
-              </Menu.Item>
-              <Menu.Item
-                icon={<IconTrash size={16} stroke={1.5} />}
-                color="red"
-                onClick={() => setDeletingItem(item)}
-              >
-                Delete child
-              </Menu.Item>
-            </Menu.Dropdown>
-          </Menu>
-        </Group>
-      </td>
+                <Menu.Item
+                  icon={<IconPencil size={16} stroke={1.5} />}
+                  onClick={() => setEditingGroupsItem(item)}
+                >
+                  Edit groups
+                </Menu.Item>
+                <Menu.Item
+                  icon={<IconPencil size={16} stroke={1.5} />}
+                  onClick={() => setEditingParentsItem(item)}
+                >
+                  Edit parents
+                </Menu.Item>
+                <Menu.Item
+                  icon={<IconPencil size={16} stroke={1.5} />}
+                  onClick={() => setEditingActivitiesItem(item)}
+                >
+                  Edit additional activities
+                </Menu.Item>
+                <Menu.Item
+                  icon={<IconTrash size={16} stroke={1.5} />}
+                  color="red"
+                  onClick={() => setDeletingItem(item)}
+                >
+                  Delete child
+                </Menu.Item>
+              </Menu.Dropdown>
+            </Menu>
+          </Group>
+        </td>
+      ) : (
+        ""
+      )}
     </tr>
   ));
   return (
@@ -279,7 +288,7 @@ export const ItemsTable = ({
             <th style={{ textAlign: "left" }}>Groups</th>
             <th style={{ textAlign: "left" }}>Parents</th>
             {/* <th style={{ textAlign: "left" }}>Children</th> */}
-            <th style={{ textAlign: "right" }}>Actions</th>
+            {isAdmin && <th style={{ textAlign: "right" }}>Actions</th>}
           </tr>
         </thead>
         <tbody>{rows}</tbody>

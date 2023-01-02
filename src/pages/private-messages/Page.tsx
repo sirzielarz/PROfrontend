@@ -33,6 +33,7 @@ function MessagesPage() {
         setRecipientSelected(recipientSelected);
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   let persons: IPerson[] = [];

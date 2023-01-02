@@ -20,8 +20,10 @@ import { IconPencil, IconTrash, IconDots, IconCirclePlus } from "@tabler/icons";
 import EditChildrenModal from "./EditChildrenModal";
 import EditTeachersModal from "./EditTeachersModal";
 import SiteHeader from "../../components/SiteHeader";
+import useAuth from "../../api/useAuth";
 
 const Page = () => {
+  const { isAdmin } = useAuth();
   const [showAddItem, setShowAddItem] = useState(false);
   const [editingItem, setEditingItem] = useState<IActivity | null>(null);
   const [deletingItem, setDeletingItem] = useState<IActivity | null>(null);
@@ -66,6 +68,7 @@ const Page = () => {
               setDeletingItem={setDeletingItem}
               setEditingChildrenItem={setEditingChildrenItem}
               setEditingTeachersItem={setEditingTeachersItem}
+              isAdmin={isAdmin}
             />
             {/* <div className="jsonout">{JSON.stringify(data, null, 4)}</div> */}
           </>
@@ -106,14 +109,14 @@ const Page = () => {
         />
       )}
       <AddModal open={showAddItem} setOpen={setShowAddItem} mutate={mutate} />
-      {
+      {isAdmin && (
         <Button
           leftIcon={<IconCirclePlus />}
           onClick={() => setShowAddItem(true)}
         >
           Add additional activity
         </Button>
-      }
+      )}
     </>
   );
 };
@@ -125,12 +128,14 @@ export const ItemsTable = ({
   setDeletingItem,
   setEditingChildrenItem,
   setEditingTeachersItem,
+  isAdmin,
 }: {
   data: IActivity[];
   setEditingItem: (arg0: IActivity) => void;
   setDeletingItem: (arg0: IActivity) => void;
   setEditingChildrenItem: (arg0: IActivity) => void;
   setEditingTeachersItem: (arg0: IActivity) => void;
+  isAdmin?: boolean;
 }) => {
   const rows = data.map((item) => (
     <tr key={item.id}>
@@ -180,44 +185,48 @@ export const ItemsTable = ({
             : "No children added"}
         </Text>
       </td>
-      <td>
-        <Group spacing={0} position="right">
-          <Menu withinPortal transition="pop" withArrow position="left">
-            <Menu.Target>
-              <ActionIcon>
-                <IconDots size={16} stroke={1.5} />
-              </ActionIcon>
-            </Menu.Target>
-            <Menu.Dropdown>
-              <Menu.Item
-                icon={<IconPencil size={16} stroke={1.5} />}
-                onClick={() => setEditingItem(item)}
-              >
-                Edit activity name
-              </Menu.Item>
-              <Menu.Item
-                icon={<IconPencil size={16} stroke={1.5} />}
-                onClick={() => setEditingTeachersItem(item)}
-              >
-                Edit teachers
-              </Menu.Item>
-              <Menu.Item
-                icon={<IconPencil size={16} stroke={1.5} />}
-                onClick={() => setEditingChildrenItem(item)}
-              >
-                Edit children
-              </Menu.Item>
-              <Menu.Item
-                icon={<IconTrash size={16} stroke={1.5} />}
-                color="red"
-                onClick={() => setDeletingItem(item)}
-              >
-                Delete activity
-              </Menu.Item>
-            </Menu.Dropdown>
-          </Menu>
-        </Group>
-      </td>
+      {isAdmin ? (
+        <td>
+          <Group spacing={0} position="right">
+            <Menu withinPortal transition="pop" withArrow position="left">
+              <Menu.Target>
+                <ActionIcon>
+                  <IconDots size={16} stroke={1.5} />
+                </ActionIcon>
+              </Menu.Target>
+              <Menu.Dropdown>
+                <Menu.Item
+                  icon={<IconPencil size={16} stroke={1.5} />}
+                  onClick={() => setEditingItem(item)}
+                >
+                  Edit activity name
+                </Menu.Item>
+                <Menu.Item
+                  icon={<IconPencil size={16} stroke={1.5} />}
+                  onClick={() => setEditingTeachersItem(item)}
+                >
+                  Edit teachers
+                </Menu.Item>
+                <Menu.Item
+                  icon={<IconPencil size={16} stroke={1.5} />}
+                  onClick={() => setEditingChildrenItem(item)}
+                >
+                  Edit children
+                </Menu.Item>
+                <Menu.Item
+                  icon={<IconTrash size={16} stroke={1.5} />}
+                  color="red"
+                  onClick={() => setDeletingItem(item)}
+                >
+                  Delete activity
+                </Menu.Item>
+              </Menu.Dropdown>
+            </Menu>
+          </Group>
+        </td>
+      ) : (
+        ""
+      )}
     </tr>
   ));
   return (
@@ -228,7 +237,7 @@ export const ItemsTable = ({
             <th style={{ textAlign: "left" }}>Name</th>
             <th style={{ textAlign: "left" }}>Teachers</th>
             <th style={{ textAlign: "left" }}>Children</th>
-            <th style={{ textAlign: "right" }}>Actions</th>
+            {isAdmin && <th style={{ textAlign: "right" }}>Actions</th>}
           </tr>
         </thead>
         <tbody>{rows}</tbody>
