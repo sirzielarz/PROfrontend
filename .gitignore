@@ -30,3 +30,5 @@ yarn-error.log*
 
 extensions.json
 .vscode/launch.json
+
+.env
